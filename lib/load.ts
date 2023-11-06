@@ -1,6 +1,11 @@
 import * as fs from "fs";
 import { CustomPlaceholder, JSONObject, Placeholder, PlaceholderType } from "./types";
 
+/**
+ * Validates a placeholder JSON object.
+ * @param jsonObject The JSON object to validate.
+ * @returns A tuple containing a boolean indicating whether the JSON object is valid, and a string containing an error message if the JSON object is invalid.
+ */
 const validatePlaceholderJSON = (jsonObject: JSONObject): [boolean, string] => {
   if (typeof jsonObject !== "object") return [false, "Placeholder is not an object."];
   if (!jsonObject.hasOwnProperty("name")) return [false, "Placeholder is missing name field."];
@@ -132,3 +137,12 @@ export const loadPlaceholdersFromFile = async (filepath: string): Promise<Placeh
     throw e;
   }
 };
+
+/**
+ * Placeholder loader.
+ */
+export const PLLoader = {
+  loadPlaceholderFromJSONString,
+  loadPlaceholdersFromJSONString,
+  loadPlaceholdersFromFile,
+}

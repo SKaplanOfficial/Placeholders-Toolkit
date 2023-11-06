@@ -2,6 +2,9 @@ import { Placeholder, PlaceholderCategory, PlaceholderType } from "../../types";
 import { PersistentVariable } from "./types";
 import { STORAGE_KEYS, getStorage } from "./utils";
 
+/**
+ * Placeholder for a comma-separated list of all persistent variables. If no persistent variables have been set, this placeholder will be replaced with an empty string.
+ */
 const VarsPlaceholder: Placeholder = {
   name: "vars",
   regex: /{{vars}}/g,

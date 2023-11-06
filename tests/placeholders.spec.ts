@@ -5,6 +5,7 @@ jest.mock("@raycast/utils", () => ({ runAppleScript: (script: string) => execScr
 
 import os from "os";
 import { execScript } from "../lib/scripts";
+import { DefaultPlaceholders } from "../lib/defaultPlaceholders";
 
 describe("Information Placeholder Tests", () => {
   it("should replace {{user}} with correct user name", async () => {
@@ -15,12 +16,6 @@ describe("Information Placeholder Tests", () => {
   it("should replace {{time}} with correct time", async () => {
     const time = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "numeric" });
     expect(await bulkApply("The time is {{time}}")).toMatch(/The time is [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2} (AM|PM)/g);
-  });
-
-  it("should dp things", async () => {
-    const c = await bulkApply("{{windowContent}}");
-
-    expect(c).toBe("5");
   });
 });
 

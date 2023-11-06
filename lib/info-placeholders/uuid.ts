@@ -4,7 +4,7 @@ import { Placeholder, PlaceholderCategory, PlaceholderType } from "../types";
 import crypto from "crypto";
 
 /**
- * Placeholder for a unique UUID. UUIDs are tracked in the {@link StorageKey.USED_UUIDS} storage key. The UUID will be unique for each use of the placeholder (but there is no guarantee that it will be unique across different instances of the extension, e.g. on different computers).
+ * Placeholder for a unique UUID. The UUID will be unique for each use of the placeholder (but there is no guarantee that it will be unique across different instances of the extension, e.g. on different computers).
  */
 const UUIDPlaceholder: Placeholder = {
   name: "uuid",

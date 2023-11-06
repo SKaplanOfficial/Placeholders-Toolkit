@@ -1,6 +1,6 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
-  "include": ["lib/**/*"],
+  "include": ["lib/**/*", "tests/setupEnvironment.ts"],
   "compilerOptions": {
     "lib": ["es2021"],
     "types": ["node", "jest"],

@@ -1,10 +1,3 @@
-/**
- * A placeholder type that associates Regex patterns with functions that applies the placeholder to a string, rules that determine whether or not the placeholder should be replaced, and aliases that can be used to achieve the same result.
- */
-export type PlaceholderList = {
-  [key: string]: Placeholder;
-};
-
 export type Placeholder = {
   /**
    * The detailed name of the placeholder.

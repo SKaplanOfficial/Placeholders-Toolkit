@@ -4,14 +4,34 @@ import { Placeholder } from "./types";
 /**
  * Applies placeholders to a single string.
  * @param str The string to apply placeholders to.
+ * @param context The context to apply placeholders with.
+ * @param customPlaceholders The list of custom (user-defined) placeholders. Provide this if you have a separate list of custom placeholders.
+ * @param defaultPlaceholders The list of default placeholders. Provide this if you have customized the order of default placeholders or added additional defaults.
+ * @param allPlaceholders The list of all placeholders (custom and default). Provide this if you have a single list of all placeholders.
  * @returns The string with placeholders applied.
  */
-export const applyToString = async (str: string, context?: { [key: string]: unknown }) => {
+export const applyToString = async (
+  str: string,
+  context?: { [key: string]: unknown },
+  customPlaceholders?: Placeholder[],
+  defaultPlaceholders?: Placeholder[],
+  allPlaceholders?: Placeholder[]
+) => {
+  const sortedPlaceholders = allPlaceholders
+    ? allPlaceholders
+    : [
+        ...(customPlaceholders || []),
+        ...(defaultPlaceholders ? defaultPlaceholders : Object.values(DefaultPlaceholders)),
+      ];
+
   let subbedStr = str;
-  for (const placeholder of DefaultPlaceholders) {
+  for (const placeholder of sortedPlaceholders) {
     if (!subbedStr.match(placeholder.regex)) continue;
     while (subbedStr.match(placeholder.regex) != undefined) {
-      subbedStr = subbedStr.replace(placeholder.regex, (await placeholder.apply(subbedStr, context)).result);
+      subbedStr = subbedStr.replace(
+        placeholder.regex,
+        (await placeholder.apply(subbedStr, context)).result
+      );
     }
   }
   return subbedStr;
@@ -20,9 +40,13 @@ export const applyToString = async (str: string, context?: { [key: string]: unkn
 /**
  * Applies placeholders to an array of strings.
  * @param strs The array of strings to apply placeholders to.
+ * @param context The context to apply placeholders with.
  * @returns The array of strings with placeholders applied.
  */
-export const applyToStrings = async (strs: string[], context?: { [key: string]: string }) => {
+export const applyToStrings = async (
+  strs: string[],
+  context?: { [key: string]: string }
+) => {
   const subbedStrs: string[] = [];
   for (const str of strs) {
     subbedStrs.push(await applyToString(str, context));
@@ -34,12 +58,13 @@ export const applyToStrings = async (strs: string[], context?: { [key: string]: 
  * Applies placeholders to the value of a single key in an object.
  * @param obj The object to apply placeholders to.
  * @param key The key of the value to apply placeholders to.
+ * @param context The context to apply placeholders with.
  * @returns The object with placeholders applied.
  */
 export const applyToObjectValueWithKey = async (
   obj: { [key: string]: unknown },
   key: string,
-  context?: { [key: string]: string },
+  context?: { [key: string]: string }
 ) => {
   const value = obj[key];
   if (typeof value === "string") {
@@ -50,7 +75,7 @@ export const applyToObjectValueWithKey = async (
     return await applyToObjectValuesWithKeys(
       value as { [key: string]: unknown },
       Object.keys(value as { [key: string]: unknown }),
-      context,
+      context
     );
   } else {
     return (value || "undefined").toString();
@@ -61,12 +86,13 @@ export const applyToObjectValueWithKey = async (
  * Applies placeholders to an object's values, specified by keys.
  * @param obj The object to apply placeholders to.
  * @param keys The keys of the object to apply placeholders to.
+ * @param context The context to apply placeholders with.
  * @returns The object with placeholders applied.
  */
 export const applyToObjectValuesWithKeys = async (
   obj: { [key: string]: unknown },
   keys: string[],
-  context?: { [key: string]: string },
+  context?: { [key: string]: string }
 ) => {
   const subbedObj: { [key: string]: unknown } = {};
   for (const key of keys) {
@@ -78,17 +104,40 @@ export const applyToObjectValuesWithKeys = async (
 /**
  * Gets a list of placeholders that are included in a string.
  * @param str The string to check.
+ * @param customPlaceholders The list of custom (user-defined) placeholders. Provide this if you have a separate list of custom placeholders.
+ * @param defaultPlaceholders The list of default placeholders. Provide this if you have customized the order of default placeholders or added additional defaults.
+ * @param allPlaceholders The list of all placeholders (custom and default). Provide this if you have a single list of all placeholders.
  * @returns The list of {@link Placeholder} objects.
  */
-export const checkForPlaceholders = async (str: string, customPlaceholders?: Placeholder[]): Promise<Placeholder[]> => {
-  const sortedPlaceholders = [...(customPlaceholders || []), ...DefaultPlaceholders];
+export const checkForPlaceholders = async (
+  str: string,
+  customPlaceholders?: Placeholder[],
+  defaultPlaceholders?: Placeholder[],
+  allPlaceholders?: Placeholder[]
+): Promise<Placeholder[]> => {
+  const sortedPlaceholders = allPlaceholders
+    ? allPlaceholders
+    : [
+        ...(customPlaceholders || []),
+        ...(defaultPlaceholders ? defaultPlaceholders : Object.values(DefaultPlaceholders)),
+      ];
   const includedPlaceholders = sortedPlaceholders
     .filter((placeholder) => {
       return (
         str.match(placeholder.regex) != undefined ||
-        str.match(new RegExp("(^| )" + placeholder.regex.source.replace("{{", "").replace("}}", ""), "g")) !=
-          undefined ||
-        str.match(new RegExp(`(^| )(?<!{{)${placeholder.name.replace(/[!#+-]/g, "\\$1")}(?!}})`, "g")) != undefined
+        str.match(
+          new RegExp(
+            "(^| )" +
+              placeholder.regex.source.replace("{{", "").replace("}}", ""),
+            "g"
+          )
+        ) != undefined ||
+        str.match(
+          new RegExp(
+            `(^| )(?<!{{)${placeholder.name.replace(/[!#+-]/g, "\\$1")}(?!}})`,
+            "g"
+          )
+        ) != undefined
       );
     })
     .sort((placeholderA, placeholderB) => {
@@ -107,25 +156,38 @@ export const checkForPlaceholders = async (str: string, customPlaceholders?: Pla
 /**
  * Applies placeholders to a string by memoizing the results of each placeholder.
  * @param str The string to apply placeholders to.
+ * @param context The context to apply placeholders with.
+ * @param customPlaceholders The list of custom (user-defined) placeholders. Provide this if you have a separate list of custom placeholders.
+ * @param defaultPlaceholders The list of default placeholders. Provide this if you have customized the order of default placeholders or added additional defaults.
+ * @param allPlaceholders The list of all placeholders (custom and default). Provide this if you have a single list of all placeholders.
  * @returns The string with placeholders substituted.
  */
 export const bulkApply = async (
   str: string,
   context?: { [key: string]: string },
   customPlaceholders?: Placeholder[],
+  defaultPlaceholders?: Placeholder[],
+  allPlaceholders?: Placeholder[]
 ): Promise<string> => {
-  const sortedPlaceholders = [...(customPlaceholders || []), ...DefaultPlaceholders];
+  const sortedPlaceholders = allPlaceholders
+    ? allPlaceholders
+    : [
+        ...(customPlaceholders || []),
+        ...(defaultPlaceholders ? defaultPlaceholders : Object.values(DefaultPlaceholders)),
+      ];
 
   let subbedStr = str;
   const result = { ...(context || {}) };
 
   // Apply any substitutions that are already in the context
   for (const contextKey in context) {
-    const keyHolder = sortedPlaceholders.find((placeholder) => placeholder.name == contextKey);
+    const keyHolder = sortedPlaceholders.find(
+      (placeholder) => placeholder.name == contextKey
+    );
     if (keyHolder && !(contextKey == "input" && context[contextKey] == "")) {
       subbedStr = subbedStr.replace(
         new RegExp(keyHolder.regex.source + "(?=(}}|[\\s\\S]|$))", "g"),
-        context[contextKey],
+        context[contextKey]
       );
     }
   }
@@ -140,21 +202,26 @@ export const bulkApply = async (
     if (keysToCheck.length == 0) continue;
 
     const result_keys = placeholder.result_keys?.filter(
-      (key: string) => !(key in result) || (result[key] == "" && key == "input"),
+      (key: string) => !(key in result) || (result[key] == "" && key == "input")
     );
     if (result_keys != undefined && result_keys.length == 0) continue; // Placeholder is already in the context
 
     // Add any dependencies of this placeholder to the list of keys to check
     keysToCheck.push(
-      ...(placeholder.dependencies?.reduce((acc: RegExp[], dependencyName: string) => {
-        // Get the placeholder that matches the dependency name
-        const dependency = sortedPlaceholders.find((placeholder) => placeholder.name == dependencyName);
-        if (!dependency) return acc;
+      ...(placeholder.dependencies?.reduce(
+        (acc: RegExp[], dependencyName: string) => {
+          // Get the placeholder that matches the dependency name
+          const dependency = sortedPlaceholders.find(
+            (placeholder) => placeholder.name == dependencyName
+          );
+          if (!dependency) return acc;
 
-        // Add the placeholder key to the list of keys to check
-        acc.push(dependency.regex);
-        return acc;
-      }, [] as RegExp[]) || []),
+          // Add the placeholder key to the list of keys to check
+          acc.push(dependency.regex);
+          return acc;
+        },
+        [] as RegExp[]
+      ) || [])
     );
 
     for (const newKey of keysToCheck) {
@@ -165,10 +232,13 @@ export const bulkApply = async (
         if (placeholder.constant) {
           subbedStr = subbedStr.replace(
             new RegExp(newKey.source + "(?=(}}|[\\s\\S]|$))", "g"),
-            intermediateResult.result,
+            intermediateResult.result
           );
         } else {
-          subbedStr = subbedStr.replace(new RegExp(newKey.source + "(?=(}}|[\\s\\S]|$))"), intermediateResult.result);
+          subbedStr = subbedStr.replace(
+            new RegExp(newKey.source + "(?=(}}|[\\s\\S]|$))"),
+            intermediateResult.result
+          );
         }
 
         for (const [key, value] of Object.entries(intermediateResult)) {
@@ -187,3 +257,15 @@ export const bulkApply = async (
   }
   return subbedStr;
 };
+
+/**
+ * Object for managing placeholder application.
+ */
+export const PLApplicator = {
+  applyToString,
+  applyToStrings,
+  applyToObjectValueWithKey,
+  applyToObjectValuesWithKeys,
+  checkForPlaceholders,
+  bulkApply,
+}

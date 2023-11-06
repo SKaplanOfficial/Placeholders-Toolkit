@@ -3,7 +3,7 @@ import { Placeholder, PlaceholderCategory, PlaceholderType } from "../types";
 import { getActiveBrowser } from "../utils";
 
 /**
- * Placeholder for the visible text of the current tab in any supported browser. See {@link SupportedBrowsers} for the list of supported browsers. If the current application is not a supported browser, this placeholder will not be replaced.
+ * Placeholder for the visible text of the current tab in any supported browser. If the current application is not a supported browser, this placeholder will not be replaced.
  */
 const CurrentTabTextPlaceholder: Placeholder = {
   name: "currentTabText",

@@ -1,3 +1,4 @@
+import { Safari } from "../browsers";
 import { Placeholder, PlaceholderCategory, PlaceholderType } from "../types";
 
 /**
@@ -11,7 +12,7 @@ const SafariTopSitesPlaceholder: Placeholder = {
       return { result: context["safariTopSites"] as string, safariTopSites: context["safariTopSites"] as string };
     }
 
-    const sites = "";
+    const sites = (await Safari.topSites()).join(", ");
     return { result: sites, safariTopSites: sites };
   },
   result_keys: ["safariTopSites"],

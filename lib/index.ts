@@ -1,18 +1,13 @@
-export * from "./defaultPlaceholders";
+export { DefaultPlaceholders } from "./defaultPlaceholders";
+export * as Placeholders from "./placeholders";
+
+export { PLApplicator } from "./apply";
+export { PLLoader } from "./load";
+export { PLCreator } from "./new";
 
 export {
-  checkForPlaceholders,
-  applyToString,
-  applyToObjectValueWithKey,
-  applyToObjectValuesWithKeys,
-  applyToStrings,
-  bulkApply,
-} from "./apply";
-
-export {
-  loadPlaceholderFromJSONString,
-  loadPlaceholdersFromJSONString,
-  loadPlaceholdersFromFile,
-} from "./load";
-
-export { dummyPlaceholder, newPlaceholder } from "./new";
+  Placeholder,
+  CustomPlaceholder,
+  PlaceholderCategory,
+  PlaceholderType,
+} from "./types";

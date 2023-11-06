@@ -1,3 +1,4 @@
+import { Safari } from "../browsers";
 import { Placeholder, PlaceholderCategory, PlaceholderType } from "../types";
 
 /**
@@ -11,7 +12,7 @@ const SafariBookmarksPlaceholder: Placeholder = {
       return { result: context["safariBookmarks"] as string, safariBookmarks: context["safariBookmarks"] as string };
     }
 
-    const sites = "";
+    const sites = (await Safari.bookmarks(20)).join(", ");
     return { result: sites, safariBookmarks: sites };
   },
   result_keys: ["safariBookmarks"],

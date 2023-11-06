@@ -81,3 +81,28 @@ export const newPlaceholder = (
 
   return newPlaceholder;
 };
+
+/**
+ * Builds a list of placeholders from a list of placeholder names and values.
+ * @param valueDict A dictionary of placeholder names and values.
+ * @returns A list of placeholders.
+ */
+export const buildPlaceholdersFromValueDict = (valueDict: { [key: string]: string; }) => {
+  const placeholders: Placeholder[] = [];
+  for (const key in valueDict) {
+    if (Object.prototype.hasOwnProperty.call(valueDict, key)) {
+      const value = valueDict[key];
+      placeholders.push(newPlaceholder(key, undefined, undefined, value, true));
+    }
+  }
+  return placeholders;
+}
+
+/**
+ * Placeholder creator.
+ */
+export const PLCreator = {
+  newPlaceholder,
+  dummyPlaceholder,
+  buildPlaceholdersFromValueDict,
+}

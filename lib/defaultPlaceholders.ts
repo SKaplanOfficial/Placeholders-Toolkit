@@ -42,23 +42,19 @@ import ToastDirective from "./directives/alerts/toast";
 import SayDirective from "./directives/alerts/say";
 import DialogDirective from "./directives/alerts/dialog";
 import AlertDirective from "./directives/alerts/alert";
-import PreviousResponsePlaceholder from "./info-placeholders/previousResponse";
-import PreviousPromptPlaceholder from "./info-placeholders/previousPrompt";
-import PreviousCommandPlaceholder from "./info-placeholders/previousCommand";
-// import YearRemindersPlaceholder from "./info-placeholders/calendar/yearReminders";
-// import MonthRemindersPlaceholder from "./info-placeholders/calendar/monthReminders";
-// import WeekRemindersPlaceholder from "./info-placeholders/calendar/weekReminders";
-// import TodayRemindersPlaceholder from "./info-placeholders/calendar/todayReminders";
-// import YearEventsPlaceholder from "./info-placeholders/calendar/yearEvents";
-// import MonthEventsPlaceholder from "./info-placeholders/calendar/monthEvents";
-// import WeekEventsPlaceholder from "./info-placeholders/calendar/weekEvents";
-// import TodayEventsPlaceholder from "./info-placeholders/calendar/todayEvents";
+import YearRemindersPlaceholder from "./info-placeholders/calendar/yearReminders";
+import MonthRemindersPlaceholder from "./info-placeholders/calendar/monthReminders";
+import WeekRemindersPlaceholder from "./info-placeholders/calendar/weekReminders";
+import TodayRemindersPlaceholder from "./info-placeholders/calendar/todayReminders";
+import YearEventsPlaceholder from "./info-placeholders/calendar/yearEvents";
+import MonthEventsPlaceholder from "./info-placeholders/calendar/monthEvents";
+import WeekEventsPlaceholder from "./info-placeholders/calendar/weekEvents";
+import TodayEventsPlaceholder from "./info-placeholders/calendar/todayEvents";
 import UsedUUIDsPlaceholder from "./info-placeholders/usedUUIDs";
 import UUIDPlaceholder from "./info-placeholders/uuid";
 import RunningApplicationsPlaceholder from "./info-placeholders/runningApplications";
 import SafariBookmarksPlaceholder from "./info-placeholders/safariBookmarks";
 import SafariTopSitesPlaceholder from "./info-placeholders/safariTopSites";
-import CommandsPlaceholder from "./info-placeholders/commands";
 import InstalledApplicationsPlaceholder from "./info-placeholders/installedApps";
 import LastEmailPlaceholder from "./info-placeholders/lastEmail";
 import LastNotePlaceholder from "./info-placeholders/lastNote";
@@ -80,46 +76,73 @@ import CurrentAppPathPlaceholder from "./info-placeholders/currentAppPath";
 import CurrentAppBundleIDPlaceholder from "./info-placeholders/currentAppBundleID";
 import CurrentAppNamePlaceholder from "./info-placeholders/currentAppName";
 import FileContentsPlaceholder from "./info-placeholders/contents";
-import PDFOCRTextPlaceholder from "./info-placeholders/pdfOCRText";
-import PDFRawTextPlaceholder from "./info-placeholders/pdfRawText";
-import ImageRectanglesPlaceholder from "./info-placeholders/imageRectangles";
-import ImageBarcodesPlaceholder from "./info-placeholders/imageBarcodes";
-import ImagePOIPlaceholder from "./info-placeholders/imagePOI";
-import ImageSubjectsPlaceholder from "./info-placeholders/imageSubjects";
-import ImageAnimalsPlaceholder from "./info-placeholders/imageAnimals";
-import ImageHorizonPlaceholder from "./info-placeholders/imageHorizon";
-import ImageFacesPlaceholder from "./info-placeholders/imageFaces";
-import ImageTextPlaceholder from "./info-placeholders/imageText";
 import FileMetadataPlaceholder from "./info-placeholders/metadata";
 import FileNamesPlaceholder from "./info-placeholders/fileNames";
 import SelectedFilesPlaceholder from "./info-placeholders/selectedFiles";
 import SelectedTextPlaceholder from "./info-placeholders/selectedText";
-import InputPlaceholder from "./info-placeholders/input";
 import { runJSInActiveTab } from "./utils";
+import { Placeholder } from "./types";
 
-export const HighPrecedenceDirectives = [
+/**
+ * The default placeholders.
+ */
+JavaScriptPlaceholder.apply = async (str: string) => {
+  try {
+    const script = str.match(/(?<=(js|JS))( target="(.*?)")?:(([^{]|{(?!{)|{{[\s\S]*?}})*?)}}/)?.[4];
+    const target = str.match(/(?<=(js|JS))( target="(.*?)")?:(([^{]|{(?!{)|{{[\s\S]*?}})*?)}}/)?.[3];
+    if (!script) return { result: "", js: "" };
+
+    if (target) {
+      // Run in active browser tab
+      const res = await runJSInActiveTab(script.replaceAll(/(\n|\r|\t|\\|")/g, "\\$1"), target);
+      return { result: res, js: res };
+    }
+
+    // Run in sandbox
+    const sandbox = Object.values(DefaultPlaceholders).reduce(
+      (acc, placeholder) => {
+        acc[placeholder.name] = placeholder.fn;
+        return acc;
+      },
+      {} as { [key: string]: (...args: never[]) => Promise<string> },
+    );
+    sandbox["log"] = async (str: string) => {
+      console.log(str); // Make logging available to JS scripts
+      return "";
+    };
+    const res = await vm.runInNewContext(script, sandbox, { timeout: 1000, displayErrors: true });
+    return { result: res, js: res };
+  } catch (e) {
+    return { result: "", js: "" };
+  }
+};
+
+/**
+ * Maps a list of placeholders to an object with the placeholder's full name as the key and the placeholder as the value.
+ * @param placeholders The list of placeholders to map.
+ * @returns The placeholder list as an object.
+ */
+const placeholdersObjectFromList = (placeholders: Placeholder[]) => {
+  return Object.fromEntries(placeholders.map((placeholder) => {
+    const nameParts = placeholder.name.split(":");
+    let name = nameParts[0].charAt(0).toUpperCase() + nameParts[0].slice(1);
+    for (let i = 1; i < nameParts.length; i++) {
+      name += nameParts[i].charAt(0).toUpperCase() + nameParts[i].slice(1);
+    }
+    const fullName = `${name}Placeholder`;
+    return [fullName, placeholder];
+  }));
+}
+
+const defaultPlaceholders = {
   GetPersistentVariablePlaceholder,
   ResetPersistentVariablePlaceholder,
   DeletePersistentVariablePlaceholder,
   VarsPlaceholder,
   IncrementPersistentVariablePlaceholder,
   DecrementPersistentVariablePlaceholder,
-];
-
-export const InfoPlaceholders = [
-  InputPlaceholder,
   ClipboardTextPlaceholder,
   SelectedTextPlaceholder,
-  ImageTextPlaceholder,
-  ImageFacesPlaceholder,
-  ImageHorizonPlaceholder,
-  ImageAnimalsPlaceholder,
-  ImageSubjectsPlaceholder,
-  ImagePOIPlaceholder,
-  ImageBarcodesPlaceholder,
-  ImageRectanglesPlaceholder,
-  PDFRawTextPlaceholder,
-  PDFOCRTextPlaceholder,
   SelectedFilesPlaceholder,
   FileNamesPlaceholder,
   FileContentsPlaceholder,
@@ -139,6 +162,14 @@ export const InfoPlaceholders = [
   DayPlaceholder,
   TimePlaceholder,
   TimezonePlaceholder,
+  TodayEventsPlaceholder,
+  WeekEventsPlaceholder,
+  MonthEventsPlaceholder,
+  YearEventsPlaceholder,
+  TodayRemindersPlaceholder,
+  WeekRemindersPlaceholder,
+  MonthRemindersPlaceholder,
+  YearRemindersPlaceholder,
   TodayWeatherPlaceholder,
   WeekWeatherPlaceholder,
   SystemLanguagePlaceholder,
@@ -146,36 +177,21 @@ export const InfoPlaceholders = [
   CurrentTrackPlaceholder,
   LastNotePlaceholder,
   LastEmailPlaceholder,
-  CommandsPlaceholder,
   SafariTopSitesPlaceholder,
   SafariBookmarksPlaceholder,
   InstalledApplicationsPlaceholder,
   RunningApplicationsPlaceholder,
   UUIDPlaceholder,
   UsedUUIDsPlaceholder,
-  // TodayEventsPlaceholder,
-  // WeekEventsPlaceholder,
-  // MonthEventsPlaceholder,
-  // YearEventsPlaceholder,
-  // TodayRemindersPlaceholder,
-  // WeekRemindersPlaceholder,
-  // MonthRemindersPlaceholder,
-  // YearRemindersPlaceholder,
-  PreviousCommandPlaceholder,
-  PreviousPromptPlaceholder,
-  PreviousResponsePlaceholder,
   LocationPlaceholder,
-];
-
-export const LowPrecedenceDirectives = [
   SetPersistentVariablePlaceholder,
-  ...TextFileDirectives,
+  ...placeholdersObjectFromList(TextFileDirectives),
   TextFileFlowDirective,
-  ...ImageDirectives,
+  ...placeholdersObjectFromList(ImageDirectives),
   ImageFlowDirective,
-  ...VideoDirectives,
+  ...placeholdersObjectFromList(VideoDirectives),
   VideoFlowDirective,
-  ...AudioDirectives,
+  ...placeholdersObjectFromList(AudioDirectives),
   AudioFlowDirective,
   PDFFlowDirective,
   NearbyLocationsPlaceholder,
@@ -194,48 +210,18 @@ export const LowPrecedenceDirectives = [
   SayDirective,
   ToastDirective,
   ShortcutPlaceholder,
-  // PromptPlaceholder,
   CommandPlaceholder,
   AppleScriptPlaceholder,
   JXAPlaceholder,
   ShellScriptPlaceholder,
-];
-
-/**
- * The default placeholders available in PromptLab.
- */
-const DefaultPlaceholders = [...HighPrecedenceDirectives, ...InfoPlaceholders, ...LowPrecedenceDirectives];
-
-JavaScriptPlaceholder.apply = async (str: string) => {
-  try {
-    const script = str.match(/(?<=(js|JS))( target="(.*?)")?:(([^{]|{(?!{)|{{[\s\S]*?}})*?)}}/)?.[4];
-    const target = str.match(/(?<=(js|JS))( target="(.*?)")?:(([^{]|{(?!{)|{{[\s\S]*?}})*?)}}/)?.[3];
-    if (!script) return { result: "", js: "" };
-
-    if (target) {
-      // Run in active browser tab
-      const res = await runJSInActiveTab(script.replaceAll(/(\n|\r|\t|\\|")/g, "\\$1"), target);
-      return { result: res, js: res };
-    }
-
-    // Run in sandbox
-    const sandbox = DefaultPlaceholders.reduce(
-      (acc, placeholder) => {
-        acc[placeholder.name] = placeholder.fn;
-        return acc;
-      },
-      {} as { [key: string]: (...args: never[]) => Promise<string> },
-    );
-    sandbox["log"] = async (str: string) => {
-      console.log(str); // Make logging available to JS scripts
-      return "";
-    };
-    const res = await vm.runInNewContext(script, sandbox, { timeout: 1000, displayErrors: true });
-    return { result: res, js: res };
-  } catch (e) {
-    return { result: "", js: "" };
-  }
+  JavaScriptPlaceholder,
+  CutoffDirective,
+  IgnoreDirective,
 };
 
-DefaultPlaceholders.push(JavaScriptPlaceholder, CutoffDirective, IgnoreDirective);
-export { DefaultPlaceholders };
+/**
+ * The list of default placeholders. This is a map of each placeholder's full name to its placeholder object. For example, the placeholder with the name "clipboardText" would be accessible as DefaultPlaceholders.ClipboardTextPlaceholder. Some placeholders, mainly file-extension-specific flow directives, can only be accessed using their string index, e.g. DefaultPlaceholders["TextfileMdPlaceholder"].
+ */
+const DefaultPlaceholders = defaultPlaceholders as typeof defaultPlaceholders & { [key: string]: Placeholder };
+
+export { DefaultPlaceholders, JavaScriptPlaceholder };

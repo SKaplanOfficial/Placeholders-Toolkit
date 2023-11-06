@@ -96,7 +96,6 @@ const currentDirectory_1 = __importDefault(require("./info-placeholders/currentD
 const currentAppPath_1 = __importDefault(require("./info-placeholders/currentAppPath"));
 const currentAppBundleID_1 = __importDefault(require("./info-placeholders/currentAppBundleID"));
 const currentAppName_1 = __importDefault(require("./info-placeholders/currentAppName"));
-const contents_1 = __importDefault(require("./info-placeholders/contents"));
 const metadata_1 = __importDefault(require("./info-placeholders/metadata"));
 const fileNames_1 = __importDefault(require("./info-placeholders/fileNames"));
 const selectedFiles_1 = __importDefault(require("./info-placeholders/selectedFiles"));
@@ -159,7 +158,6 @@ const defaultPlaceholders = {
     SelectedTextPlaceholder: selectedText_1.default,
     SelectedFilesPlaceholder: selectedFiles_1.default,
     FileNamesPlaceholder: fileNames_1.default,
-    FileContentsPlaceholder: contents_1.default,
     FileMetadataPlaceholder: metadata_1.default,
     CurrentAppNamePlaceholder: currentAppName_1.default,
     CurrentAppBundleIDPlaceholder: currentAppBundleID_1.default,

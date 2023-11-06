@@ -9,13 +9,13 @@ import { CustomPlaceholder, JSONObject, Placeholder, PlaceholderType } from "./t
 const validatePlaceholderJSON = (jsonObject: JSONObject): [boolean, string] => {
   if (typeof jsonObject !== "object") return [false, "Placeholder is not an object."];
   if (!jsonObject.hasOwnProperty("name")) return [false, "Placeholder is missing name field."];
-  if (!jsonObject.hasOwnProperty("regex")) return [false, "Placeholder is missing regex field."];
   if (!jsonObject.hasOwnProperty("value")) return [false, "Placeholder is missing value field."];
 
   if (typeof jsonObject.name !== "string") return [false, "Placeholder name is not a string."];
-  if (typeof jsonObject.regex !== "string") return [false, "Placeholder regex is not a string."];
   if (typeof jsonObject.value !== "string") return [false, "Placeholder value is not a string."];
 
+  if (jsonObject.hasOwnProperty("regex") && typeof jsonObject.regex !== "string")
+    return [false, "Placeholder regex is not a string."];
   if (jsonObject.hasOwnProperty("description") && typeof jsonObject.description !== "string")
     return [false, "Placeholder description is not a string."];
   if (jsonObject.hasOwnProperty("example") && typeof jsonObject.example !== "string")
@@ -50,7 +50,7 @@ export const loadPlaceholderFromJSONString = (jsonString: string): Placeholder |
 
     const newPlaceholder: Placeholder = {
       name: newPlaceholderData.name,
-      regex: new RegExp(newPlaceholderData.regex),
+      regex: new RegExp(newPlaceholderData.regex || `{{${newPlaceholderData.name}}}`),
       apply: async (str: string, context?: { [key: string]: unknown }) => {
         const match = str.match(new RegExp(`${newPlaceholderData.regex}`));
         let value = newPlaceholderData.value;

@@ -23,7 +23,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.PlaceholderType = exports.PlaceholderCategory = exports.PLCreator = exports.PLLoader = exports.PLApplicator = exports.Placeholders = exports.DefaultPlaceholders = void 0;
+exports.utils = exports.PlaceholderType = exports.PlaceholderCategory = exports.PLCreator = exports.PLLoader = exports.PLApplicator = exports.Placeholders = exports.DefaultPlaceholders = void 0;
 var defaultPlaceholders_1 = require("./defaultPlaceholders");
 Object.defineProperty(exports, "DefaultPlaceholders", { enumerable: true, get: function () { return defaultPlaceholders_1.DefaultPlaceholders; } });
 exports.Placeholders = __importStar(require("./placeholders"));
@@ -36,3 +36,4 @@ Object.defineProperty(exports, "PLCreator", { enumerable: true, get: function ()
 var types_1 = require("./types");
 Object.defineProperty(exports, "PlaceholderCategory", { enumerable: true, get: function () { return types_1.PlaceholderCategory; } });
 Object.defineProperty(exports, "PlaceholderType", { enumerable: true, get: function () { return types_1.PlaceholderType; } });
+exports.utils = __importStar(require("./utils"));

@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.PLCreator = exports.buildPlaceholdersFromValueDict = exports.newPlaceholder = exports.dummyPlaceholder = void 0;
+exports.PLCreator = exports.buildPlaceholdersFromFnDict = exports.buildPlaceholdersFromValueDict = exports.newPlaceholder = exports.dummyPlaceholder = void 0;
 const types_1 = require("./types");
 /**
  * A dummy placeholder.
@@ -37,33 +37,33 @@ exports.dummyPlaceholder = dummyPlaceholder;
  * @param categories The categories of the placeholder.
  * @returns A placeholder object.
  */
-const newPlaceholder = (name, regex, apply_fn, replace_with, constant = false, description, example, hintRepresentation, fullRepresentation, type = types_1.PlaceholderType.Informational, categories) => {
-    if (apply_fn != undefined && replace_with != undefined)
+const newPlaceholder = (name, options) => {
+    if (options?.apply_fn != undefined && options?.replace_with != undefined)
         throw new Error("Cannot specify both apply_fn and replace_with");
-    if (replace_with != undefined) {
-        if (constant) {
-            apply_fn = async (str, context) => ({
-                result: replace_with,
-                [name]: replace_with,
+    if (options?.replace_with != undefined) {
+        if (options.constant) {
+            options.apply_fn = async (str, context) => ({
+                result: options.replace_with || "",
+                [name]: options.replace_with || "",
             });
         }
         else {
-            apply_fn = async (str, context) => ({ result: replace_with });
+            options.apply_fn = async (str, context) => ({ result: options.replace_with || "", [name]: options.replace_with || "" });
         }
     }
     const newPlaceholder = {
         name: name,
-        regex: regex || new RegExp(`{{${name}}}`, "g"),
-        apply: apply_fn || (async (str, context) => ({ result: "" })),
+        regex: options?.regex || new RegExp(`{{${name}}}`, "g"),
+        apply: options?.apply_fn || (async (str, context) => ({ result: "" })),
         result_keys: [name],
-        constant: constant,
+        constant: options?.constant || false,
         fn: async (content) => (await newPlaceholder.apply(`{{${name}}}`)).result,
-        description: description || "",
-        example: example || "",
-        hintRepresentation: hintRepresentation || `{{${name}}}`,
-        fullRepresentation: fullRepresentation || `${name} (Custom)`,
-        type: type,
-        categories: categories || [],
+        description: options?.description || "",
+        example: options?.example || "",
+        hintRepresentation: options?.hintRepresentation || `{{${name}}}`,
+        fullRepresentation: options?.fullRepresentation || `${name} (Custom)`,
+        type: options?.type || types_1.PlaceholderType.Informational,
+        categories: options?.categories || [],
     };
     return newPlaceholder;
 };
@@ -78,17 +78,34 @@ const buildPlaceholdersFromValueDict = (valueDict) => {
     for (const key in valueDict) {
         if (Object.prototype.hasOwnProperty.call(valueDict, key)) {
             const value = valueDict[key];
-            placeholders.push((0, exports.newPlaceholder)(key, undefined, undefined, value, true));
+            placeholders.push((0, exports.newPlaceholder)(key, { replace_with: value, constant: true }));
         }
     }
     return placeholders;
 };
 exports.buildPlaceholdersFromValueDict = buildPlaceholdersFromValueDict;
 /**
+ * Builds a list of placeholders from a list of placeholder names and application functions.
+ * @param fnDict A dictionary of placeholder names and application functions.
+ * @returns A list of placeholders.
+ */
+const buildPlaceholdersFromFnDict = (fnDict) => {
+    const placeholders = [];
+    for (const key in fnDict) {
+        if (Object.prototype.hasOwnProperty.call(fnDict, key)) {
+            const fn = fnDict[key];
+            placeholders.push((0, exports.newPlaceholder)(key, { apply_fn: fn }));
+        }
+    }
+    return placeholders;
+};
+exports.buildPlaceholdersFromFnDict = buildPlaceholdersFromFnDict;
+/**
  * Placeholder creator.
  */
 exports.PLCreator = {
-    newPlaceholder: exports.newPlaceholder,
     dummyPlaceholder: exports.dummyPlaceholder,
+    newPlaceholder: exports.newPlaceholder,
     buildPlaceholdersFromValueDict: exports.buildPlaceholdersFromValueDict,
+    buildPlaceholdersFromFnDict: exports.buildPlaceholdersFromFnDict,
 };

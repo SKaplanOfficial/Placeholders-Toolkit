@@ -3,6 +3,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ImageDirectives = void 0;
 const file_extensions_1 = require("../../data/file-extensions");
 const types_1 = require("../../types");
+/**
+ * Flow control directives for each image file extension.
+ */
 exports.ImageDirectives = file_extensions_1.imageFileExtensions.map((ext) => {
     const newPlaceholder = {
         name: `image:${ext}`,

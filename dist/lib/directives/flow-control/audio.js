@@ -3,6 +3,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AudioDirectives = void 0;
 const file_extensions_1 = require("../../data/file-extensions");
 const types_1 = require("../../types");
+/**
+ * Flow control directives for each audio file extension.
+ */
 exports.AudioDirectives = file_extensions_1.audioFileExtensions.map((ext) => {
     const newPlaceholder = {
         name: `audio:${ext}`,

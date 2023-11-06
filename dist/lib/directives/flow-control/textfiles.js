@@ -3,6 +3,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.TextFileDirectives = void 0;
 const file_extensions_1 = require("../../data/file-extensions");
 const types_1 = require("../../types");
+/**
+ * Flow control directives for each text file extension.
+ */
 exports.TextFileDirectives = file_extensions_1.textFileExtensions
     .map((ext) => {
     if (["js", "as"].includes(ext)) {

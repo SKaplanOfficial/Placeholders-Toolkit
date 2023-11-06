@@ -11,3 +11,5 @@ export {
   PlaceholderCategory,
   PlaceholderType,
 } from "./types";
+
+export * as utils from "./utils";

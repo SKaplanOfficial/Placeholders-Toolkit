@@ -42,7 +42,6 @@ declare const DefaultPlaceholders: {
     SelectedTextPlaceholder: Placeholder;
     SelectedFilesPlaceholder: Placeholder;
     FileNamesPlaceholder: Placeholder;
-    FileContentsPlaceholder: Placeholder;
     FileMetadataPlaceholder: Placeholder;
     CurrentAppNamePlaceholder: Placeholder;
     CurrentAppBundleIDPlaceholder: Placeholder;

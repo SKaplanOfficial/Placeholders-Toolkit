@@ -75,7 +75,6 @@ import CurrentDirectoryPlaceholder from "./info-placeholders/currentDirectory";
 import CurrentAppPathPlaceholder from "./info-placeholders/currentAppPath";
 import CurrentAppBundleIDPlaceholder from "./info-placeholders/currentAppBundleID";
 import CurrentAppNamePlaceholder from "./info-placeholders/currentAppName";
-import FileContentsPlaceholder from "./info-placeholders/contents";
 import FileMetadataPlaceholder from "./info-placeholders/metadata";
 import FileNamesPlaceholder from "./info-placeholders/fileNames";
 import SelectedFilesPlaceholder from "./info-placeholders/selectedFiles";
@@ -92,7 +91,6 @@ export {
   SelectedTextPlaceholder,
   SelectedFilesPlaceholder,
   FileNamesPlaceholder,
-  FileContentsPlaceholder,
   FileMetadataPlaceholder,
   CurrentAppNamePlaceholder,
   CurrentAppBundleIDPlaceholder,

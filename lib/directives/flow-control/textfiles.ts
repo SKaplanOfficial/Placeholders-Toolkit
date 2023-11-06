@@ -1,6 +1,9 @@
 import { textFileExtensions } from "../../data/file-extensions";
 import { Placeholder, PlaceholderCategory, PlaceholderType } from "../../types";
 
+/**
+ * Flow control directives for each text file extension.
+ */
 export const TextFileDirectives = textFileExtensions
   .map((ext) => {
     if (["js", "as"].includes(ext)) {

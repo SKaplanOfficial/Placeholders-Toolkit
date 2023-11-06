@@ -1,6 +1,9 @@
 import { videoFileExtensions } from "../../data/file-extensions";
 import { Placeholder, PlaceholderCategory, PlaceholderType } from "../../types";
 
+/**
+ * Flow control directives for each video file extension.
+ */
 export const VideoDirectives = videoFileExtensions.map((ext) => {
   const newPlaceholder: Placeholder = {
     name: `video:${ext}`,

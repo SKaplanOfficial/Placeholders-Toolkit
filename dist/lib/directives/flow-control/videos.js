@@ -3,6 +3,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.VideoDirectives = void 0;
 const file_extensions_1 = require("../../data/file-extensions");
 const types_1 = require("../../types");
+/**
+ * Flow control directives for each video file extension.
+ */
 exports.VideoDirectives = file_extensions_1.videoFileExtensions.map((ext) => {
     const newPlaceholder = {
         name: `video:${ext}`,

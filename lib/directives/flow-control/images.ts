@@ -1,6 +1,9 @@
 import { imageFileExtensions } from "../../data/file-extensions";
 import { Placeholder, PlaceholderCategory, PlaceholderType } from "../../types";
 
+/**
+ * Flow control directives for each image file extension.
+ */
 export const ImageDirectives = imageFileExtensions.map((ext) => {
   const newPlaceholder: Placeholder = {
     name: `image:${ext}`,

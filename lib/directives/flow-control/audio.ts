@@ -1,6 +1,9 @@
 import { audioFileExtensions } from "../../data/file-extensions";
 import { Placeholder, PlaceholderCategory, PlaceholderType } from "../../types";
 
+/**
+ * Flow control directives for each audio file extension.
+ */
 export const AudioDirectives = audioFileExtensions.map((ext) => {
   const newPlaceholder: Placeholder = {
     name: `audio:${ext}`,

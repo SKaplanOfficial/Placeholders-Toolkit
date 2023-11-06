@@ -4,3 +4,4 @@ export { PLApplicator } from "./apply";
 export { PLLoader } from "./load";
 export { PLCreator } from "./new";
 export { Placeholder, CustomPlaceholder, PlaceholderCategory, PlaceholderType, } from "./types";
+export * as utils from "./utils";

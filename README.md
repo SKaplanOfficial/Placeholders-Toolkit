@@ -2,11 +2,21 @@
 
 A placeholders system for supplying dynamic content to Raycast extensions.
 
+## Overview
+
+This package provides the core functionality for the placeholders system seen in Raycast extensions such as [PromptLab](https://www.raycast.com/HelloImSteven/promptlab) and [Pins](https://www.raycast.com/HelloImSteven/pins). The Placeholders Toolkit helps you create, manage, and apply complex placeholders, compose them into more powerful structures, and ultimately use them to give your users a more dynamic experience.
+
+The Placeholders Toolkit supports a wide array of built-in placeholders, including placeholders for getting the current date and time, the current user, the list of upcoming calendar events, custom scripts, and more. You can also create your own placeholders, either programmatically or by specifying them in JSON. Users of your extensions can then use these placeholders to input dynamic content into your extension's commands and input fields. For example, you could create a journal extension that allows users to insert various placeholders to give context to their entries; or you could add support for convenient placeholders to a GitHub/GitLab-esque "Create Issue" command—for example, allowing users to type `{{osVersion}}` to insert their macOS version on-the-fly.
+
+To get started, follow the brief tutorial below, then check out the [API Reference](https://skaplanofficial.github.io/Placeholders-Toolkit/).
+
 ## Installation
 
 ```bash
 npm install placeholders-toolkit
 ```
+
+[View on npm](https://www.npmjs.com/package/placeholders-toolkit)
 
 ### Usage
 

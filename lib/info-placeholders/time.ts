@@ -2,16 +2,17 @@ import { runAppleScript } from "@raycast/utils";
 import { Placeholder, PlaceholderCategory, PlaceholderType } from "../types";
 
 /**
-   * Placeholder for the current time supporting an optional format argument. Defaults to "Hour:Minute:Second AM/PM". Barring any issues, this should always be replaced.
-   */
+ * Placeholder for the current time supporting an optional format argument. Defaults to "Hour:Minute:Second AM/PM". Barring any issues, this should always be replaced.
+ */
 const TimePlaceholder: Placeholder = {
   name: "time",
   regex: /{{(time|currentTime)( format=("|').*?("|'))?}}/g,
   apply: async (str: string, context?: { [key: string]: unknown }) => {
-    const format = str.match(/(?<=format=("|')).*?(?=("|'))/)?.[0] || "HH:mm:s a";
+    const format =
+      str.match(/(?<=format=("|')).*?(?=("|'))/)?.[0] || "HH:mm:s a";
     const time =
       context && "time" in context
-        ? context["time"] as string
+        ? (context["time"] as string)
         : await runAppleScript(`use framework "Foundation"
       set currentDate to current application's NSDate's alloc()'s init()
       try
@@ -38,6 +39,6 @@ const TimePlaceholder: Placeholder = {
   fullRepresentation: "Current Time",
   type: PlaceholderType.Informational,
   categories: [PlaceholderCategory.Calendar],
-}
+};
 
 export default TimePlaceholder;

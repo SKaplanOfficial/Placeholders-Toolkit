@@ -22,7 +22,7 @@ npm install placeholders-toolkit
 
 #### Basic Usage
 
-```js
+```ts
 import { PLApplicator } from "placeholders-toolkit";
 
 const myFunc = async () => {
@@ -34,11 +34,11 @@ const myFunc = async () => {
 
 #### Applying Placeholders
 
-The {@link PLApplicator}.`bulkApply` method is the main method for applying placeholders. It takes a string and returns a promise that resolves to the string with all placeholders applied. Placeholders are applied in order of precedence, with faster placeholders being applied first, in general. Script placeholders, such as `{{js:...}}`, are applied last.
+The {@link PLApplicator.bulkApply} method is the main method for applying placeholders. It takes a string and returns a promise that resolves to the string with all placeholders applied. Placeholders are applied in order of precedence, with faster placeholders being applied first, in general. Script placeholders, such as `{{js:...}}`, are applied last.
 
-When using `bulkApply`, you can provide a context object that will be passed to all placeholders. This allows you to pass information between placeholders, e.g.:
+When using {@link PLApplicator.bulkApply}, you can provide a context object that will be passed to all placeholders. This allows you to pass information between placeholders, e.g.:
 
-```js
+```ts
 const p1 = PLCreator.newPlaceholder("test", { apply_fn: async (str, context) => {
   return { result: "", __my_data: "Hello" }; // Stores some data for the next placeholder to use.
 } });
@@ -53,9 +53,9 @@ PLApplicator.bulkApply("{{test}}{{test2}}", undefined, [p1, p2]).then((result) =
 });
 ```
 
-In the example above, notice how we pass `[p1, p2]` as the third argument to `bulkApply`. This specifies a list of custom placeholders that `bulkApply` will consider in addition to the default placeholders. If you don't want to use any custom placeholders, you can omit this argument. If you want to use only custom placeholders, you can overwrite the default placeholders by passing an empty array as the fourth argument.
+In the example above, notice how we pass `[p1, p2]` as the third argument to {@link PLApplicator.bulkApply}. This specifies a list of custom placeholders that {@link PLApplicator.bulkApply} will consider in addition to the default placeholders. If you don't want to use any custom placeholders, you can omit this argument. If you want to use only custom placeholders, you can overwrite the default placeholders by passing an empty array as the fourth argument.
 
-{@link PLApplicator} has several methods in addition to `bulkApply` that allow you to apply placeholders in different ways. For example, `applyToString` applies placeholders sequentially without using a managed context object (though you can still implement one yourself if you want).
+{@link PLApplicator} has several methods in addition to {@link PLApplicator.bulkApply} that allow you to apply placeholders in different ways. For example, {@link PLApplicator.applyToString} applies placeholders sequentially without using a managed context object (though you can still implement one yourself if you want).
 
 #### Creating Custom Placeholders
 
@@ -63,7 +63,7 @@ In the example above, notice how we pass `[p1, p2]` as the third argument to `bu
 
 You can create your own placeholders either programmatically or by specifying them in JSON. All of the following are valid, equivalent ways to create a placeholder:
 
-```js
+```ts
 const myPlaceholder = PLCreator.newPlaceholder("myPlaceholder", { replace_with: "Testing 1 2 3..." });
 
 const myPlaceholder2 = PLCreator.buildPlaceholdersFromValueDict({ myPlaceholder2: "Testing 1 2 3..." })[0];
@@ -90,9 +90,9 @@ const myPlaceholder4: Placeholder = {
 };
 ```
 
-Since this placeholder always maps to a single value, we call it a `single-value placeholder`. To create several single-value placeholders at once, you can use the {@link PLCreator}.`buildPlaceholdersFromValueDict` method:
+Since this placeholder always maps to a single value, we call it a `single-value placeholder`. To create several single-value placeholders at once, you can use the {@link PLCreator.buildPlaceholdersFromValueDict} method:
 
-```js
+```ts
 const singleValuePlaceholders = PLCreator.buildPlaceholdersFromValueDict({
   p1: "Testing",
   p2: "1",
@@ -102,9 +102,9 @@ const singleValuePlaceholders = PLCreator.buildPlaceholdersFromValueDict({
 });
 ```
 
-Note that, when using {@link PLApplicator}.`bulkApply`, you can use existing placeholders when specifying the values for `single-value placeholders`, e.g.:
+Note that, when using {@link PLApplicator.bulkApply}, you can use existing placeholders when specifying the values for `single-value placeholders`, e.g.:
 
-```js
+```ts
 const singleValuePlaceholders = PLCreator.buildPlaceholdersFromValueDict({
   p6: "Hello, my name is {{user}}.",
   p7: "Today is {{day}}.",
@@ -115,13 +115,13 @@ PLApplicator.bulkApply("{{p6}} {{p7}}", undefined, singleValuePlaceholders).then
 });
 ```
 
-As far as the placeholders system is concerned, `p6` and `p7` are just like any other `single-value placeholders`. However, when {@link PLApplicator}.`bulkApply` is called, the substitutions for `user` and `day` are applied after the substitutions for `p6` and `p7`, so each placeholder is present in the string at the time it is applied.
+As far as the placeholders system is concerned, `p6` and `p7` are just like any other `single-value placeholders`. However, when {@link PLApplicator.bulkApply} is called, the substitutions for `user` and `day` are applied after the substitutions for `p6` and `p7`, so each placeholder is present in the string at the time it is applied.
 
 ##### Dynamic-Value Placeholders
 
-To create a `dynamic-value placeholder`, a placeholder that maps to a function that returns a value, you can use the {@link PLCreator}.`buildPlaceholdersFromFnDict` method:
+To create a `dynamic-value placeholder`, a placeholder that maps to a function that returns a value, you can use the {@link PLCreator.buildPlaceholdersFromFnDict} method:
 
-```js
+```ts
 const dynamicValuePlaceholders = PLCreator.buildPlaceholdersFromFnDict({
   p8: async (str, context) => ({ result: str.includes("{{p9}}") ? "Hello. " : "Goodbye. " }),
   p9: async (str, context) => ({ result: "It is currently {{time}}." }),
@@ -132,9 +132,9 @@ PLApplicator.bulkApply("{{p8}} {{p9}}", undefined, dynamicValuePlaceholders).the
 });
 ```
 
-Alternatively, you can create `dynamic-value placeholders` using {@link PLCreator}.`newPlaceholder` by specifying the `apply_fn` option:
+Alternatively, you can create `dynamic-value placeholders` using {@link PLCreator.newPlaceholder} by specifying the `apply_fn` option:
 
-```js
+```ts
 const dynamicPlaceholder = PLCreator.newPlaceholder("dynamicPlaceholder", {
   apply_fn: async (str: string, context?: { [key: string]: unknown } | undefined) => {
     const res = str.length > 10 ? "long" : "short";
@@ -162,9 +162,9 @@ Suppose you have a JSON file `custom_placeholders.json` containing the following
 }
 ```
 
-You could then load the placeholder from the file using {@link PLLoader}.`loadPlaceholdersFromJSONFile`:
+You could then load the placeholder from the file using {@link PLLoader.loadPlaceholdersFromJSONFile}:
 
-```js
+```ts
 // Make sure to adjust the path to the file as necessary
 const customPlaceholders = await PLLoader.loadPlaceholdersFromFile("/Users/exampleUser/Downloads/custom_placeholders.json");
 
@@ -180,7 +180,7 @@ Note how we used `$2` to refer to the second capture group in the regex. Using t
 
 The placeholders system is designed to be flexible and extensible. You can use custom application functions to create placeholders that do anything you want, based on any criteria you want. For example, you could create a placeholder that transforms text to uppercase:
 
-```js
+```ts
 const uppercaseTransform = PLCreator.newPlaceholder("upper", { regex: /{{upper:[\s\S]*}}/g, apply_fn: async (str, context) => {
   const match = str.match(/{{upper:([\s\S]*)}}/);
   const res = match?.[1]?.toUpperCase() ?? "";
@@ -194,7 +194,7 @@ PLApplicator.bulkApply("Hello, {{upper:world}}", undefined, [uppercaseTransform]
 
 You could also create a placeholder that outputs a Markdown table:
 
-```js
+```ts
 const markdownTablePlaceholder = PLCreator.newPlaceholder("mdtable", { regex: /{{mdtable:(([\s\S]*?(,[\s\S]*?)*?)\|)*?([\s\S]*?(,[\s\S]*?)*?)}}/g, apply_fn: async (str, context) => {
   const match = str.match(/{{mdtable:(([\s\S]*?(,[\s\S]*?)*?)\|)*?([\s\S]*?(,[\s\S]*?)*?)}}/);
   const rows = match?.[4]?.split("|");
@@ -223,3 +223,28 @@ PLApplicator.bulkApply("{{mdtable:A,B,C,D|E,F,G,H|I,J,K,L|M,N,O,P|Q,R,S,T|U,V,W,
   */
 });
 ```
+
+##### Regex Construction
+
+You can specify regexes to match placeholders in a few different ways. You can specify a `RegExp` or a regex string directly, or you can use the methods of {@link PLMatcher} to construct a regex programmatically. For example, the following will all match the same URL placeholder:
+
+```ts
+const m1 = /{{url( raw=(true|false))?:https?:\/\/[a-zA-Z0-9.\-#=?]+?}}/g;
+const m2 = new RegExp(`{{url( raw=(true|false))?:https?:\\/\\/[a-zA-Z0-9.\\-#=?]+?}}`, "g")
+const m3 = PLMatcher.Braced(`url( raw=(true|false))?:(${PLMatcher.HTTPURL().source})`);
+const m4 = PLMatcher.Container("url", [PLMatcher.RawParameter("raw", PLMatcher.Bool(), { optional: true })], PLMatcher.HTTPURL());
+```
+
+However, if we print out the source of each of these regexes, we see that there are some significant differences:
+
+```ts
+m1: /{{url( raw=(true|false))?:https?:\/\/[a-zA-Z0-9.\-#=?]+?}}/g
+
+m2: /{{url( raw=(true|false))?:https?:\/\/[a-zA-Z0-9.\-#=?]+?}}/g
+
+m3: /{{(url( raw=(true|false))?:((?:(?:(?:https?):)\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z0-9][a-z0-9_-]{0,62})?[a-z0-9]\.)+(?:[a-z]{2,}\.?))(?::\d{2,5})?(?:[\/?#]\S*)?))}}/g
+
+m4: /{{url(\s*?(raw=(true|false))?):((?:(?:(?:https?):)\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z0-9][a-z0-9_-]{0,62})?[a-z0-9]\.)+(?:[a-z]{2,}\.?))(?::\d{2,5})?(?:[\/?#]\S*)?)}}/g
+```
+
+Although these regexes match *mostly* the same strings, the latter two aim to match the URL standard (i.e. RFC 3986) more closely. You might not need the extra precision for your use case, so it's up to you to decide which style to use.

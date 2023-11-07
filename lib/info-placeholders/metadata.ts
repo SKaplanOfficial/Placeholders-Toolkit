@@ -25,7 +25,11 @@ const FileMetadataPlaceholder: Placeholder = {
               return `${file}:\n${fileMetadata}`;
             })
             .join("\n\n");
-    return { result: metadata, metadata: metadata, selectedFiles: files.join(", ") };
+    return {
+      result: metadata,
+      metadata: metadata,
+      selectedFiles: files.join(", "),
+    };
   },
   result_keys: ["metadata", "selectedFiles"],
   constant: true,

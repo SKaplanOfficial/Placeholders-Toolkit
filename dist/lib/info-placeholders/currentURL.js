@@ -10,7 +10,9 @@ const CurrentURLPlaceholder = {
     regex: /{{(currentURL|currentTabURL)}}/g,
     apply: async (str, context) => {
         try {
-            if (context && "currentURL" in context && context["currentURL"].length > 0) {
+            if (context &&
+                "currentURL" in context &&
+                context["currentURL"].length > 0) {
                 return {
                     result: context["currentURL"],
                     currentURL: context["currentURL"],

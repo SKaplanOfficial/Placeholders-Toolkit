@@ -10,7 +10,8 @@ const IgnoreDirective: Placeholder = {
     return { result: "" };
   },
   constant: false,
-  fn: async (content: string) => (await IgnoreDirective.apply(`{{ignore:${content}}}`)).result,
+  fn: async (content: string) =>
+    (await IgnoreDirective.apply(`{{ignore:${content}}}`)).result,
   example: '{{ignore:{{jxa:Application("Safari").activate()}}}}',
   description:
     "Directive to ignore all content within the directive. Allows placeholders and directives to run without influencing the output.",

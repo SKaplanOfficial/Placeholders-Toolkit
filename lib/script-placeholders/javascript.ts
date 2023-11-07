@@ -11,7 +11,11 @@ const JavaScriptPlaceholder: Placeholder = {
   },
   constant: false,
   fn: async (script: string, target?: string) =>
-    (await JavaScriptPlaceholder.apply(`{{js${target == undefined ? `` : ` target="${target}"`}:${script}}}`)).result,
+    (
+      await JavaScriptPlaceholder.apply(
+        `{{js${target == undefined ? `` : ` target="${target}"`}:${script}}}`
+      )
+    ).result,
   example: '{{js:log("Hello World")}}',
   description:
     "Placeholder for output of a JavaScript script. If the script fails, this placeholder will be replaced with an empty string. The script is run in a sandboxed environment.",

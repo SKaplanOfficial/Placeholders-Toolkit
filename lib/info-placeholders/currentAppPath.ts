@@ -17,7 +17,8 @@ const CurrentAppPathPlaceholder: Placeholder = {
   },
   result_keys: ["currentAppPath"],
   constant: true,
-  fn: async () => (await CurrentAppPathPlaceholder.apply("{{currentAppPath}}")).result,
+  fn: async () =>
+    (await CurrentAppPathPlaceholder.apply("{{currentAppPath}}")).result,
   example: "Tell me about {{currentAppPath}}",
   description: "Replaced with the path of the current application.",
   hintRepresentation: "{{currentAppPath}}",

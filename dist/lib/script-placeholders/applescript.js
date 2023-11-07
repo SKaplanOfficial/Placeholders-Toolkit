@@ -3,8 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const utils_1 = require("@raycast/utils");
 const types_1 = require("../types");
 /**
-   * Placeholder for output of an AppleScript script. If the script fails, this placeholder will be replaced with an empty string. No sanitization is done in the script input; the expectation is that users will only use this placeholder with trusted scripts.
-   */
+ * Placeholder for output of an AppleScript script. If the script fails, this placeholder will be replaced with an empty string. No sanitization is done in the script input; the expectation is that users will only use this placeholder with trusted scripts.
+ */
 const AppleScriptPlaceholder = {
     name: "as",
     regex: /{{(as|AS):(([^{]|{(?!{)|{{[\\s\\S]*?}})*?)}}/g,
@@ -21,8 +21,7 @@ const AppleScriptPlaceholder = {
         }
     },
     constant: false,
-    fn: async (script) => (await AppleScriptPlaceholder.apply(`{{as:${script}}}`))
-        .result,
+    fn: async (script) => (await AppleScriptPlaceholder.apply(`{{as:${script}}}`)).result,
     example: '{{as:display dialog "Hello World"}}',
     description: "Placeholder for output of an AppleScript script. If the script fails, this placeholder will be replaced with an empty string.",
     hintRepresentation: "{{as:...}}",

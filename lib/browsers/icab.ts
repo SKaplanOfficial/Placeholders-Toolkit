@@ -13,7 +13,9 @@ const bundleID = async () => {
 };
 
 const bundlePath = async () => {
-  return await runAppleScript(`tell application "iCab" to return POSIX path of (path to it)`);
+  return await runAppleScript(
+    `tell application "iCab" to return POSIX path of (path to it)`
+  );
 };
 
 const currentURL = async () => {

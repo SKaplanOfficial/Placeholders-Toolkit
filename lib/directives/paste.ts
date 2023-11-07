@@ -15,7 +15,8 @@ const PasteDirective: Placeholder = {
     return { result: "" };
   },
   constant: false,
-  fn: async (text: string) => (await PasteDirective.apply(`{{paste:${text}}}`)).result,
+  fn: async (text: string) =>
+    (await PasteDirective.apply(`{{paste:${text}}}`)).result,
   example: "{{paste:Hello World}}",
   description:
     "Directive to paste the provided text in the frontmost application. The placeholder will always be replaced with an empty string.",

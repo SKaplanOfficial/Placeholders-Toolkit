@@ -1,7 +1,9 @@
-import { bulkApply } from "../lib/apply"; 
+import { bulkApply } from "../lib/apply";
 
-jest.mock('node-fetch', () => ({fetch: console.log("mocked fetch")}))
-jest.mock("@raycast/utils", () => ({ runAppleScript: (script: string) => execScript(script, []).data }));
+jest.mock("node-fetch", () => ({ fetch: console.log("mocked fetch") }));
+jest.mock("@raycast/utils", () => ({
+  runAppleScript: (script: string) => execScript(script, []).data,
+}));
 
 import os from "os";
 import { execScript } from "../lib/scripts";
@@ -14,8 +16,14 @@ describe("Information Placeholder Tests", () => {
   });
 
   it("should replace {{time}} with correct time", async () => {
-    const time = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "numeric" });
-    expect(await bulkApply("The time is {{time}}")).toMatch(/The time is [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2} (AM|PM)/g);
+    const time = new Date().toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "numeric",
+    });
+    expect(await bulkApply("The time is {{time}}")).toMatch(
+      /The time is [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2} (AM|PM)/g
+    );
   });
 });
 

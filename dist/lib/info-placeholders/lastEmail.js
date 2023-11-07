@@ -10,7 +10,10 @@ const LastEmailPlaceholder = {
     regex: /{{lastEmail}}/g,
     apply: async (str, context) => {
         if (context && "lastEmail" in context) {
-            return { result: context["lastEmail"], lastEmail: context["lastEmail"] };
+            return {
+                result: context["lastEmail"],
+                lastEmail: context["lastEmail"],
+            };
         }
         const email = await (0, scripts_1.getLastEmail)();
         return { result: email, lastEmail: email };

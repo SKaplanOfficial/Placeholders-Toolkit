@@ -18,7 +18,8 @@ const SetPersistentVariablePlaceholder: Placeholder = {
   },
   constant: false,
   fn: async (id: string, value: string) =>
-    (await SetPersistentVariablePlaceholder.apply(`{{set ${id}:${value}}}`)).result,
+    (await SetPersistentVariablePlaceholder.apply(`{{set ${id}:${value}}}`))
+      .result,
   example: "{{set myVariable:Hello World}}",
   description:
     "Directive to set the value of a persistent variable. If the variable does not exist, it will be created. The placeholder will always be replaced with an empty string.",

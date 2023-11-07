@@ -20,10 +20,18 @@ import CutoffDirective from "./directives/cutoff";
 import AppleScriptPlaceholder from "./script-placeholders/applescript";
 import JXAPlaceholder from "./script-placeholders/jxa";
 import ShellScriptPlaceholder from "./script-placeholders/shell";
-import TextFileFlowDirective, { TextFileDirectives } from "./directives/flow-control/textfiles";
-import ImageFlowDirective, { ImageDirectives } from "./directives/flow-control/images";
-import VideoFlowDirective, { VideoDirectives } from "./directives/flow-control/videos";
-import AudioFlowDirective, { AudioDirectives } from "./directives/flow-control/audio";
+import TextFileFlowDirective, {
+  TextFileDirectives,
+} from "./directives/flow-control/textfiles";
+import ImageFlowDirective, {
+  ImageDirectives,
+} from "./directives/flow-control/images";
+import VideoFlowDirective, {
+  VideoDirectives,
+} from "./directives/flow-control/videos";
+import AudioFlowDirective, {
+  AudioDirectives,
+} from "./directives/flow-control/audio";
 import PDFFlowDirective from "./directives/flow-control/pdf";
 import URLPlaceholder from "./directives/url";
 import FilePlaceholder from "./directives/file";
@@ -162,4 +170,4 @@ export {
   JavaScriptPlaceholder,
   CutoffDirective,
   IgnoreDirective,
-}
+};

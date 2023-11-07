@@ -10,7 +10,10 @@ const CurrentTrackPlaceholder = {
     regex: /{{(currentTrack|currentSong)}}/g,
     apply: async (str, context) => {
         if (context && "currentTrack" in context) {
-            return { result: context["currentTrack"], currentTrack: context["currentTrack"] };
+            return {
+                result: context["currentTrack"],
+                currentTrack: context["currentTrack"],
+            };
         }
         const track = await (0, scripts_1.getCurrentTrack)();
         return { result: track, currentTrack: track };

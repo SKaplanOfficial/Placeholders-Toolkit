@@ -9,14 +9,19 @@ const TypeDirective: Placeholder = {
   name: "type",
   regex: /{{type:(([^{]|{(?!{)|{{[\s\S]*?}})*?)}}/g,
   apply: async (str: string) => {
-    const text = str.match(/(?<=(type:))(([^{]|{(?!{)|{{[\s\S]*?}})*?)(?=}})/)?.[0];
+    const text = str.match(
+      /(?<=(type:))(([^{]|{(?!{)|{{[\s\S]*?}})*?)(?=}})/
+    )?.[0];
     if (!text) return { result: "" };
     await showHUD("Typing Into Frontmost App");
-    await runAppleScript(`tell application "System Events" to keystroke "${text}"`);
+    await runAppleScript(
+      `tell application "System Events" to keystroke "${text}"`
+    );
     return { result: "" };
   },
   constant: false,
-  fn: async (text: string) => (await TypeDirective.apply(`{{type:${text}}}`)).result,
+  fn: async (text: string) =>
+    (await TypeDirective.apply(`{{type:${text}}}`)).result,
   example: "{{type:Hello World}}",
   description:
     "Directive to type the provided text in the frontmost application. The placeholder will always be replaced with an empty string.",

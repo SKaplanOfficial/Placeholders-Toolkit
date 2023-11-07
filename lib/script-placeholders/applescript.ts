@@ -2,8 +2,8 @@ import { runAppleScript } from "@raycast/utils";
 import { Placeholder, PlaceholderCategory, PlaceholderType } from "../types";
 
 /**
-   * Placeholder for output of an AppleScript script. If the script fails, this placeholder will be replaced with an empty string. No sanitization is done in the script input; the expectation is that users will only use this placeholder with trusted scripts.
-   */
+ * Placeholder for output of an AppleScript script. If the script fails, this placeholder will be replaced with an empty string. No sanitization is done in the script input; the expectation is that users will only use this placeholder with trusted scripts.
+ */
 const AppleScriptPlaceholder: Placeholder = {
   name: "as",
   regex: /{{(as|AS):(([^{]|{(?!{)|{{[\\s\\S]*?}})*?)}}/g,
@@ -20,8 +20,7 @@ const AppleScriptPlaceholder: Placeholder = {
   },
   constant: false,
   fn: async (script: string) =>
-    (await AppleScriptPlaceholder.apply(`{{as:${script}}}`))
-      .result,
+    (await AppleScriptPlaceholder.apply(`{{as:${script}}}`)).result,
   example: '{{as:display dialog "Hello World"}}',
   description:
     "Placeholder for output of an AppleScript script. If the script fails, this placeholder will be replaced with an empty string.",
@@ -29,6 +28,6 @@ const AppleScriptPlaceholder: Placeholder = {
   fullRepresentation: "Run AppleScript",
   type: PlaceholderType.Script,
   categories: [PlaceholderCategory.Custom],
-}
+};
 
 export default AppleScriptPlaceholder;

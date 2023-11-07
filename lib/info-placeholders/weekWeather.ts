@@ -9,7 +9,10 @@ const WeekWeatherPlaceholder: Placeholder = {
   regex: /{{weekWeather}}/g,
   apply: async (str: string, context?: { [key: string]: unknown }) => {
     if (context && "weekWeather" in context) {
-      return { result: context["weekWeather"] as string, weekWeather: context["weekWeather"] };
+      return {
+        result: context["weekWeather"] as string,
+        weekWeather: context["weekWeather"],
+      };
     }
 
     const weather = JSON.stringify(await getWeatherData(7));
@@ -17,9 +20,12 @@ const WeekWeatherPlaceholder: Placeholder = {
   },
   result_keys: ["weekWeather"],
   constant: true,
-  fn: async () => (await WeekWeatherPlaceholder.apply("{{weekWeather}}")).result,
-  example: "Summarize the following forecast for {{location}} this week: {{weekWeather}}",
-  description: "Replaced with 7-day weather forecast data at the user's current location, in JSON format.",
+  fn: async () =>
+    (await WeekWeatherPlaceholder.apply("{{weekWeather}}")).result,
+  example:
+    "Summarize the following forecast for {{location}} this week: {{weekWeather}}",
+  description:
+    "Replaced with 7-day weather forecast data at the user's current location, in JSON format.",
   hintRepresentation: "{{weekWeather}}",
   fullRepresentation: "This Week's Weather",
   type: PlaceholderType.Informational,

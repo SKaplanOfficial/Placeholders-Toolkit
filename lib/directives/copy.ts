@@ -19,7 +19,8 @@ const CopyDirective: Placeholder = {
     return { result: "" };
   },
   constant: false,
-  fn: async (text: string) => (await CopyDirective.apply(`{{copy:${text}}}`)).result,
+  fn: async (text: string) =>
+    (await CopyDirective.apply(`{{copy:${text}}}`)).result,
   example: "{{copy:Hello World}}",
   description:
     "Directive to copy the provided text to the clipboard. The placeholder will always be replaced with an empty string.",

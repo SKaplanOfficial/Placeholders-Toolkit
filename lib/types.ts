@@ -14,7 +14,10 @@ export type Placeholder = {
    * @param str The string to apply the placeholder to.
    * @returns The string with the placeholder applied.
    */
-  apply: (str: string, context?: { [key: string]: unknown }) => Promise<{ result: string; [key: string]: unknown }>;
+  apply: (
+    str: string,
+    context?: { [key: string]: unknown }
+  ) => Promise<{ result: string; [key: string]: unknown }>;
 
   /**
    * The keys of the result object relevant to the placeholder. When placeholders are applied in bulk, this list is used to determine which keys to return as well as to make optimizations when determining which placeholders to apply. The first key in the list is the key for the placeholder's value.
@@ -163,7 +166,13 @@ export enum PlaceholderCategory {
  * A JSON object.
  */
 export type JSONObject = {
-  [key: string]: string | number | JSONObject | JSONObject[] | string[] | number[];
+  [key: string]:
+    | string
+    | number
+    | JSONObject
+    | JSONObject[]
+    | string[]
+    | number[];
 };
 
 /**

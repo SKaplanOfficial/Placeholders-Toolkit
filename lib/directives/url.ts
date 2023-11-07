@@ -10,10 +10,15 @@ const URLPlaceholder: Placeholder = {
   apply: async (str: string) => {
     try {
       const URL =
-        str.match(/(url|URL)( raw=(true|false))?:(([^{]|{(?!{)|{{[\s\S]*?}})*?)}}/)?.[4] ||
+        str.match(
+          /(url|URL)( raw=(true|false))?:(([^{]|{(?!{)|{{[\s\S]*?}})*?)}}/
+        )?.[4] ||
         str.match(/https?:[\s\S]*?(?=}})/)?.[0] ||
         "";
-      const raw = str.match(/(url|URL)( raw=(true|false))?:(([^{]|{(?!{)|{{[\s\S]*?}})*?)}}/)?.[3] === "true";
+      const raw =
+        str.match(
+          /(url|URL)( raw=(true|false))?:(([^{]|{(?!{)|{{[\s\S]*?}})*?)}}/
+        )?.[3] === "true";
       if (!URL) return { result: "", url: "" };
       const urlText = raw ? await getURLHTML(URL) : await getTextOfWebpage(URL);
       return { result: urlText, url: urlText };

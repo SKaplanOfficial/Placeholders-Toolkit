@@ -26,9 +26,14 @@ const ShortcutPlaceholder: Placeholder = {
   },
   constant: false,
   fn: async (shortcut: string, input?: string) =>
-    (await ShortcutPlaceholder.apply(`{{shortcut:${shortcut}${input?.length ? `:${input}` : ""}}}`)).result,
+    (
+      await ShortcutPlaceholder.apply(
+        `{{shortcut:${shortcut}${input?.length ? `:${input}` : ""}}}`
+      )
+    ).result,
   example: "{{shortcut:My Shortcut:7}}",
-  description: "Directive to execute a Siri Shortcut by name, optionally supplying input, and insert the result.",
+  description:
+    "Directive to execute a Siri Shortcut by name, optionally supplying input, and insert the result.",
   hintRepresentation: "{{shortcut:...}}",
   fullRepresentation: "Run Siri Shortcut",
   type: PlaceholderType.InteractiveDirective,

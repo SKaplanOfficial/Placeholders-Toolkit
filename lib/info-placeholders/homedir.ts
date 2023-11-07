@@ -14,8 +14,10 @@ const HomeDirPlaceholder: Placeholder = {
   result_keys: ["homedir"],
   constant: true,
   fn: async () => (await HomeDirPlaceholder.apply("{{homedir}}")).result,
-  example: '{{as:tell application "Finder" to reveal POSIX file "{{homedir}}"}}',
-  description: "Replaced with the path of the home directory for the currently logged-in user.",
+  example:
+    '{{as:tell application "Finder" to reveal POSIX file "{{homedir}}"}}',
+  description:
+    "Replaced with the path of the home directory for the currently logged-in user.",
   hintRepresentation: "{{homedir}}",
   fullRepresentation: "Home Directory Path",
   type: PlaceholderType.Informational,

@@ -15,10 +15,8 @@ exports.AudioDirectives = file_extensions_1.audioFileExtensions.map((ext) => {
                 return { result: "", [`audio:${ext}`]: "" };
             if (!context["selectedFiles"])
                 return { result: "", [`audio:${ext}`]: "" };
-            const onSuccess = str.match(new RegExp(`{{${ext}:(([^{]|{(?!{)|{{[\\s\\S]*?}})*?)(:(([^{]|{(?!{)|{{[\\s\\S]*?}})*?))?}}`))?.[1] ||
-                "";
-            const onFailure = str.match(new RegExp(`{{${ext}:(([^{]|{(?!{)|{{[\\s\\S]*?}})*?)(:(([^{]|{(?!{)|{{[\\s\\S]*?}})*?))?}}`))?.[4] ||
-                "";
+            const onSuccess = str.match(new RegExp(`{{${ext}:(([^{]|{(?!{)|{{[\\s\\S]*?}})*?)(:(([^{]|{(?!{)|{{[\\s\\S]*?}})*?))?}}`))?.[1] || "";
+            const onFailure = str.match(new RegExp(`{{${ext}:(([^{]|{(?!{)|{{[\\s\\S]*?}})*?)(:(([^{]|{(?!{)|{{[\\s\\S]*?}})*?))?}}`))?.[4] || "";
             const files = context["selectedFiles"].split(",");
             const containsImage = files.some((file) => file.toLowerCase().endsWith(ext));
             if (!containsImage)

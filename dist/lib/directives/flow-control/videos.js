@@ -15,10 +15,8 @@ exports.VideoDirectives = file_extensions_1.videoFileExtensions.map((ext) => {
                 return { result: "", [`video:${ext}`]: "" };
             if (!context["selectedFiles"])
                 return { result: "", [`video:${ext}`]: "" };
-            const onSuccess = str.match(new RegExp(`{{${ext}:(([^{]|{(?!{)|{{[\\s\\S]*?}})*?)(:(([^{]|{(?!{)|{{[\\s\\S]*?}})*?))?}}`))?.[1] ||
-                "";
-            const onFailure = str.match(new RegExp(`{{${ext}:(([^{]|{(?!{)|{{[\\s\\S]*?}})*?)(:(([^{]|{(?!{)|{{[\\s\\S]*?}})*?))?}}`))?.[4] ||
-                "";
+            const onSuccess = str.match(new RegExp(`{{${ext}:(([^{]|{(?!{)|{{[\\s\\S]*?}})*?)(:(([^{]|{(?!{)|{{[\\s\\S]*?}})*?))?}}`))?.[1] || "";
+            const onFailure = str.match(new RegExp(`{{${ext}:(([^{]|{(?!{)|{{[\\s\\S]*?}})*?)(:(([^{]|{(?!{)|{{[\\s\\S]*?}})*?))?}}`))?.[4] || "";
             const files = context["selectedFiles"].split(",");
             const containsImage = files.some((file) => file.toLowerCase().endsWith(ext));
             if (!containsImage)

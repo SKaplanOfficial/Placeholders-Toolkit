@@ -18,13 +18,17 @@ const Chromium = (name = "Chromium"): Browser => {
   return {
     name,
     version: async () => {
-      return await runAppleScript(`tell application "${name}" to return version`);
+      return await runAppleScript(
+        `tell application "${name}" to return version`
+      );
     },
     bundleID: async () => {
       return await runAppleScript(`tell application "${name}" to return id`);
     },
     bundlePath: async () => {
-      return await runAppleScript(`tell application "${name}" to return POSIX path of (path to it)`);
+      return await runAppleScript(
+        `tell application "${name}" to return POSIX path of (path to it)`
+      );
     },
     currentURL: async () => {
       return runAppleScript(`try

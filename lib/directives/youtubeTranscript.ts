@@ -1,5 +1,9 @@
 import { Placeholder, PlaceholderCategory, PlaceholderType } from "../types";
-import { getMatchingYouTubeVideoID, getYouTubeVideoTranscriptById, getYouTubeVideoTranscriptByURL } from "../utils";
+import {
+  getMatchingYouTubeVideoID,
+  getYouTubeVideoTranscriptById,
+  getYouTubeVideoTranscriptByURL,
+} from "../utils";
 
 /**
  * Replaces YouTube placeholders with the transcript of the corresponding YouTube video.
@@ -15,13 +19,17 @@ const YouTubeTranscriptPlaceholder: Placeholder = {
 
     const transcriptText = specifier.startsWith("http")
       ? await getYouTubeVideoTranscriptByURL(specifier)
-      : await getYouTubeVideoTranscriptById(await getMatchingYouTubeVideoID(specifier));
+      : await getYouTubeVideoTranscriptById(
+          await getMatchingYouTubeVideoID(specifier)
+        );
     return { result: transcriptText };
   },
   constant: false,
-  fn: async (idOrURL: string) => (await YouTubeTranscriptPlaceholder.apply(`{{youtube:${idOrURL}}}`)).result,
+  fn: async (idOrURL: string) =>
+    (await YouTubeTranscriptPlaceholder.apply(`{{youtube:${idOrURL}}}`)).result,
   example: "{{youtube:https://www.youtube.com/watch?v=dQw4w9WgXcQ}}",
-  description: "Replaced with the transcript of the corresponding YouTube video.",
+  description:
+    "Replaced with the transcript of the corresponding YouTube video.",
   hintRepresentation: "{{youtube:...}}",
   fullRepresentation: "Transcription of YouTube Video",
   type: PlaceholderType.InteractiveDirective,

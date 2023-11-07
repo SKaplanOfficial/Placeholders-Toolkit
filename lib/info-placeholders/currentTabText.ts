@@ -34,9 +34,11 @@ const CurrentTabTextPlaceholder: Placeholder = {
   result_keys: ["currentTabText", "currentAppName"],
   dependencies: ["currentAppName"],
   constant: true,
-  fn: async () => (await CurrentTabTextPlaceholder.apply("{{currentTabText}}")).result,
+  fn: async () =>
+    (await CurrentTabTextPlaceholder.apply("{{currentTabText}}")).result,
   example: "Summarize this: {{currentTabText}}",
-  description: "Replaced with the visible text of the current tab in any supported browser.",
+  description:
+    "Replaced with the visible text of the current tab in any supported browser.",
   hintRepresentation: "{{currentTabText}}",
   fullRepresentation: "Text of Current Browser Tab",
   type: PlaceholderType.Informational,

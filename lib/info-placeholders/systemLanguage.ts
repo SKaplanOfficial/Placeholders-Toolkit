@@ -19,9 +19,11 @@ const SystemLanguagePlaceholder: Placeholder = {
   },
   result_keys: ["systemLanguage"],
   constant: true,
-  fn: async () => (await SystemLanguagePlaceholder.apply("{{systemLanguage}}")).result,
+  fn: async () =>
+    (await SystemLanguagePlaceholder.apply("{{systemLanguage}}")).result,
   example: 'Translate "Ciao" to {{systemLanguage}}',
-  description: "Replaced with the name of the default language for the current user.",
+  description:
+    "Replaced with the name of the default language for the current user.",
   hintRepresentation: "{{systemLanguage}}",
   fullRepresentation: "System Language",
   type: PlaceholderType.Informational,

@@ -95,7 +95,8 @@ const EventFetcher = {
      * @returns A comma-separated list of the name, start time, and end time of all calendar events that are scheduled over the specified duration.
      */
     getUpcomingEvents: async (eventType, duration) => {
-        return await ((0, utils_1.execScript)(eventsScript, [eventType, duration], "AppleScript").data);
+        return await (0, utils_1.execScript)(eventsScript, [eventType, duration], "AppleScript")
+            .data;
     },
     /**
      * Fetches upcoming calendar events scheduled over the next 24 hours.

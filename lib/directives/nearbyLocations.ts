@@ -13,9 +13,15 @@ const NearbyLocationsPlaceholder: Placeholder = {
     return { result: nearbyLocations };
   },
   constant: false,
-  fn: async (query?: string) => (await NearbyLocationsPlaceholder.apply(`{{nearbyLocations:${query || ""}}}`)).result,
+  fn: async (query?: string) =>
+    (
+      await NearbyLocationsPlaceholder.apply(
+        `{{nearbyLocations:${query || ""}}}`
+      )
+    ).result,
   example: "{{nearbyLocations:food}}",
-  description: "Placeholder for a comma-separated list of nearby locations based on the given search query.",
+  description:
+    "Placeholder for a comma-separated list of nearby locations based on the given search query.",
   hintRepresentation: "{{nearbyLocations:...}}",
   fullRepresentation: "Nearby Locations Search",
   type: PlaceholderType.StaticDirective,

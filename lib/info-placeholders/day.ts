@@ -14,9 +14,14 @@ const DayPlaceholder: Placeholder = {
   result_keys: ["day"],
   constant: false,
   fn: async (locale: string) =>
-    (await DayPlaceholder.apply(`{{day${locale?.length ? ` locale="${locale}"` : ""}}}`)).result,
+    (
+      await DayPlaceholder.apply(
+        `{{day${locale?.length ? ` locale="${locale}"` : ""}}}`
+      )
+    ).result,
   example: "Write a generic agenda for {{day locale='en-GB'}}",
-  description: "Replaced with the name of the current day of the week in the specified locale.",
+  description:
+    "Replaced with the name of the current day of the week in the specified locale.",
   hintRepresentation: "{{day}}",
   fullRepresentation: "Day of Week",
   type: PlaceholderType.Informational,

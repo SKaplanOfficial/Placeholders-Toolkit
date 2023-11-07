@@ -16,7 +16,8 @@ const GetPersistentVariablePlaceholder: Placeholder = {
     return { result: "" };
   },
   constant: false,
-  fn: async (id: string) => (await GetPersistentVariablePlaceholder.apply(`{{get ${id}}}`)).result,
+  fn: async (id: string) =>
+    (await GetPersistentVariablePlaceholder.apply(`{{get ${id}}}`)).result,
   example: "Summarize this: {{get storedText}}",
   description:
     "Replaced with the value of a persistent variable. If the variable has not been set, the placeholder will be replaced with an empty string.",

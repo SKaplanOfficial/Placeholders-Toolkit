@@ -17,7 +17,8 @@ const DeletePersistentVariablePlaceholder = {
         return { result: "" };
     },
     constant: false,
-    fn: async (id) => (await DeletePersistentVariablePlaceholder.apply(`{{delete ${id}}}`)).result,
+    fn: async (id) => (await DeletePersistentVariablePlaceholder.apply(`{{delete ${id}}}`))
+        .result,
     example: "{{delete storedText}}",
     description: "Deletes a persistent variable. If the variable does not exist, nothing will happen. Replaced with an empty string.",
     hintRepresentation: "{{delete x}",

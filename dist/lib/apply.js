@@ -16,7 +16,9 @@ const applyToString = async (str, context, customPlaceholders, defaultPlaceholde
         ? allPlaceholders
         : [
             ...(customPlaceholders || []),
-            ...(defaultPlaceholders ? defaultPlaceholders : Object.values(defaultPlaceholders_1.DefaultPlaceholders)),
+            ...(defaultPlaceholders
+                ? defaultPlaceholders
+                : Object.values(defaultPlaceholders_1.DefaultPlaceholders)),
         ];
     let subbedStr = str;
     for (const placeholder of sortedPlaceholders) {
@@ -94,7 +96,9 @@ const checkForPlaceholders = async (str, customPlaceholders, defaultPlaceholders
         ? allPlaceholders
         : [
             ...(customPlaceholders || []),
-            ...(defaultPlaceholders ? defaultPlaceholders : Object.values(defaultPlaceholders_1.DefaultPlaceholders)),
+            ...(defaultPlaceholders
+                ? defaultPlaceholders
+                : Object.values(defaultPlaceholders_1.DefaultPlaceholders)),
         ];
     const includedPlaceholders = sortedPlaceholders
         .filter((placeholder) => {
@@ -132,7 +136,9 @@ const bulkApply = async (str, context, customPlaceholders, defaultPlaceholders, 
         ? allPlaceholders
         : [
             ...(customPlaceholders || []),
-            ...(defaultPlaceholders ? defaultPlaceholders : Object.values(defaultPlaceholders_1.DefaultPlaceholders)),
+            ...(defaultPlaceholders
+                ? defaultPlaceholders
+                : Object.values(defaultPlaceholders_1.DefaultPlaceholders)),
         ];
     let subbedStr = str;
     const result = { ...(context || {}) };

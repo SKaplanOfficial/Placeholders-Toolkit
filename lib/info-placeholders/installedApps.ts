@@ -9,7 +9,10 @@ const InstalledApplicationsPlaceholder: Placeholder = {
   regex: /{{(installedApps|apps|installedApplications|applications)}}/g,
   apply: async (str: string, context?: { [key: string]: unknown }) => {
     if (context && "installedApps" in context) {
-      return { result: context["installedApps"] as string, installedApps: context["installedApps"] as string };
+      return {
+        result: context["installedApps"] as string,
+        installedApps: context["installedApps"] as string,
+      };
     }
 
     const apps = await getInstalledApplications();
@@ -17,9 +20,12 @@ const InstalledApplicationsPlaceholder: Placeholder = {
   },
   result_keys: ["installedApps"],
   constant: true,
-  fn: async () => (await InstalledApplicationsPlaceholder.apply("{{installedApps}}")).result,
-  example: "Based on this list of apps, recommend some new ones I might like: {{installedApps}}",
-  description: "Replaced with the comma-separated list of names of applications installed on the system.",
+  fn: async () =>
+    (await InstalledApplicationsPlaceholder.apply("{{installedApps}}")).result,
+  example:
+    "Based on this list of apps, recommend some new ones I might like: {{installedApps}}",
+  description:
+    "Replaced with the comma-separated list of names of applications installed on the system.",
   hintRepresentation: "{{installedApps}}",
   fullRepresentation: "List of Installed Applications",
   type: PlaceholderType.Informational,

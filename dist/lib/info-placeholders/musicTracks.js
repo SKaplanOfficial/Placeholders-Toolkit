@@ -10,7 +10,10 @@ const MusicTracksPlaceholder = {
     regex: /{{musicTracks}}/g,
     apply: async (str, context) => {
         if (context && "musicTracks" in context) {
-            return { result: context["musicTracks"], musicTracks: context["musicTracks"] };
+            return {
+                result: context["musicTracks"],
+                musicTracks: context["musicTracks"],
+            };
         }
         const tracks = await (0, scripts_1.getTrackNames)();
         return { result: tracks, musicTracks: tracks };

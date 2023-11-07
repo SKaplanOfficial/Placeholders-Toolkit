@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.PLCreator = exports.buildPlaceholdersFromFnDict = exports.buildPlaceholdersFromValueDict = exports.newPlaceholder = exports.dummyPlaceholder = void 0;
+exports.buildPlaceholdersFromFnDict = exports.buildPlaceholdersFromValueDict = exports.newPlaceholder = exports.dummyPlaceholder = void 0;
 const types_1 = require("./types");
 /**
  * A dummy placeholder.
@@ -10,7 +10,9 @@ const dummyPlaceholder = () => {
     return {
         name: "New Placeholder",
         regex: /{{newPlaceholder}}/g,
-        apply: async (str, context) => ({ result: "" }),
+        apply: async (str, context) => ({
+            result: "",
+        }),
         constant: true,
         fn: async (content) => (await (0, exports.dummyPlaceholder)().apply("{{newPlaceholder}}")).result,
         description: "A dummy placeholder.",
@@ -48,13 +50,19 @@ const newPlaceholder = (name, options) => {
             });
         }
         else {
-            options.apply_fn = async (str, context) => ({ result: options.replace_with || "", [name]: options.replace_with || "" });
+            options.apply_fn = async (str, context) => ({
+                result: options.replace_with || "",
+                [name]: options.replace_with || "",
+            });
         }
     }
     const newPlaceholder = {
         name: name,
         regex: options?.regex || new RegExp(`{{${name}}}`, "g"),
-        apply: options?.apply_fn || (async (str, context) => ({ result: "" })),
+        apply: options?.apply_fn ||
+            (async (str, context) => ({
+                result: "",
+            })),
         result_keys: [name],
         constant: options?.constant || false,
         fn: async (content) => (await newPlaceholder.apply(`{{${name}}}`)).result,
@@ -100,12 +108,3 @@ const buildPlaceholdersFromFnDict = (fnDict) => {
     return placeholders;
 };
 exports.buildPlaceholdersFromFnDict = buildPlaceholdersFromFnDict;
-/**
- * Placeholder creator.
- */
-exports.PLCreator = {
-    dummyPlaceholder: exports.dummyPlaceholder,
-    newPlaceholder: exports.newPlaceholder,
-    buildPlaceholdersFromValueDict: exports.buildPlaceholdersFromValueDict,
-    buildPlaceholdersFromFnDict: exports.buildPlaceholdersFromFnDict,
-};

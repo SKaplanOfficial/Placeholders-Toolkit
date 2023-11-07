@@ -10,7 +10,10 @@ const ComputerNamePlaceholder = {
     regex: /{{computerName}}/g,
     apply: async (str, context) => {
         if (context && "computerName" in context) {
-            return { result: context["computerName"], computerName: context["computerName"] };
+            return {
+                result: context["computerName"],
+                computerName: context["computerName"],
+            };
         }
         const name = await (0, scripts_1.getComputerName)();
         return { result: name, computerName: name };

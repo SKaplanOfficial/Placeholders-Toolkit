@@ -124,7 +124,10 @@ javascript_1.default.apply = async (str) => {
             console.log(str); // Make logging available to JS scripts
             return "";
         };
-        const res = await vm.runInNewContext(script, sandbox, { timeout: 1000, displayErrors: true });
+        const res = await vm.runInNewContext(script, sandbox, {
+            timeout: 1000,
+            displayErrors: true,
+        });
         return { result: res, js: res };
     }
     catch (e) {

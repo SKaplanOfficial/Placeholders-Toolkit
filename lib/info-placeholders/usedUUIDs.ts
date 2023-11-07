@@ -1,4 +1,7 @@
-import { STORAGE_KEYS, getStorage } from "../directives/persistent-variables/utils";
+import {
+  STORAGE_KEYS,
+  getStorage,
+} from "../directives/persistent-variables/utils";
 import { Placeholder, PlaceholderCategory, PlaceholderType } from "../types";
 
 /**

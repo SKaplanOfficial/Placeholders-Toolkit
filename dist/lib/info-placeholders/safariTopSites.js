@@ -10,7 +10,10 @@ const SafariTopSitesPlaceholder = {
     regex: /{{safariTopSites}}/g,
     apply: async (str, context) => {
         if (context && "safariTopSites" in context) {
-            return { result: context["safariTopSites"], safariTopSites: context["safariTopSites"] };
+            return {
+                result: context["safariTopSites"],
+                safariTopSites: context["safariTopSites"],
+            };
         }
         const sites = (await browsers_1.Safari.topSites()).join(", ");
         return { result: sites, safariTopSites: sites };

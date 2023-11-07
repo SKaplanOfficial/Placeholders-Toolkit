@@ -17,41 +17,49 @@ export const TextFileDirectives = textFileExtensions
       regex: new RegExp(
         `{{${ext.replaceAll(
           /[/\\+#!-]/g,
-          "\\$1",
-        )}:(([^{]|{(?!{)|{{[\\s\\S]*?}})*?)(:(([^{]|{(?!{)|{{[\\s\\S]*?}})*?))?}}`,
+          "\\$1"
+        )}:(([^{]|{(?!{)|{{[\\s\\S]*?}})*?)(:(([^{]|{(?!{)|{{[\\s\\S]*?}})*?))?}}`
       ),
       apply: async (str: string, context?: { [key: string]: unknown }) => {
         if (!context) return { result: "", [`textfile:${ext}`]: "" };
-        if (!context["selectedFiles"]) return { result: "", [`image:${ext}`]: "" };
+        if (!context["selectedFiles"])
+          return { result: "", [`image:${ext}`]: "" };
 
         const onSuccess =
           str.match(
             new RegExp(
               `{{${ext.replaceAll(
                 /\+#!-/g,
-                "\\$1",
-              )}:(([^{]|{(?!{)|{{[\\s\\S]*?}})*?)(:(([^{]|{(?!{)|{{[\\s\\S]*?}})*?))?}}`,
-            ),
+                "\\$1"
+              )}:(([^{]|{(?!{)|{{[\\s\\S]*?}})*?)(:(([^{]|{(?!{)|{{[\\s\\S]*?}})*?))?}}`
+            )
           )?.[1] || "";
         const onFailure =
           str.match(
             new RegExp(
               `{{${ext.replaceAll(
                 /\+#!-/g,
-                "\\$1",
-              )}:(([^{]|{(?!{)|{{[\\s\\S]*?}})*?)(:(([^{]|{(?!{)|{{[\\s\\S]*?}})*?))?}}`,
-            ),
+                "\\$1"
+              )}:(([^{]|{(?!{)|{{[\\s\\S]*?}})*?)(:(([^{]|{(?!{)|{{[\\s\\S]*?}})*?))?}}`
+            )
           )?.[4] || "";
 
         const files = (context["selectedFiles"] as string).split(",");
-        const containsTextFile = files.some((file) => file.toLowerCase().endsWith(ext));
-        if (!containsTextFile) return { result: onFailure, [`textfile:${ext}`]: onFailure };
+        const containsTextFile = files.some((file) =>
+          file.toLowerCase().endsWith(ext)
+        );
+        if (!containsTextFile)
+          return { result: onFailure, [`textfile:${ext}`]: onFailure };
         return { result: onSuccess, [`textfile:${ext}`]: onSuccess };
       },
       result_keys: [`textfile:${ext}`],
       constant: true,
       fn: async (content: string) =>
-        (await newPlaceholder.apply(`{{${ext}:${content}}}`, { selectedFiles: content })).result,
+        (
+          await newPlaceholder.apply(`{{${ext}:${content}}}`, {
+            selectedFiles: content,
+          })
+        ).result,
       example: `{{${ext}:This one if any ${ext} file is selected:This one if no ${ext} file is selected}}`,
       description: `Flow control directive to include some content if any ${ext} file is selected and some other content if no ${ext} file is selected.`,
       hintRepresentation: `{{${ext}:...:...}}`,
@@ -67,27 +75,36 @@ export const TextFileDirectives = textFileExtensions
  */
 const TextFileFlowDirective: Placeholder = {
   name: "contentForTextFiles",
-  regex: /{{textfiles:(([^{]|{(?!{)|{{[\s\S]*?}})*?)(:(([^{]|{(?!{)|{{[\s\S]*?}})*?))?}}/g,
+  regex:
+    /{{textfiles:(([^{]|{(?!{)|{{[\s\S]*?}})*?)(:(([^{]|{(?!{)|{{[\s\S]*?}})*?))?}}/g,
   apply: async (str: string, context?: { [key: string]: unknown }) => {
     if (!context) return { result: "", contentForTextFiles: "" };
-    if (!context["selectedFiles"]) return { result: "", contentForTextFiles: "" };
+    if (!context["selectedFiles"])
+      return { result: "", contentForTextFiles: "" };
 
     const onSuccess =
-      str.match(/{{textfiles:(([^{]|{(?!{)|{{[\s\S]*?}})*?)(:(([^{]|{(?!{)|{{[\s\S]*?}})*?))?}}/)?.[1] || "";
+      str.match(
+        /{{textfiles:(([^{]|{(?!{)|{{[\s\S]*?}})*?)(:(([^{]|{(?!{)|{{[\s\S]*?}})*?))?}}/
+      )?.[1] || "";
     const onFailure =
-      str.match(/{{textfiles:(([^{]|{(?!{)|{{[\s\S]*?}})*?)(:(([^{]|{(?!{)|{{[\s\S]*?}})*?))?}}/)?.[4] || "";
+      str.match(
+        /{{textfiles:(([^{]|{(?!{)|{{[\s\S]*?}})*?)(:(([^{]|{(?!{)|{{[\s\S]*?}})*?))?}}/
+      )?.[4] || "";
 
     const files = (context["selectedFiles"] as string).split(",");
     const contentForTextFiles = files.some((file) =>
-      textFileExtensions.some((ext) => file.toLowerCase().endsWith(ext)),
+      textFileExtensions.some((ext) => file.toLowerCase().endsWith(ext))
     );
-    if (!contentForTextFiles) return { result: onFailure, contentForTextFiles: onFailure };
+    if (!contentForTextFiles)
+      return { result: onFailure, contentForTextFiles: onFailure };
     return { result: onSuccess, contentForTextFiles: onSuccess };
   },
   result_keys: ["contentForTextFiles"],
   constant: true,
-  fn: async (content: string) => (await TextFileFlowDirective.apply(`{{textfiles:${content}}}`)).result,
-  example: "{{textfiles:This one if any text file is selected:This one if no text file is selected}}",
+  fn: async (content: string) =>
+    (await TextFileFlowDirective.apply(`{{textfiles:${content}}}`)).result,
+  example:
+    "{{textfiles:This one if any text file is selected:This one if no text file is selected}}",
   description:
     "Flow control directive to include some content if any text file is selected and some other content if no text file is selected.",
   hintRepresentation: "{{textfiles:...:...}}",

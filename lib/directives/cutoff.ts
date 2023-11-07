@@ -7,7 +7,9 @@ const CutoffDirective: Placeholder = {
   name: "cutoff",
   regex: /{{cutoff [0-9]+:(([^{]|{(?!{)|{{[\s\S]*?}})*?)}}/g,
   apply: async (str: string) => {
-    const matches = str.match(/(?<=(cutoff ))[0-9]+:(([^{]|{(?!{)|{{[\s\S]*?}})*?)}}/);
+    const matches = str.match(
+      /(?<=(cutoff ))[0-9]+:(([^{]|{(?!{)|{{[\s\S]*?}})*?)}}/
+    );
     if (!matches) return { result: "" };
     const cutoff = parseInt(matches[0]);
     const content = matches[2];

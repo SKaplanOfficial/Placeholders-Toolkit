@@ -338,7 +338,18 @@ export const imageFileExtensions = [
 /**
  * File extensions that are considered to be videos and are supported by Apple's Core Media framework.
  */
-export const videoFileExtensions = ["avi", "flv", "m4v", "mkv", "mov", "mp4", "mpeg", "mpg", "webm", "wmv"];
+export const videoFileExtensions = [
+  "avi",
+  "flv",
+  "m4v",
+  "mkv",
+  "mov",
+  "mp4",
+  "mpeg",
+  "mpg",
+  "webm",
+  "wmv",
+];
 
 /**
  * File extensions that are considered audio files and are supported by Apple's AV Foundation framework.
@@ -363,4 +374,11 @@ export const audioFileExtensions = [
 /**
  * Spreadsheet file extensions supported by the XLSX package.
  */
-export const spreadsheetFileExtensions = ["xls", "xlsx", "xlsm", "xlsb", "ods", "numbers"];
+export const spreadsheetFileExtensions = [
+  "xls",
+  "xlsx",
+  "xlsm",
+  "xlsb",
+  "ods",
+  "numbers",
+];

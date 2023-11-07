@@ -3,8 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const utils_1 = require("@raycast/utils");
 const types_1 = require("../types");
 /**
-   * Placeholder for the current time supporting an optional format argument. Defaults to "Hour:Minute:Second AM/PM". Barring any issues, this should always be replaced.
-   */
+ * Placeholder for the current time supporting an optional format argument. Defaults to "Hour:Minute:Second AM/PM". Barring any issues, this should always be replaced.
+ */
 const TimePlaceholder = {
     name: "time",
     regex: /{{(time|currentTime)( format=("|').*?("|'))?}}/g,

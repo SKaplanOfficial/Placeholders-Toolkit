@@ -9,7 +9,10 @@ const SafariBookmarksPlaceholder: Placeholder = {
   regex: /{{safariBookmarks}}/g,
   apply: async (str: string, context?: { [key: string]: unknown }) => {
     if (context && "safariBookmarks" in context) {
-      return { result: context["safariBookmarks"] as string, safariBookmarks: context["safariBookmarks"] as string };
+      return {
+        result: context["safariBookmarks"] as string,
+        safariBookmarks: context["safariBookmarks"] as string,
+      };
     }
 
     const sites = (await Safari.bookmarks(20)).join(", ");
@@ -17,9 +20,12 @@ const SafariBookmarksPlaceholder: Placeholder = {
   },
   result_keys: ["safariBookmarks"],
   constant: true,
-  fn: async () => (await SafariBookmarksPlaceholder.apply("{{safariBookmarks}}")).result,
-  example: "Based on this list of websites, suggest some new ones I might like: {{safariBookmarks}}",
-  description: "Replaced with the comma-separated list of titles and URLs of bookmarks in Safari.",
+  fn: async () =>
+    (await SafariBookmarksPlaceholder.apply("{{safariBookmarks}}")).result,
+  example:
+    "Based on this list of websites, suggest some new ones I might like: {{safariBookmarks}}",
+  description:
+    "Replaced with the comma-separated list of titles and URLs of bookmarks in Safari.",
   hintRepresentation: "{{safariBookmarks}}",
   fullRepresentation: "Safari Bookmarks",
   type: PlaceholderType.Informational,

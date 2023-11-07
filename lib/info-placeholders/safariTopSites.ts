@@ -9,7 +9,10 @@ const SafariTopSitesPlaceholder: Placeholder = {
   regex: /{{safariTopSites}}/g,
   apply: async (str: string, context?: { [key: string]: unknown }) => {
     if (context && "safariTopSites" in context) {
-      return { result: context["safariTopSites"] as string, safariTopSites: context["safariTopSites"] as string };
+      return {
+        result: context["safariTopSites"] as string,
+        safariTopSites: context["safariTopSites"] as string,
+      };
     }
 
     const sites = (await Safari.topSites()).join(", ");
@@ -17,8 +20,10 @@ const SafariTopSitesPlaceholder: Placeholder = {
   },
   result_keys: ["safariTopSites"],
   constant: true,
-  fn: async () => (await SafariTopSitesPlaceholder.apply("{{safariTopSites}}")).result,
-  example: "Based on this list of websites, suggest some new ones I might like: {{safariTopSites}}",
+  fn: async () =>
+    (await SafariTopSitesPlaceholder.apply("{{safariTopSites}}")).result,
+  example:
+    "Based on this list of websites, suggest some new ones I might like: {{safariTopSites}}",
   description:
     "Replaced with the comma-separated list of titles and URLs of the most frequently visited websites in Safari.",
   hintRepresentation: "{{safariTopSites}}",

@@ -9,10 +9,11 @@ const TimezonePlaceholder: Placeholder = {
   apply: async (str: string, context?: { [key: string]: unknown }) => {
     const time =
       context && "timezone" in context
-        ? context["timezone"] as string
+        ? (context["timezone"] as string)
         : Intl.DateTimeFormat(undefined, { timeZoneName: "long" })
             .formatToParts(new Date())
-            .filter((s) => s.type == "timeZoneName")?.[0]?.value || Intl.DateTimeFormat().resolvedOptions().timeZone;
+            .filter((s) => s.type == "timeZoneName")?.[0]?.value ||
+          Intl.DateTimeFormat().resolvedOptions().timeZone;
     return { result: time, time: time };
   },
   result_keys: ["timezone"],
@@ -24,6 +25,6 @@ const TimezonePlaceholder: Placeholder = {
   fullRepresentation: "Current Time Zone",
   type: PlaceholderType.Informational,
   categories: [PlaceholderCategory.Location],
-}
+};
 
 export default TimezonePlaceholder;

@@ -20,10 +20,18 @@ import CutoffDirective from "./directives/cutoff";
 import AppleScriptPlaceholder from "./script-placeholders/applescript";
 import JXAPlaceholder from "./script-placeholders/jxa";
 import ShellScriptPlaceholder from "./script-placeholders/shell";
-import TextFileFlowDirective, { TextFileDirectives } from "./directives/flow-control/textfiles";
-import ImageFlowDirective, { ImageDirectives } from "./directives/flow-control/images";
-import VideoFlowDirective, { VideoDirectives } from "./directives/flow-control/videos";
-import AudioFlowDirective, { AudioDirectives } from "./directives/flow-control/audio";
+import TextFileFlowDirective, {
+  TextFileDirectives,
+} from "./directives/flow-control/textfiles";
+import ImageFlowDirective, {
+  ImageDirectives,
+} from "./directives/flow-control/images";
+import VideoFlowDirective, {
+  VideoDirectives,
+} from "./directives/flow-control/videos";
+import AudioFlowDirective, {
+  AudioDirectives,
+} from "./directives/flow-control/audio";
 import PDFFlowDirective from "./directives/flow-control/pdf";
 import URLPlaceholder from "./directives/url";
 import FilePlaceholder from "./directives/file";
@@ -87,13 +95,20 @@ import { Placeholder } from "./types";
  */
 JavaScriptPlaceholder.apply = async (str: string) => {
   try {
-    const script = str.match(/(?<=(js|JS))( target="(.*?)")?:(([^{]|{(?!{)|{{[\s\S]*?}})*?)}}/)?.[4];
-    const target = str.match(/(?<=(js|JS))( target="(.*?)")?:(([^{]|{(?!{)|{{[\s\S]*?}})*?)}}/)?.[3];
+    const script = str.match(
+      /(?<=(js|JS))( target="(.*?)")?:(([^{]|{(?!{)|{{[\s\S]*?}})*?)}}/
+    )?.[4];
+    const target = str.match(
+      /(?<=(js|JS))( target="(.*?)")?:(([^{]|{(?!{)|{{[\s\S]*?}})*?)}}/
+    )?.[3];
     if (!script) return { result: "", js: "" };
 
     if (target) {
       // Run in active browser tab
-      const res = await runJSInActiveTab(script.replaceAll(/(\n|\r|\t|\\|")/g, "\\$1"), target);
+      const res = await runJSInActiveTab(
+        script.replaceAll(/(\n|\r|\t|\\|")/g, "\\$1"),
+        target
+      );
       return { result: res, js: res };
     }
 
@@ -103,13 +118,16 @@ JavaScriptPlaceholder.apply = async (str: string) => {
         acc[placeholder.name] = placeholder.fn;
         return acc;
       },
-      {} as { [key: string]: (...args: never[]) => Promise<string> },
+      {} as { [key: string]: (...args: never[]) => Promise<string> }
     );
     sandbox["log"] = async (str: string) => {
       console.log(str); // Make logging available to JS scripts
       return "";
     };
-    const res = await vm.runInNewContext(script, sandbox, { timeout: 1000, displayErrors: true });
+    const res = await vm.runInNewContext(script, sandbox, {
+      timeout: 1000,
+      displayErrors: true,
+    });
     return { result: res, js: res };
   } catch (e) {
     return { result: "", js: "" };
@@ -122,16 +140,18 @@ JavaScriptPlaceholder.apply = async (str: string) => {
  * @returns The placeholder list as an object.
  */
 const placeholdersObjectFromList = (placeholders: Placeholder[]) => {
-  return Object.fromEntries(placeholders.map((placeholder) => {
-    const nameParts = placeholder.name.split(":");
-    let name = nameParts[0].charAt(0).toUpperCase() + nameParts[0].slice(1);
-    for (let i = 1; i < nameParts.length; i++) {
-      name += nameParts[i].charAt(0).toUpperCase() + nameParts[i].slice(1);
-    }
-    const fullName = `${name}Placeholder`;
-    return [fullName, placeholder];
-  }));
-}
+  return Object.fromEntries(
+    placeholders.map((placeholder) => {
+      const nameParts = placeholder.name.split(":");
+      let name = nameParts[0].charAt(0).toUpperCase() + nameParts[0].slice(1);
+      for (let i = 1; i < nameParts.length; i++) {
+        name += nameParts[i].charAt(0).toUpperCase() + nameParts[i].slice(1);
+      }
+      const fullName = `${name}Placeholder`;
+      return [fullName, placeholder];
+    })
+  );
+};
 
 const defaultPlaceholders = {
   GetPersistentVariablePlaceholder,
@@ -220,6 +240,9 @@ const defaultPlaceholders = {
 /**
  * The list of default placeholders. This is a map of each placeholder's full name to its placeholder object. For example, the placeholder with the name "clipboardText" would be accessible as DefaultPlaceholders.ClipboardTextPlaceholder. Some placeholders, mainly file-extension-specific flow directives, can only be accessed using their string index, e.g. DefaultPlaceholders["TextfileMdPlaceholder"].
  */
-const DefaultPlaceholders = defaultPlaceholders as typeof defaultPlaceholders & { [key: string]: Placeholder };
+const DefaultPlaceholders =
+  defaultPlaceholders as typeof defaultPlaceholders & {
+    [key: string]: Placeholder;
+  };
 
 export { DefaultPlaceholders, JavaScriptPlaceholder };

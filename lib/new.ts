@@ -4,14 +4,16 @@ import { PlaceholderType, PlaceholderCategory, Placeholder } from "./types";
  * A dummy placeholder.
  * @returns A placeholder object.
  */
-
 export const dummyPlaceholder = (): Placeholder => {
   return {
     name: "New Placeholder",
     regex: /{{newPlaceholder}}/g,
-    apply: async (str: string, context?: { [key: string]: unknown; }) => ({ result: "" }),
+    apply: async (str: string, context?: { [key: string]: unknown }) => ({
+      result: "",
+    }),
     constant: true,
-    fn: async (content: string) => (await dummyPlaceholder().apply("{{newPlaceholder}}")).result,
+    fn: async (content: string) =>
+      (await dummyPlaceholder().apply("{{newPlaceholder}}")).result,
     description: "A dummy placeholder.",
     example: "This is an example of a dummy placeholder: {{newPlaceholder}}",
     hintRepresentation: "{{newPlaceholder}}",
@@ -36,19 +38,18 @@ export const dummyPlaceholder = (): Placeholder => {
  * @param categories The categories of the placeholder.
  * @returns A placeholder object.
  */
-
 export const newPlaceholder = (
   name: string,
   options?: {
     /**
      * The regex to match the placeholder.
      */
-    regex?: RegExp,
+    regex?: RegExp;
 
     /**
      * The string to replace the placeholder with. Specify either this or apply_fn. Can include other placeholders.
      */
-    replace_with?: string,
+    replace_with?: string;
 
     /**
      * The function to apply to the placeholder. Specify either this or replace_with.
@@ -56,42 +57,45 @@ export const newPlaceholder = (
      * @param context The context object to store & retrieve values from.
      * @returns An object containing the result of the placeholder and any other values to store in the context object.
      */
-    apply_fn?: (str: string, context?: { [key: string]: unknown; }) => Promise<{ result: string;[key: string]: unknown; }>,
+    apply_fn?: (
+      str: string,
+      context?: { [key: string]: unknown }
+    ) => Promise<{ result: string; [key: string]: unknown }>;
 
     /**
      * Whether the placeholder's value is constant over the course of a single run.
      */
-    constant?: boolean,
+    constant?: boolean;
 
     /**
      * A brief description of the placeholder.
      */
-    description?: string,
+    description?: string;
 
     /**
      * An example of the placeholder in use.
      */
-    example?: string,
+    example?: string;
 
     /**
      * A representation of the placeholder to show in hints.
      */
-    hintRepresentation?: string,
+    hintRepresentation?: string;
 
     /**
      * A representation of the placeholder to show in detailed explanations.
      */
-    fullRepresentation?: string,
+    fullRepresentation?: string;
 
     /**
      * The type of the placeholder.
      */
-    type?: PlaceholderType,
+    type?: PlaceholderType;
 
     /**
      * The categories of the placeholder.
      */
-    categories?: PlaceholderCategory[]
+    categories?: PlaceholderCategory[];
   }
 ) => {
   if (options?.apply_fn != undefined && options?.replace_with != undefined)
@@ -99,22 +103,36 @@ export const newPlaceholder = (
 
   if (options?.replace_with != undefined) {
     if (options.constant) {
-      options.apply_fn = async (str: string, context?: { [key: string]: unknown; }) => ({
+      options.apply_fn = async (
+        str: string,
+        context?: { [key: string]: unknown }
+      ) => ({
         result: options.replace_with || "",
         [name]: options.replace_with || "",
       });
     } else {
-      options.apply_fn = async (str: string, context?: { [key: string]: unknown; }) => ({ result: options.replace_with || "", [name]: options.replace_with || "" });
+      options.apply_fn = async (
+        str: string,
+        context?: { [key: string]: unknown }
+      ) => ({
+        result: options.replace_with || "",
+        [name]: options.replace_with || "",
+      });
     }
   }
 
   const newPlaceholder: Placeholder = {
     name: name,
     regex: options?.regex || new RegExp(`{{${name}}}`, "g"),
-    apply: options?.apply_fn || (async (str: string, context?: { [key: string]: unknown; }) => ({ result: "" })),
+    apply:
+      options?.apply_fn ||
+      (async (str: string, context?: { [key: string]: unknown }) => ({
+        result: "",
+      })),
     result_keys: [name],
     constant: options?.constant || false,
-    fn: async (content: string) => (await newPlaceholder.apply(`{{${name}}}`)).result,
+    fn: async (content: string) =>
+      (await newPlaceholder.apply(`{{${name}}}`)).result,
     description: options?.description || "",
     example: options?.example || "",
     hintRepresentation: options?.hintRepresentation || `{{${name}}}`,
@@ -131,23 +149,32 @@ export const newPlaceholder = (
  * @param valueDict A dictionary of placeholder names and values.
  * @returns A list of placeholders.
  */
-export const buildPlaceholdersFromValueDict = (valueDict: { [key: string]: string; }) => {
+export const buildPlaceholdersFromValueDict = (valueDict: {
+  [key: string]: string;
+}) => {
   const placeholders: Placeholder[] = [];
   for (const key in valueDict) {
     if (Object.prototype.hasOwnProperty.call(valueDict, key)) {
       const value = valueDict[key];
-      placeholders.push(newPlaceholder(key, { replace_with: value, constant: true }));
+      placeholders.push(
+        newPlaceholder(key, { replace_with: value, constant: true })
+      );
     }
   }
   return placeholders;
-}
+};
 
 /**
  * Builds a list of placeholders from a list of placeholder names and application functions.
  * @param fnDict A dictionary of placeholder names and application functions.
  * @returns A list of placeholders.
  */
-export const buildPlaceholdersFromFnDict = (fnDict: { [key: string]: (str: string, context?: { [key: string]: unknown; }) => Promise<{ result: string;[key: string]: unknown; }>; }) => {
+export const buildPlaceholdersFromFnDict = (fnDict: {
+  [key: string]: (
+    str: string,
+    context?: { [key: string]: unknown }
+  ) => Promise<{ result: string; [key: string]: unknown }>;
+}) => {
   const placeholders: Placeholder[] = [];
   for (const key in fnDict) {
     if (Object.prototype.hasOwnProperty.call(fnDict, key)) {
@@ -156,14 +183,4 @@ export const buildPlaceholdersFromFnDict = (fnDict: { [key: string]: (str: strin
     }
   }
   return placeholders;
-}
-
-/**
- * Placeholder creator.
- */
-export const PLCreator = {
-  dummyPlaceholder,
-  newPlaceholder,
-  buildPlaceholdersFromValueDict,
-  buildPlaceholdersFromFnDict,
-}
+};

@@ -3,8 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const child_process_1 = require("child_process");
 const types_1 = require("../types");
 /**
-   * Placeholder for output of a JavaScript for Automation script. If the script fails, this placeholder will be replaced with an empty string. No sanitization is done in the script input; the expectation is that users will only use this placeholder with trusted scripts.
-   */
+ * Placeholder for output of a JavaScript for Automation script. If the script fails, this placeholder will be replaced with an empty string. No sanitization is done in the script input; the expectation is that users will only use this placeholder with trusted scripts.
+ */
 const JXAPlaceholder = {
     name: "jxa",
     regex: /{{(jxa|JXA):(([^{]|{(?!{)|{{[\\s\\S]*?}})*?)}}/g,
@@ -17,7 +17,9 @@ const JXAPlaceholder = {
                 .replaceAll('"', '\\"')
                 .replaceAll("`", "\\`")
                 .replaceAll("$", "\\$")
-                .replaceAll(new RegExp(/[\n\r]/, "g"), " \\\n")}"`).toString().trim();
+                .replaceAll(new RegExp(/[\n\r]/, "g"), " \\\n")}"`)
+                .toString()
+                .trim();
             return { result: res, jxa: res };
         }
         catch (e) {
@@ -25,8 +27,7 @@ const JXAPlaceholder = {
         }
     },
     constant: false,
-    fn: async (script) => (await JXAPlaceholder.apply(`{{jxa:${script}}}`))
-        .result,
+    fn: async (script) => (await JXAPlaceholder.apply(`{{jxa:${script}}}`)).result,
     example: "{{jxa:Application('Music').currentTrack.name()}}",
     description: "Placeholder for output of a JavaScript for Automation script. If the script fails, this placeholder will be replaced with an empty string.",
     hintRepresentation: "{{jxa:...}}",

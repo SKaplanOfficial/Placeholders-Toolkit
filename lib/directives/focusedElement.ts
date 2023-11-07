@@ -13,7 +13,7 @@ const FocusedElementPlaceholder: Placeholder = {
   apply: async (str: string, context?: { [key: string]: unknown }) => {
     try {
       const browser = str.match(
-        /(focusedElement|activeElement|selectedElement|focusedElementText|activeElementText|selectedElementText)( browser=")(.*?)(")?/,
+        /(focusedElement|activeElement|selectedElement|focusedElementText|activeElementText|selectedElementText)( browser=")(.*?)(")?/
       )?.[3];
       const appName = browser
         ? browser
@@ -31,7 +31,11 @@ const FocusedElementPlaceholder: Placeholder = {
   dependencies: ["currentAppName"],
   constant: false,
   fn: async (browser: string) =>
-    (await FocusedElementPlaceholder.apply(`{{focusedElement browser="${browser}"}}`)).result,
+    (
+      await FocusedElementPlaceholder.apply(
+        `{{focusedElement browser="${browser}"}}`
+      )
+    ).result,
   example: 'Summarize this: {{focusedElement browser="Safari"}}',
   description:
     "Replaced with the text content of the currently focused HTML element in the active tab of the given browser. If no browser is specified, the frontmost browser is used.",

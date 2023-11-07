@@ -12,7 +12,8 @@ const TimezonePlaceholder = {
             ? context["timezone"]
             : Intl.DateTimeFormat(undefined, { timeZoneName: "long" })
                 .formatToParts(new Date())
-                .filter((s) => s.type == "timeZoneName")?.[0]?.value || Intl.DateTimeFormat().resolvedOptions().timeZone;
+                .filter((s) => s.type == "timeZoneName")?.[0]?.value ||
+                Intl.DateTimeFormat().resolvedOptions().timeZone;
         return { result: time, time: time };
     },
     result_keys: ["timezone"],

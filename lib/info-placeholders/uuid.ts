@@ -1,4 +1,8 @@
-import { STORAGE_KEYS, getStorage, setStorage } from "../directives/persistent-variables/utils";
+import {
+  STORAGE_KEYS,
+  getStorage,
+  setStorage,
+} from "../directives/persistent-variables/utils";
 import { Placeholder, PlaceholderCategory, PlaceholderType } from "../types";
 
 import crypto from "crypto";
@@ -27,7 +31,8 @@ const UUIDPlaceholder: Placeholder = {
   constant: false,
   fn: async () => (await UUIDPlaceholder.apply("{{uuid}}")).result,
   example: "{{copy:{{uuid}}}}",
-  description: "Replaced with a unique UUID. UUIDs are tracked in the {{usedUUIDs}} placeholder.",
+  description:
+    "Replaced with a unique UUID. UUIDs are tracked in the {{usedUUIDs}} placeholder.",
   hintRepresentation: "{{uuid}}",
   fullRepresentation: "New UUID",
   type: PlaceholderType.Informational,

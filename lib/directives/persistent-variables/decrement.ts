@@ -2,8 +2,8 @@ import { LocalStorage } from "@raycast/api";
 import { Placeholder, PlaceholderCategory, PlaceholderType } from "../../types";
 
 /**
-   * Directive to decrement a persistent counter variable by 1. Returns the new value of the counter.
-   */
+ * Directive to decrement a persistent counter variable by 1. Returns the new value of the counter.
+ */
 const DecrementPersistentVariablePlaceholder: Placeholder = {
   name: "decrement",
   regex: /{{decrement:[\\s\\S]*?}}/g,
@@ -16,13 +16,14 @@ const DecrementPersistentVariablePlaceholder: Placeholder = {
   },
   constant: false,
   fn: async (id: string) =>
-    (await DecrementPersistentVariablePlaceholder.apply(`{{decrement:${id}}}`)).result,
+    (await DecrementPersistentVariablePlaceholder.apply(`{{decrement:${id}}}`))
+      .result,
   example: "{{decrement:counter}}",
   description: "Directive to decrement a persistent counter variable by 1.",
   hintRepresentation: "{{decrement:x}}",
   fullRepresentation: "Decrement Persistent Counter Variable",
   type: PlaceholderType.StaticDirective,
   categories: [PlaceholderCategory.Memory],
-}
+};
 
 export default DecrementPersistentVariablePlaceholder;

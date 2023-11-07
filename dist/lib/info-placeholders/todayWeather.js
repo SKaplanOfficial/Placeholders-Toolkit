@@ -10,7 +10,10 @@ const TodayWeatherPlaceholder = {
     regex: /{{todayWeather}}/g,
     apply: async (str, context) => {
         if (context && "todayWeather" in context) {
-            return { result: context["todayWeather"], todayWeather: context["todayWeather"] };
+            return {
+                result: context["todayWeather"],
+                todayWeather: context["todayWeather"],
+            };
         }
         const weather = JSON.stringify(await (0, utils_1.getWeatherData)(1));
         return { result: weather, todayWeather: weather };

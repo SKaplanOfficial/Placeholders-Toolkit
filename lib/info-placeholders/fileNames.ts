@@ -12,7 +12,8 @@ const FileNamesPlaceholder: Placeholder = {
       context && "selectedFiles" in context
         ? (context["selectedFiles"] as string)
         : (await getSelectedFiles()).csv;
-    if (files.length == 0) return { result: "", fileNames: "", selectedFiles: "" };
+    if (files.length == 0)
+      return { result: "", fileNames: "", selectedFiles: "" };
     const fileNames = files
       .split(", ")
       .map((file) => file.split("/").pop())

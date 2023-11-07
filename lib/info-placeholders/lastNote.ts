@@ -9,7 +9,10 @@ const LastNotePlaceholder: Placeholder = {
   regex: /{{lastNote}}/g,
   apply: async (str: string, context?: { [key: string]: unknown }) => {
     if (context && "lastNote" in context) {
-      return { result: context["lastNote"] as string, lastNote: context["lastNote"] as string };
+      return {
+        result: context["lastNote"] as string,
+        lastNote: context["lastNote"] as string,
+      };
     }
 
     const note = await getLastNote();
@@ -19,7 +22,8 @@ const LastNotePlaceholder: Placeholder = {
   constant: true,
   fn: async () => (await LastNotePlaceholder.apply("{{lastNote}}")).result,
   example: "Summarize this: {{lastNote}}",
-  description: "Replaced with the HTML text of the most recently edited note in Notes.app.",
+  description:
+    "Replaced with the HTML text of the most recently edited note in Notes.app.",
   hintRepresentation: "{{lastNote}}",
   fullRepresentation: "Text of Last Note",
   type: PlaceholderType.Informational,

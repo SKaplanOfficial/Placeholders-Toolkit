@@ -21,14 +21,15 @@ const CommandPlaceholder = {
                 return extension.name == ext || extension.title == ext;
             }
             else {
-                return extension.commands.find((command) => command.name == cmd) != undefined;
+                return (extension.commands.find((command) => command.name == cmd) != undefined);
             }
         });
         if (targetExtension != undefined) {
             // Run the command belonging to the exact extension
             const targetCommand = targetExtension.commands.find((command) => command.name == cmd || command.title == cmd);
             if (targetCommand != undefined) {
-                open(targetCommand.deeplink + (input.length > 0 ? `?fallbackText=${input}` : ``));
+                open(targetCommand.deeplink +
+                    (input.length > 0 ? `?fallbackText=${input}` : ``));
             }
         }
         else {
@@ -38,13 +39,16 @@ const CommandPlaceholder = {
                 .flat()
                 .find((command) => command.name == cmd || command.title == cmd);
             if (targetCommand != undefined) {
-                open(targetCommand.deeplink + (input.length > 0 ? `?fallbackText=${input}` : ``));
+                open(targetCommand.deeplink +
+                    (input.length > 0 ? `?fallbackText=${input}` : ``));
             }
         }
         return { result: "" };
     },
     constant: false,
-    fn: async (command, extension, input) => (await CommandPlaceholder.apply(`{{command:${command}${extension?.length ? `:${extension}${input?.length ? `:${input}` : ``}` : ``}}`)).result,
+    fn: async (command, extension, input) => (await CommandPlaceholder.apply(`{{command:${command}${extension?.length
+        ? `:${extension}${input?.length ? `:${input}` : ``}`
+        : ``}}`)).result,
     example: "{{command:PromptLab Chat:PromptLab:Hello!}}",
     description: "Directive to run a Raycast command by name, optionally narrowing down the search to a specific extension. Input can be supplied as well.",
     hintRepresentation: "{{command:cmdName:extName:input}}",

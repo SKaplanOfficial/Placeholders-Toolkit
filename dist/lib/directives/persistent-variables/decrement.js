@@ -3,8 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const api_1 = require("@raycast/api");
 const types_1 = require("../../types");
 /**
-   * Directive to decrement a persistent counter variable by 1. Returns the new value of the counter.
-   */
+ * Directive to decrement a persistent counter variable by 1. Returns the new value of the counter.
+ */
 const DecrementPersistentVariablePlaceholder = {
     name: "decrement",
     regex: /{{decrement:[\\s\\S]*?}}/g,
@@ -16,7 +16,8 @@ const DecrementPersistentVariablePlaceholder = {
         return { result: value.toString() };
     },
     constant: false,
-    fn: async (id) => (await DecrementPersistentVariablePlaceholder.apply(`{{decrement:${id}}}`)).result,
+    fn: async (id) => (await DecrementPersistentVariablePlaceholder.apply(`{{decrement:${id}}}`))
+        .result,
     example: "{{decrement:counter}}",
     description: "Directive to decrement a persistent counter variable by 1.",
     hintRepresentation: "{{decrement:x}}",

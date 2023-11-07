@@ -9,7 +9,11 @@ const CurrentURLPlaceholder: Placeholder = {
   regex: /{{(currentURL|currentTabURL)}}/g,
   apply: async (str: string, context?: { [key: string]: unknown }) => {
     try {
-      if (context && "currentURL" in context && (context["currentURL"] as string).length > 0) {
+      if (
+        context &&
+        "currentURL" in context &&
+        (context["currentURL"] as string).length > 0
+      ) {
         return {
           result: context["currentURL"] as string,
           currentURL: context["currentURL"] as string,
@@ -31,7 +35,8 @@ const CurrentURLPlaceholder: Placeholder = {
   constant: true,
   fn: async () => (await CurrentURLPlaceholder.apply("{{currentURL}}")).result,
   example: "Tell me about {{currentURL}}",
-  description: "Replaced with the URL of the current tab in any supported browser.",
+  description:
+    "Replaced with the URL of the current tab in any supported browser.",
   hintRepresentation: "{{currentURL}}",
   fullRepresentation: "URL of Current Browser Tab",
   type: PlaceholderType.Informational,

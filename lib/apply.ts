@@ -21,7 +21,9 @@ export const applyToString = async (
     ? allPlaceholders
     : [
         ...(customPlaceholders || []),
-        ...(defaultPlaceholders ? defaultPlaceholders : Object.values(DefaultPlaceholders)),
+        ...(defaultPlaceholders
+          ? defaultPlaceholders
+          : Object.values(DefaultPlaceholders)),
       ];
 
   let subbedStr = str;
@@ -119,7 +121,9 @@ export const checkForPlaceholders = async (
     ? allPlaceholders
     : [
         ...(customPlaceholders || []),
-        ...(defaultPlaceholders ? defaultPlaceholders : Object.values(DefaultPlaceholders)),
+        ...(defaultPlaceholders
+          ? defaultPlaceholders
+          : Object.values(DefaultPlaceholders)),
       ];
   const includedPlaceholders = sortedPlaceholders
     .filter((placeholder) => {
@@ -173,7 +177,9 @@ export const bulkApply = async (
     ? allPlaceholders
     : [
         ...(customPlaceholders || []),
-        ...(defaultPlaceholders ? defaultPlaceholders : Object.values(DefaultPlaceholders)),
+        ...(defaultPlaceholders
+          ? defaultPlaceholders
+          : Object.values(DefaultPlaceholders)),
       ];
 
   let subbedStr = str;
@@ -268,4 +274,4 @@ export const PLApplicator = {
   applyToObjectValuesWithKeys,
   checkForPlaceholders,
   bulkApply,
-}
+};

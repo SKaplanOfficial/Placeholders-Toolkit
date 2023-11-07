@@ -16,7 +16,8 @@ const IncrementPersistentVariablePlaceholder = {
         return { result: value.toString() };
     },
     constant: false,
-    fn: async (id) => (await IncrementPersistentVariablePlaceholder.apply(`{{increment:${id}}}`)).result,
+    fn: async (id) => (await IncrementPersistentVariablePlaceholder.apply(`{{increment:${id}}}`))
+        .result,
     example: "{{increment:counter}}",
     description: "Directive to increment a persistent counter variable by 1. Returns the new value of the counter.",
     hintRepresentation: "{{increment:x}}",

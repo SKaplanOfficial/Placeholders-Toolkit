@@ -12,11 +12,15 @@ const bundleID = async () => {
 };
 
 const bundlePath = async () => {
-  return await runAppleScript(`tell application "OmniWeb" to return POSIX path of (path to it)`);
+  return await runAppleScript(
+    `tell application "OmniWeb" to return POSIX path of (path to it)`
+  );
 };
 
 const currentURL = async () => {
-  return runAppleScript(`tell application "OmniWeb" to return address of active tab of browser 1`);
+  return runAppleScript(
+    `tell application "OmniWeb" to return address of active tab of browser 1`
+  );
 };
 
 const currentTabText = async () => {

@@ -42,8 +42,7 @@ const ElementTextPlaceholder = {
     },
     dependencies: ["currentAppName"],
     constant: false,
-    fn: async (specifier, browser) => (await ElementTextPlaceholder.apply(`{{elementText${browser ? ` browser="${browser}"` : ``}:${specifier}}}`))
-        .result,
+    fn: async (specifier, browser) => (await ElementTextPlaceholder.apply(`{{elementText${browser ? ` browser="${browser}"` : ``}:${specifier}}}`)).result,
     example: "Summarize this: {{elementText:#article}}",
     description: "Replaced with the text content of an HTML element in the active tab of any supported browser.",
     hintRepresentation: "{{elementText}}",

@@ -12,7 +12,9 @@ const FilePlaceholder: Placeholder = {
     const target = str.match(/(?<=(file:))[\s\S]*?(?=}})/)?.[0];
     if (!target) return { result: "", file: "" };
 
-    const filePath = target.startsWith("~") ? target.replace("~", os.homedir()) : target;
+    const filePath = target.startsWith("~")
+      ? target.replace("~", os.homedir())
+      : target;
     if (filePath == "") return { result: "", file: "" };
 
     if (!filePath.startsWith("/")) return { result: "", file: "" };
@@ -25,7 +27,8 @@ const FilePlaceholder: Placeholder = {
     }
   },
   constant: false,
-  fn: async (path: string) => (await FilePlaceholder.apply(`{{file:${path}}}`)).result,
+  fn: async (path: string) =>
+    (await FilePlaceholder.apply(`{{file:${path}}}`)).result,
   example: "{{file:/Users/username/Desktop/file.txt}}",
   description: "Placeholder for the raw text of a file at the given path.",
   hintRepresentation: "{{file:...}}",

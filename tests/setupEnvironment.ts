@@ -21,9 +21,7 @@ jest.mock(
       launchType: "userInitiated",
       launchContext: {},
     },
-    getPreferenceValues: jest.fn(
-      () => ({})
-    ),
+    getPreferenceValues: jest.fn(() => ({})),
     LocalStorage: {
       allItems: jest.fn(),
       getItem: jest.fn(),

@@ -13,11 +13,15 @@ const bundleID = async () => {
 };
 
 const bundlePath = async () => {
-  return await runAppleScript(`tell application "SigmaOS" to return POSIX path of (path to it)`);
+  return await runAppleScript(
+    `tell application "SigmaOS" to return POSIX path of (path to it)`
+  );
 };
 
 const currentURL = async () => {
-  return runAppleScript(`tell application "SigmaOS" to return URL of active tab of window 1`);
+  return runAppleScript(
+    `tell application "SigmaOS" to return URL of active tab of window 1`
+  );
 };
 
 const currentTabText = async () => {

@@ -14,7 +14,7 @@ const DialogDirective: Placeholder = {
     /{{dialog( input=(true|false))?( timeout=([0-9]+))?( title="(([^{]|{(?!{)|{{[\s\S]*?}})*?)")?:(([^{]|{(?!{)|{{[\s\S]*?}})+?)}}/g,
   apply: async (str: string) => {
     const matches = str.match(
-      /{{dialog( input=(true|false))?( timeout=([0-9]+))?( title="(([^{]|{(?!{)|{{[\s\S]*?}})*?)")?:(([^{]|{(?!{)|{{[\s\S]*?}})+?)}}/,
+      /{{dialog( input=(true|false))?( timeout=([0-9]+))?( title="(([^{]|{(?!{)|{{[\s\S]*?}})*?)")?:(([^{]|{(?!{)|{{[\s\S]*?}})+?)}}/
     );
     if (matches) {
       const input = matches[2] == "true";
@@ -22,25 +22,34 @@ const DialogDirective: Placeholder = {
       const title = matches[6] || "Pins";
       const message = matches[8];
       const result = await runAppleScript(
-        `display dialog "${message.replaceAll('"', "'")}" with title "${title.replaceAll('"', "'")}"${
+        `display dialog "${message.replaceAll(
+          '"',
+          "'"
+        )}" with title "${title.replaceAll('"', "'")}"${
           input ? ' default answer ""' : ""
         } giving up after ${timeout}`,
-        { timeout: timeout * 1000 },
+        { timeout: timeout * 1000 }
       );
       if (input) {
-        const textReturned = result.match(/(?<=text returned:)(.|[ \n\r\s])*?(?=,)/)?.[0] || "";
+        const textReturned =
+          result.match(/(?<=text returned:)(.|[ \n\r\s])*?(?=,)/)?.[0] || "";
         return { result: textReturned.trim().replaceAll('"', "'") };
       }
     }
     return { result: "" };
   },
   constant: false,
-  fn: async (message: string, title?: string, timeout?: string, input = "false") =>
+  fn: async (
+    message: string,
+    title?: string,
+    timeout?: string,
+    input = "false"
+  ) =>
     (
       await DialogDirective.apply(
-        `{{dialog${input ? ` input=${input}` : ""}${timeout ? ` timeout=${timeout}` : ""}${
-          title ? ` title="${title}"` : ""
-        }:${message}}}`,
+        `{{dialog${input ? ` input=${input}` : ""}${
+          timeout ? ` timeout=${timeout}` : ""
+        }${title ? ` title="${title}"` : ""}:${message}}}`
       )
     ).result,
   example: '{{dialog title="Info":Hello World}}',

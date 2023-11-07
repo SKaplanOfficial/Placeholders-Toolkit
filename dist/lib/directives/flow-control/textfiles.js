@@ -32,7 +32,9 @@ exports.TextFileDirectives = file_extensions_1.textFileExtensions
         },
         result_keys: [`textfile:${ext}`],
         constant: true,
-        fn: async (content) => (await newPlaceholder.apply(`{{${ext}:${content}}}`, { selectedFiles: content })).result,
+        fn: async (content) => (await newPlaceholder.apply(`{{${ext}:${content}}}`, {
+            selectedFiles: content,
+        })).result,
         example: `{{${ext}:This one if any ${ext} file is selected:This one if no ${ext} file is selected}}`,
         description: `Flow control directive to include some content if any ${ext} file is selected and some other content if no ${ext} file is selected.`,
         hintRepresentation: `{{${ext}:...:...}}`,

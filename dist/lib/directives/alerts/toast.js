@@ -15,7 +15,9 @@ const ToastDirective = {
     apply: async (str) => {
         const matches = str.match(/{(toast|hud|HUD)( style="(success|failure|fail)")?( message="(([^{]|{(?!{)|{{[\s\S]*?}})*?)")?:(([^{]|{(?!{)|{{[\s\S]*?}})+?)}}/);
         if (matches) {
-            const style = matches[3] == "failure" || matches[3] == "fail" ? api_1.Toast.Style.Failure : api_1.Toast.Style.Success;
+            const style = matches[3] == "failure" || matches[3] == "fail"
+                ? api_1.Toast.Style.Failure
+                : api_1.Toast.Style.Success;
             const message = matches[5] || "";
             const title = matches[7];
             await (0, api_1.showToast)({ title: title, message: message, style: style });

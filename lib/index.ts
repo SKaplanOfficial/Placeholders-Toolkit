@@ -1,9 +1,10 @@
 export { DefaultPlaceholders } from "./defaultPlaceholders";
 export * as Placeholders from "./placeholders";
 
-export { PLApplicator } from "./apply";
-export { PLLoader } from "./load";
-export { PLCreator } from "./new";
+export * as PLApplicator from "./apply";
+export * as PLLoader from "./load";
+export * as PLCreator from "./new";
+export * as PLMatcher from "./match";
 
 export {
   Placeholder,

@@ -15,9 +15,12 @@ const IncrementPersistentVariablePlaceholder: Placeholder = {
     return { result: value.toString() };
   },
   constant: false,
-  fn: async (id: string) => (await IncrementPersistentVariablePlaceholder.apply(`{{increment:${id}}}`)).result,
+  fn: async (id: string) =>
+    (await IncrementPersistentVariablePlaceholder.apply(`{{increment:${id}}}`))
+      .result,
   example: "{{increment:counter}}",
-  description: "Directive to increment a persistent counter variable by 1. Returns the new value of the counter.",
+  description:
+    "Directive to increment a persistent counter variable by 1. Returns the new value of the counter.",
   hintRepresentation: "{{increment:x}}",
   fullRepresentation: "Increment Persistent Counter Variable",
   type: PlaceholderType.StaticDirective,

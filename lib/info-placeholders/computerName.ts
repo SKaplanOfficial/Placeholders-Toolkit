@@ -9,7 +9,10 @@ const ComputerNamePlaceholder: Placeholder = {
   regex: /{{computerName}}/g,
   apply: async (str: string, context?: { [key: string]: unknown }) => {
     if (context && "computerName" in context) {
-      return { result: context["computerName"] as string, computerName: context["computerName"] as string };
+      return {
+        result: context["computerName"] as string,
+        computerName: context["computerName"] as string,
+      };
     }
 
     const name = await getComputerName();
@@ -17,7 +20,8 @@ const ComputerNamePlaceholder: Placeholder = {
   },
   result_keys: ["computerName"],
   constant: true,
-  fn: async () => (await ComputerNamePlaceholder.apply("{{computerName}}")).result,
+  fn: async () =>
+    (await ComputerNamePlaceholder.apply("{{computerName}}")).result,
   example: "Come up with aliases for {{computerName}}",
   description: "Replaced with the 'pretty' hostname of the current machine.",
   hintRepresentation: "{{computerName}}",

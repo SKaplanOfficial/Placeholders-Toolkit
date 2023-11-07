@@ -10,7 +10,10 @@ const InstalledApplicationsPlaceholder = {
     regex: /{{(installedApps|apps|installedApplications|applications)}}/g,
     apply: async (str, context) => {
         if (context && "installedApps" in context) {
-            return { result: context["installedApps"], installedApps: context["installedApps"] };
+            return {
+                result: context["installedApps"],
+                installedApps: context["installedApps"],
+            };
         }
         const apps = await (0, scripts_1.getInstalledApplications)();
         return { result: apps, installedApps: apps };

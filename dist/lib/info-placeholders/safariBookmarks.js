@@ -10,7 +10,10 @@ const SafariBookmarksPlaceholder = {
     regex: /{{safariBookmarks}}/g,
     apply: async (str, context) => {
         if (context && "safariBookmarks" in context) {
-            return { result: context["safariBookmarks"], safariBookmarks: context["safariBookmarks"] };
+            return {
+                result: context["safariBookmarks"],
+                safariBookmarks: context["safariBookmarks"],
+            };
         }
         const sites = (await browsers_1.Safari.bookmarks(20)).join(", ");
         return { result: sites, safariBookmarks: sites };

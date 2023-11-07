@@ -18,7 +18,9 @@
     "declaration": true
   },
   "typedocOptions": {
-    "entryPoints": ["lib/index.ts"],
-    "out": "docs"
+    "entryPoints": ["lib/index.ts", "dist/lib/index.d.ts"],
+    "out": "docs",
+    "includeVersion": true,
+    "searchInComments": true
   }
 }

@@ -17,7 +17,8 @@ const SelectedTextPlaceholder: Placeholder = {
   },
   result_keys: ["selectedText"],
   constant: true,
-  fn: async () => (await SelectedTextPlaceholder.apply("{{selectedText}}")).result,
+  fn: async () =>
+    (await SelectedTextPlaceholder.apply("{{selectedText}}")).result,
   example: "Rewrite this as a list: {{selectedText}}",
   description:
     "Replaced with the currently selected text. If no text is selected, this will be replaced with an empty string.",

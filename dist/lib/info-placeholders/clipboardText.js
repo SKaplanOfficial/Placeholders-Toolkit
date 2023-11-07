@@ -10,7 +10,10 @@ const ClipboardTextPlaceholder = {
     regex: /{{(clipboardText|clipboard)}}/g,
     apply: async (_, context) => {
         if (context?.["clipboardText"]?.toString().length) {
-            return { result: context["clipboardText"], clipboardText: context["clipboardText"] };
+            return {
+                result: context["clipboardText"],
+                clipboardText: context["clipboardText"],
+            };
         }
         try {
             const text = (await api_1.Clipboard.readText()) || "";

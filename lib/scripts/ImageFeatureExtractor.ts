@@ -211,4 +211,4 @@ on run (argv)
 	set jsonObj to current application's NSJSONSerialization's dataWithJSONObject:imageData options:(current application's NSJSONWritingFragmentsAllowed) |error|:(missing value)
 	set jsonString to current application's NSString's alloc()'s initWithData:jsonObj encoding:(current application's NSUTF8StringEncoding)
 	return jsonString as text
-end run`
+end run`;

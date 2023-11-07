@@ -82,7 +82,7 @@ on run (argv)
 	end repeat
 	
 	return theEvents
-end run`
+end run`;
 
 /**
  * Wrapper around event fetching functions.
@@ -94,8 +94,12 @@ const EventFetcher = {
    * @param duration The duration of the event to fetch, either 0 (today), 1 (this week), 2 (this month), or 3 (this year).
    * @returns A comma-separated list of the name, start time, and end time of all calendar events that are scheduled over the specified duration.
    */
-  getUpcomingEvents: async (eventType: "calendar" | "reminder", duration: number): Promise<string> => {
-    return await (execScript(eventsScript, [eventType, duration], "AppleScript").data);
+  getUpcomingEvents: async (
+    eventType: "calendar" | "reminder",
+    duration: number
+  ): Promise<string> => {
+    return await execScript(eventsScript, [eventType, duration], "AppleScript")
+      .data;
   },
 
   /**
@@ -161,6 +165,6 @@ const EventFetcher = {
   getYearReminderEvents: async (): Promise<string> => {
     return await EventFetcher.getUpcomingEvents("reminder", 3);
   },
-}
+};
 
 export default EventFetcher;

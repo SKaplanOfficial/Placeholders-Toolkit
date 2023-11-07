@@ -17,7 +17,8 @@ const ResetPersistentVariablePlaceholder: Placeholder = {
     return { result: "" };
   },
   constant: false,
-  fn: async (id: string) => (await ResetPersistentVariablePlaceholder.apply(`{{reset ${id}}}`)).result,
+  fn: async (id: string) =>
+    (await ResetPersistentVariablePlaceholder.apply(`{{reset ${id}}}`)).result,
   example: "{{reset storedText}}",
   description:
     "Resets the value of a persistent variable to its initial value. If the variable does not exist, nothing will happen. Replaced with an empty string.",

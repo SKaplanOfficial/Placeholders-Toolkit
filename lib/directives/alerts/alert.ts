@@ -11,10 +11,11 @@ import { showHUD } from "@raycast/api";
  */
 const AlertDirective: Placeholder = {
   name: "displayAlert",
-  regex: /{{(alert)( timeout=([0-9]+))?( title="(([^{]|{(?!{)|{{[\s\S]*?}})*?)")?:(([^{]|{(?!{)|{{[\s\S]*?}})+?)}}/g,
+  regex:
+    /{{(alert)( timeout=([0-9]+))?( title="(([^{]|{(?!{)|{{[\s\S]*?}})*?)")?:(([^{]|{(?!{)|{{[\s\S]*?}})+?)}}/g,
   apply: async (str: string) => {
     const matches = str.match(
-      /{{alert( timeout=([0-9]+))?( title="(([^{]|{(?!{)|{{[\s\S]*?}})*?)")?:(([^{]|{(?!{)|{{[\s\S]*?}})+?)}}/,
+      /{{alert( timeout=([0-9]+))?( title="(([^{]|{(?!{)|{{[\s\S]*?}})*?)")?:(([^{]|{(?!{)|{{[\s\S]*?}})+?)}}/
     );
     if (matches) {
       const timeout = parseInt(matches[2]) || 10;
@@ -24,7 +25,7 @@ const AlertDirective: Placeholder = {
         await runAppleScript(
           `display alert "${title.replaceAll('"', "'")}"${
             message ? ` message "${message.replaceAll('"', "'")}"` : ""
-          } giving up after ${timeout} as critical`,
+          } giving up after ${timeout} as critical`
         );
       } catch (e) {
         if ((e as Error).message.includes("timed out")) {
@@ -38,7 +39,9 @@ const AlertDirective: Placeholder = {
   fn: async (message: string, title?: string, timeout?: string) =>
     (
       await AlertDirective.apply(
-        `{{alert${timeout ? ` timeout=${timeout}` : ""}${title ? ` title="${title}"` : ""}:${message}}}`,
+        `{{alert${timeout ? ` timeout=${timeout}` : ""}${
+          title ? ` title="${title}"` : ""
+        }:${message}}}`
       )
     ).result,
   example: '{{alert title="Info":Hello World}}',

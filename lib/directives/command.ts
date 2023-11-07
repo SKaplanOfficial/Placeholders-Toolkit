@@ -6,11 +6,14 @@ import { getExtensions } from "../utils";
  */
 const CommandPlaceholder: Placeholder = {
   name: "command",
-  regex: /{{command:([^:}]*[\\s]*)*?(:([^:}]*[\\s]*)*?)?(:([^:}]*[\\s]*)*?)?}}/g,
+  regex:
+    /{{command:([^:}]*[\\s]*)*?(:([^:}]*[\\s]*)*?)?(:([^:}]*[\\s]*)*?)?}}/g,
   apply: async (str: string) => {
     const command = str.match(/command:([^:]*?)(:[^}:]*?)*(?=}})/)?.[1] || "";
-    const extension = str.match(/(?<=(command:[^:]*?:))([^:]*?)(:[^}:]*?)*(?=}})/)?.[2] || "";
-    const input = str.match(/(?<=(command:[^:]*?:[^:]*?:)).*?(?=}})/)?.[0] || "";
+    const extension =
+      str.match(/(?<=(command:[^:]*?:))([^:]*?)(:[^}:]*?)*(?=}})/)?.[2] || "";
+    const input =
+      str.match(/(?<=(command:[^:]*?:[^:]*?:)).*?(?=}})/)?.[0] || "";
 
     // Locate the extension and command
     const cmd = command.trim();
@@ -20,15 +23,22 @@ const CommandPlaceholder: Placeholder = {
       if (ext != "") {
         return extension.name == ext || extension.title == ext;
       } else {
-        return extension.commands.find((command) => command.name == cmd) != undefined;
+        return (
+          extension.commands.find((command) => command.name == cmd) != undefined
+        );
       }
     });
 
     if (targetExtension != undefined) {
       // Run the command belonging to the exact extension
-      const targetCommand = targetExtension.commands.find((command) => command.name == cmd || command.title == cmd);
+      const targetCommand = targetExtension.commands.find(
+        (command) => command.name == cmd || command.title == cmd
+      );
       if (targetCommand != undefined) {
-        open(targetCommand.deeplink + (input.length > 0 ? `?fallbackText=${input}` : ``));
+        open(
+          targetCommand.deeplink +
+            (input.length > 0 ? `?fallbackText=${input}` : ``)
+        );
       }
     } else {
       // Run a command with the specified name, not necessary belonging to the target extension
@@ -37,7 +47,10 @@ const CommandPlaceholder: Placeholder = {
         .flat()
         .find((command) => command.name == cmd || command.title == cmd);
       if (targetCommand != undefined) {
-        open(targetCommand.deeplink + (input.length > 0 ? `?fallbackText=${input}` : ``));
+        open(
+          targetCommand.deeplink +
+            (input.length > 0 ? `?fallbackText=${input}` : ``)
+        );
       }
     }
     return { result: "" };
@@ -46,7 +59,11 @@ const CommandPlaceholder: Placeholder = {
   fn: async (command: string, extension?: string, input?: string) =>
     (
       await CommandPlaceholder.apply(
-        `{{command:${command}${extension?.length ? `:${extension}${input?.length ? `:${input}` : ``}` : ``}}`,
+        `{{command:${command}${
+          extension?.length
+            ? `:${extension}${input?.length ? `:${input}` : ``}`
+            : ``
+        }}`
       )
     ).result,
   example: "{{command:PromptLab Chat:PromptLab:Hello!}}",

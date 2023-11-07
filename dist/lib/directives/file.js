@@ -36,7 +36,9 @@ const FilePlaceholder = {
         const target = str.match(/(?<=(file:))[\s\S]*?(?=}})/)?.[0];
         if (!target)
             return { result: "", file: "" };
-        const filePath = target.startsWith("~") ? target.replace("~", os.homedir()) : target;
+        const filePath = target.startsWith("~")
+            ? target.replace("~", os.homedir())
+            : target;
         if (filePath == "")
             return { result: "", file: "" };
         if (!filePath.startsWith("/"))

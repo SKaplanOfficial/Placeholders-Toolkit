@@ -20,8 +20,11 @@ const RunningApplicationsPlaceholder: Placeholder = {
   },
   result_keys: ["runningApplications"],
   constant: true,
-  fn: async () => (await RunningApplicationsPlaceholder.apply("{{runningApplications}}")).result,
-  example: "Come up for a name for a workspace running the following apps: {{runningApplications}}",
+  fn: async () =>
+    (await RunningApplicationsPlaceholder.apply("{{runningApplications}}"))
+      .result,
+  example:
+    "Come up for a name for a workspace running the following apps: {{runningApplications}}",
   description:
     "Replaced with the comma-separated list of names of all running applications that are visible to the user.",
   hintRepresentation: "{{runningApplications}}",

@@ -9,7 +9,9 @@ const VarsPlaceholder: Placeholder = {
   name: "vars",
   regex: /{{vars}}/g,
   apply: async () => {
-    const vars: PersistentVariable[] = await getStorage(STORAGE_KEYS.PERSISTENT_VARIABLES);
+    const vars: PersistentVariable[] = await getStorage(
+      STORAGE_KEYS.PERSISTENT_VARIABLES
+    );
     if (Array.isArray(vars)) {
       const varNames = vars.map((v) => v.name);
       return { result: varNames.join(", "), vars: varNames.join(", ") };

@@ -14,9 +14,11 @@ const SelectFileDirective: Placeholder = {
     return { result: "" };
   },
   constant: false,
-  fn: async (path: string) => (await SelectFileDirective.apply(`{{selectFile:${path}}}`)).result,
+  fn: async (path: string) =>
+    (await SelectFileDirective.apply(`{{selectFile:${path}}}`)).result,
   example: "{{selectFile:/Users/username/Desktop/file.txt}}",
-  description: "Directive to a select file. The placeholder will always be replaced with an empty string.",
+  description:
+    "Directive to a select file. The placeholder will always be replaced with an empty string.",
   hintRepresentation: "{{selectFile:...}}",
   fullRepresentation: "Select File At Path",
   type: PlaceholderType.InteractiveDirective,

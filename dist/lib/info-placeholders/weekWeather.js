@@ -10,7 +10,10 @@ const WeekWeatherPlaceholder = {
     regex: /{{weekWeather}}/g,
     apply: async (str, context) => {
         if (context && "weekWeather" in context) {
-            return { result: context["weekWeather"], weekWeather: context["weekWeather"] };
+            return {
+                result: context["weekWeather"],
+                weekWeather: context["weekWeather"],
+            };
         }
         const weather = JSON.stringify(await (0, utils_1.getWeatherData)(7));
         return { result: weather, weekWeather: weather };

@@ -9,7 +9,10 @@ const MusicTracksPlaceholder: Placeholder = {
   regex: /{{musicTracks}}/g,
   apply: async (str: string, context?: { [key: string]: unknown }) => {
     if (context && "musicTracks" in context) {
-      return { result: context["musicTracks"] as string, musicTracks: context["musicTracks"] as string };
+      return {
+        result: context["musicTracks"] as string,
+        musicTracks: context["musicTracks"] as string,
+      };
     }
 
     const tracks = await getTrackNames();
@@ -17,9 +20,12 @@ const MusicTracksPlaceholder: Placeholder = {
   },
   result_keys: ["musicTracks"],
   constant: true,
-  fn: async () => (await MusicTracksPlaceholder.apply("{{musicTracks}}")).result,
-  example: "Recommend some new songs based on the themes of these songs: {{musicTracks}}",
-  description: "Replaced with a comma-separated list of track names in Music.app.",
+  fn: async () =>
+    (await MusicTracksPlaceholder.apply("{{musicTracks}}")).result,
+  example:
+    "Recommend some new songs based on the themes of these songs: {{musicTracks}}",
+  description:
+    "Replaced with a comma-separated list of track names in Music.app.",
   hintRepresentation: "{{musicTracks}}",
   fullRepresentation: "List of Music Tracks",
   type: PlaceholderType.Informational,

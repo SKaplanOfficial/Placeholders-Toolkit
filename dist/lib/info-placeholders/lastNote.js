@@ -10,7 +10,10 @@ const LastNotePlaceholder = {
     regex: /{{lastNote}}/g,
     apply: async (str, context) => {
         if (context && "lastNote" in context) {
-            return { result: context["lastNote"], lastNote: context["lastNote"] };
+            return {
+                result: context["lastNote"],
+                lastNote: context["lastNote"],
+            };
         }
         const note = await (0, scripts_1.getLastNote)();
         return { result: note, lastNote: note };

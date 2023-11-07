@@ -17,7 +17,9 @@ const CurrentAppBundleIDPlaceholder: Placeholder = {
   },
   result_keys: ["currentAppBundleID"],
   constant: true,
-  fn: async () => (await CurrentAppBundleIDPlaceholder.apply("{{currentAppBundleID}}")).result,
+  fn: async () =>
+    (await CurrentAppBundleIDPlaceholder.apply("{{currentAppBundleID}}"))
+      .result,
   example: "Tell me about {{currentAppBundleID}}",
   description: "Replaced with the bundle ID of the current application.",
   hintRepresentation: "{{currentAppBundleID}}",

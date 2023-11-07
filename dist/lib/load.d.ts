@@ -3,12 +3,29 @@ import { Placeholder } from "./types";
  * Loads a *single* placeholder from a JSON string.
  * @param jsonString The JSON string to load a placeholder from.
  * @returns A placeholder object.
+ *
+ * @see {@link loadPlaceholdersFromJSONString}
  */
 export declare const loadPlaceholderFromJSONString: (jsonString: string) => Placeholder | undefined;
 /**
  * Loads *multiple* placeholders from a JSON string.
  * @param jsonString The JSON string to load placeholders from.
  * @returns An array of placeholder objects.
+ *
+ * @example
+ * ```ts
+ * const customPlaceholders = loadPlaceholdersFromJSONString(`{
+ *    "{{test}}": {
+ *    "name": "test",
+ *    "regex": "test",
+ *    "value": "my value"
+ *   }
+ * }`);
+ * const result = await PLApplicator.applyToString("{{test}}", undefined, customPlaceholders);
+ * console.log(result); // my value
+ * ```
+ *
+ * @see {@link loadPlaceholderFromJSONString}
  */
 export declare const loadPlaceholdersFromJSONString: (jsonString: string) => Placeholder[];
 /**
@@ -16,11 +33,3 @@ export declare const loadPlaceholdersFromJSONString: (jsonString: string) => Pla
  * @returns An array of placeholder objects.
  */
 export declare const loadPlaceholdersFromFile: (filepath: string) => Promise<Placeholder[]>;
-/**
- * Placeholder loader.
- */
-export declare const PLLoader: {
-    loadPlaceholderFromJSONString: (jsonString: string) => Placeholder | undefined;
-    loadPlaceholdersFromJSONString: (jsonString: string) => Placeholder[];
-    loadPlaceholdersFromFile: (filepath: string) => Promise<Placeholder[]>;
-};

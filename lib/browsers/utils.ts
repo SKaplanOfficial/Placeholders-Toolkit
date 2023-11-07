@@ -24,16 +24,23 @@ export const getTextOfWebpage = async (URL: string): Promise<string> => {
     .replaceAll(/(<br ?\/?>|[\n\r]+)/g, "\n")
     .replaceAll(
       /(<script[\s\S\n\r]+?<\/script>|<style[\s\S\n\r]+?<\/style>|<nav[\s\S\n\r]+?<\/nav>|<link[\s\S\n\r]+?<\/link>|<form[\s\S\n\r]+?<\/form>|<button[\s\S\n\r]+?<\/button>|<!--[\s\S\n\r]+?-->|<select[\s\S\n\r]+?<\/select>|<[\s\n\r\S]+?>)/g,
-      "\t",
+      "\t"
     )
     .replaceAll(/(\t+)/g, "\n")
     .replaceAll(/([\t ]*[\n\r][\t ]*)+/g, "\r")
-    .replaceAll(/(\([^A-Za-z0-9\n]*\)|(?<=[,.!?%*])[,.!?%*]*?\s*[,.!?%*])/g, " ")
+    .replaceAll(
+      /(\([^A-Za-z0-9\n]*\)|(?<=[,.!?%*])[,.!?%*]*?\s*[,.!?%*])/g,
+      " "
+    )
     .replaceAll(/{{(.*?)}}/g, "$1");
   return filteredString.trim();
 };
 
-export const runJSAgainstHTML = async (script: string, html?: string, url?: string) => {
+export const runJSAgainstHTML = async (
+  script: string,
+  html?: string,
+  url?: string
+) => {
   return await runAppleScript(
     `(() => {
     ObjC.import("AppKit");
@@ -44,7 +51,13 @@ export const runJSAgainstHTML = async (script: string, html?: string, url?: stri
     ${url ? `baseURL = "${url}";` : ""}
 
     let rawHTML = null;
-    ${html ? `rawHTML = "${html.replaceAll(/"/g, '\\"').replaceAll(/[\n\r]+/g, " ")}";` : ""}
+    ${
+      html
+        ? `rawHTML = "${html
+            .replaceAll(/"/g, '\\"')
+            .replaceAll(/[\n\r]+/g, " ")}";`
+        : ""
+    }
   
     // Size of WebView
     const width = 1080;
@@ -66,7 +79,9 @@ export const runJSAgainstHTML = async (script: string, html?: string, url?: stri
             types: ["void", ["id", "id"]],
             implementation: function (webview, navigation) {
               // Run JS to get the HTML of the document
-              let jsString = "${script.replaceAll(/"/g, '\\"').replaceAll(/[\n\r]+/g, ";")}";
+              let jsString = "${script
+                .replaceAll(/"/g, '\\"')
+                .replaceAll(/[\n\r]+/g, ";")}";
               webview.evaluateJavaScriptCompletionHandler(
                 jsString,
                 (result, error) => {
@@ -111,6 +126,6 @@ export const runJSAgainstHTML = async (script: string, html?: string, url?: stri
   
     return delegate.result.js;
   })();`,
-    { language: "JavaScript" },
+    { language: "JavaScript" }
   );
 };

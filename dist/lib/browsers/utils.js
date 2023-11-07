@@ -45,7 +45,11 @@ const runJSAgainstHTML = async (script, html, url) => {
     ${url ? `baseURL = "${url}";` : ""}
 
     let rawHTML = null;
-    ${html ? `rawHTML = "${html.replaceAll(/"/g, '\\"').replaceAll(/[\n\r]+/g, " ")}";` : ""}
+    ${html
+        ? `rawHTML = "${html
+            .replaceAll(/"/g, '\\"')
+            .replaceAll(/[\n\r]+/g, " ")}";`
+        : ""}
   
     // Size of WebView
     const width = 1080;
@@ -67,7 +71,9 @@ const runJSAgainstHTML = async (script, html, url) => {
             types: ["void", ["id", "id"]],
             implementation: function (webview, navigation) {
               // Run JS to get the HTML of the document
-              let jsString = "${script.replaceAll(/"/g, '\\"').replaceAll(/[\n\r]+/g, ";")}";
+              let jsString = "${script
+        .replaceAll(/"/g, '\\"')
+        .replaceAll(/[\n\r]+/g, ";")}";
               webview.evaluateJavaScriptCompletionHandler(
                 jsString,
                 (result, error) => {

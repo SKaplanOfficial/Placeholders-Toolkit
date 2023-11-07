@@ -143,11 +143,15 @@ exports.getJSONResponse = getJSONResponse;
  */
 const getYouTubeVideoTranscriptById = async (videoId) => {
     const html = await (0, exports.getURLHTML)(`https://www.youtube.com/watch?v=${videoId}`);
-    const captionsJSON = JSON.parse(html.split(`"captions":`)?.[1]?.split(`,"videoDetails"`)?.[0]?.replace("\n", ""))["playerCaptionsTracklistRenderer"];
+    const captionsJSON = JSON.parse(html
+        .split(`"captions":`)?.[1]
+        ?.split(`,"videoDetails"`)?.[0]
+        ?.replace("\n", ""))["playerCaptionsTracklistRenderer"];
     if (!("captionTracks" in captionsJSON)) {
         return "No transcript available.";
     }
-    const title = html.matchAll(/title":"((.| )*?),"lengthSeconds/g).next().value?.[1];
+    const title = html.matchAll(/title":"((.| )*?),"lengthSeconds/g).next()
+        .value?.[1];
     const captionTracks = captionsJSON["captionTracks"];
     const englishCaptionTrack = captionTracks.find((track) => track["languageCode"] === "en");
     if (!englishCaptionTrack) {
@@ -174,7 +178,8 @@ exports.getYouTubeVideoTranscriptByURL = getYouTubeVideoTranscriptByURL;
  */
 const getMatchingYouTubeVideoID = async (searchText) => {
     const html = await (0, exports.getURLHTML)(`https://www.youtube.com/results?search_query=${encodeURIComponent(searchText)}`);
-    const videoID = html.matchAll(/videoId\\x22:\\x22(.*?)\\x22,/g).next().value?.[1];
+    const videoID = html.matchAll(/videoId\\x22:\\x22(.*?)\\x22,/g).next()
+        .value?.[1];
     return videoID;
 };
 exports.getMatchingYouTubeVideoID = getMatchingYouTubeVideoID;
@@ -198,7 +203,10 @@ exports.getWeatherData = getWeatherData;
  */
 const getExtensions = async () => {
     return new Promise((resolve, reject) => {
-        const extensionsDir = api_1.environment.assetsPath.split("/").slice(0, -2).join("/");
+        const extensionsDir = api_1.environment.assetsPath
+            .split("/")
+            .slice(0, -2)
+            .join("/");
         fs.readdir(extensionsDir, (err, files) => {
             const extensions = [];
             if (err) {

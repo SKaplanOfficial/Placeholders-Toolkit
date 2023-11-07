@@ -14,10 +14,13 @@ const ToastDirective: Placeholder = {
     /{{(toast|hud|HUD)( style="(success|failure|fail)")?( message="(([^{]|{(?!{)|{{[\s\S]*?}})*?)")?:(([^{]|{(?!{)|{{[\s\S]*?}})+?)}}/g,
   apply: async (str: string) => {
     const matches = str.match(
-      /{(toast|hud|HUD)( style="(success|failure|fail)")?( message="(([^{]|{(?!{)|{{[\s\S]*?}})*?)")?:(([^{]|{(?!{)|{{[\s\S]*?}})+?)}}/,
+      /{(toast|hud|HUD)( style="(success|failure|fail)")?( message="(([^{]|{(?!{)|{{[\s\S]*?}})*?)")?:(([^{]|{(?!{)|{{[\s\S]*?}})+?)}}/
     );
     if (matches) {
-      const style = matches[3] == "failure" || matches[3] == "fail" ? Toast.Style.Failure : Toast.Style.Success;
+      const style =
+        matches[3] == "failure" || matches[3] == "fail"
+          ? Toast.Style.Failure
+          : Toast.Style.Success;
       const message = matches[5] || "";
       const title = matches[7];
       await showToast({ title: title, message: message, style: style });
@@ -26,7 +29,11 @@ const ToastDirective: Placeholder = {
   },
   constant: false,
   fn: async (message: string, style?: string) =>
-    (await ToastDirective.apply(`{{toast${style ? ` style="${style}"` : ""}:${message}}}`)).result,
+    (
+      await ToastDirective.apply(
+        `{{toast${style ? ` style="${style}"` : ""}:${message}}}`
+      )
+    ).result,
   example: '{{toast style="success":Done!}}',
   description:
     "Directive to display a toast or HUD with the provided text. The placeholder will always be replaced with an empty string. Whether a toast or HUD is displayed depends on the context (e.g. if the Raycast window is focused, a toast will be displayed; otherwise, a HUD will be displayed).",

@@ -39,7 +39,9 @@ export const getStorage = async (key: string) => {
  * @returns The value of the variable, or an empty string if the variable does not exist.
  */
 export const getPersistentVariable = async (name: string): Promise<string> => {
-  const vars: PersistentVariable[] = await getStorage(STORAGE_KEYS.PERSISTENT_VARIABLES);
+  const vars: PersistentVariable[] = await getStorage(
+    STORAGE_KEYS.PERSISTENT_VARIABLES
+  );
   const variable = vars.find((variable) => variable.name == name);
   if (variable) {
     return variable.value;
@@ -53,7 +55,9 @@ export const getPersistentVariable = async (name: string): Promise<string> => {
  * @param value The initial value of the variable.
  */
 export const setPersistentVariable = async (name: string, value: string) => {
-  const vars: PersistentVariable[] = await getStorage(STORAGE_KEYS.PERSISTENT_VARIABLES);
+  const vars: PersistentVariable[] = await getStorage(
+    STORAGE_KEYS.PERSISTENT_VARIABLES
+  );
   const variable = vars.find((variable) => variable.name == name);
   if (variable) {
     vars.splice(vars.indexOf(variable), 1);
@@ -69,8 +73,12 @@ export const setPersistentVariable = async (name: string, value: string) => {
  * Resets the value of a persistent variable to its initial value. If the variable does not exist, nothing will happen.
  * @param name The name of the variable to reset.
  */
-export const resetPersistentVariable = async (name: string): Promise<string> => {
-  const vars: PersistentVariable[] = await getStorage(STORAGE_KEYS.PERSISTENT_VARIABLES);
+export const resetPersistentVariable = async (
+  name: string
+): Promise<string> => {
+  const vars: PersistentVariable[] = await getStorage(
+    STORAGE_KEYS.PERSISTENT_VARIABLES
+  );
   const variable = vars.find((variable) => variable.name == name);
   if (variable) {
     vars.splice(vars.indexOf(variable), 1);
@@ -87,7 +95,9 @@ export const resetPersistentVariable = async (name: string): Promise<string> => 
  * @param name The name of the variable to delete.
  */
 export const deletePersistentVariable = async (name: string) => {
-  const vars: PersistentVariable[] = await getStorage(STORAGE_KEYS.PERSISTENT_VARIABLES);
+  const vars: PersistentVariable[] = await getStorage(
+    STORAGE_KEYS.PERSISTENT_VARIABLES
+  );
   const variable = vars.find((variable) => variable.name == name);
   if (variable) {
     vars.splice(vars.indexOf(variable), 1);

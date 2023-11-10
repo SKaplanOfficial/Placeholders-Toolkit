@@ -3,6 +3,8 @@ import { getExtensions } from "../utils";
 
 /**
  * Directive to run a Raycast command. The placeholder will always be replaced with an empty string. Commands are specified in the format {{command:commandName:extensionName}}.
+ * 
+ * Syntax: `{{command:[commandName]:[extensionName]:[input]}}`, where `commandName` is the name of the command to run, `extensionName` is the name of the extension to run the command from (optional), and `input` is the input to supply to the command (optional).
  */
 const CommandPlaceholder: Placeholder = {
   name: "command",
@@ -60,8 +62,8 @@ const CommandPlaceholder: Placeholder = {
     (
       await CommandPlaceholder.apply(
         `{{command:${command}${
-          extension?.length
-            ? `:${extension}${input?.length ? `:${input}` : ``}`
+          extension?.toString().length
+            ? `:${extension}${input?.toString().length ? `:${input}` : ``}`
             : ``
         }}`
       )

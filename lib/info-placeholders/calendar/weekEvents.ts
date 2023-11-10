@@ -3,6 +3,8 @@ import { Placeholder, PlaceholderCategory, PlaceholderType } from "../../types";
 
 /**
  * Placeholder for a comma-separated list of the name, start time, and end time of all calendar events that are scheduled over the next 7 days.
+ * 
+ * Syntax: `{{weekEvents}}`
  */
 const WeekEventsPlaceholder: Placeholder = {
   name: "weekEvents",

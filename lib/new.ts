@@ -8,6 +8,7 @@ export const dummyPlaceholder = (): Placeholder => {
   return {
     name: "New Placeholder",
     regex: /{{newPlaceholder}}/g,
+    rules: [],
     apply: async (str: string, context?: { [key: string]: unknown }) => ({
       result: "",
     }),
@@ -50,6 +51,17 @@ export const newPlaceholder = (
      * The string to replace the placeholder with. Specify either this or apply_fn. Can include other placeholders.
      */
     replace_with?: string;
+
+    /**
+     * The rules that determine whether or not the placeholder is relevant in the current context.
+     * @param str The string to check the rules against.
+     * @param context The context object to store & retrieve values from.
+     * @returns True if the placeholder should be replaced, false otherwise.
+     */
+    rules?: ((
+      str: string,
+      context?: { [key: string]: unknown }
+    ) => Promise<boolean>)[];
 
     /**
      * The function to apply to the placeholder. Specify either this or replace_with.
@@ -124,6 +136,7 @@ export const newPlaceholder = (
   const newPlaceholder: Placeholder = {
     name: name,
     regex: options?.regex || new RegExp(`{{${name}}}`, "g"),
+    rules: options?.rules || [],
     apply:
       options?.apply_fn ||
       (async (str: string, context?: { [key: string]: unknown }) => ({

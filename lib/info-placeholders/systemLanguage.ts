@@ -3,6 +3,8 @@ import { Placeholder, PlaceholderCategory, PlaceholderType } from "../types";
 
 /**
  * Placeholder for the default language for the current user. Barring any issues, this should always be replaced.
+ * 
+ * Syntax: `{{systemLanguage}}`
  */
 const SystemLanguagePlaceholder: Placeholder = {
   name: "systemLanguage",

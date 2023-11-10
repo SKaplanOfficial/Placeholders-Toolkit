@@ -3,6 +3,8 @@ import { getTextOfWebpage, getURLHTML } from "../utils";
 
 /**
  * Placeholder for the visible text content at a given URL.
+ * 
+ * Syntax: `{{url:[url]}}`, where `[url]` is the URL to get the text content of.
  */
 const URLPlaceholder: Placeholder = {
   name: "url",

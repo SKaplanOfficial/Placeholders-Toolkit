@@ -1,18 +1,12 @@
-import { PLApplicator } from "../lib/apply";
-import { PLCreator } from "../lib";
 import {
   Bool,
   Braced,
   Container,
   EmailAddress,
-  Float,
   HTTPURL,
-  InnerText,
   Integer,
   List,
-  QuotedParameter,
   RawParameter,
-  URI,
 } from "../lib/match";
 
 jest.mock("node-fetch", () => ({ fetch: console.log("mocked fetch") }));

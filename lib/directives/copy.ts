@@ -3,6 +3,8 @@ import { Placeholder, PlaceholderCategory, PlaceholderType } from "../types";
 
 /**
  * Directive to copy the provided text to the clipboard. The placeholder will always be replaced with an empty string.
+ * 
+ * Syntax: `{{copy:...}}`, where `...` is the text to copy to the clipboard.
  */
 const CopyDirective: Placeholder = {
   name: "copy",
@@ -19,8 +21,16 @@ const CopyDirective: Placeholder = {
     return { result: "" };
   },
   constant: false,
-  fn: async (text: string) =>
-    (await CopyDirective.apply(`{{copy:${text}}}`)).result,
+  fn: async (content: unknown) => {
+    if (typeof content === "function") {
+      return (
+        await CopyDirective.apply(
+          `{{copy:${await Promise.resolve(content())}}}`
+        )
+      ).result;
+    }
+    return (await CopyDirective.apply(`{{copy:${content}}}`)).result;
+  },
   example: "{{copy:Hello World}}",
   description:
     "Directive to copy the provided text to the clipboard. The placeholder will always be replaced with an empty string.",

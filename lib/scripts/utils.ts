@@ -8,9 +8,9 @@ import * as util from "util";
  * @param language The language of the script, defaults to AppleScript
  * @returns A promise that resolves to the output of the script.
  */
-export const execScript = (
+export const runOSAScript = (
   script: string,
-  args: (string | boolean | number)[],
+  args?: (string | boolean | number)[],
   language = "AppleScript",
   stderrCallback?: (data: string) => void
 ): { data: Promise<string>; sendMessage: (msg: string) => void } => {
@@ -18,6 +18,7 @@ export const execScript = (
   let sendMessage: (msg: string) => void = (msg: string) => {
     msg;
   };
+  args = args || [];
   const proc = spawn("osascript", [
     ...(script.startsWith("/") ? [] : ["-e"]),
     script,

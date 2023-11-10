@@ -20,6 +20,14 @@ export type Placeholder = {
   ) => Promise<{ result: string; [key: string]: unknown }>;
 
   /**
+   * Rules that determine whether or not a placeholder is relevant in a given context.
+   */
+  rules?: ((
+    str: string,
+    context?: { [key: string]: unknown }
+  ) => Promise<boolean>)[];
+
+  /**
    * The keys of the result object relevant to the placeholder. When placeholders are applied in bulk, this list is used to determine which keys to return as well as to make optimizations when determining which placeholders to apply. The first key in the list is the key for the placeholder's value.
    */
   result_keys?: string[];

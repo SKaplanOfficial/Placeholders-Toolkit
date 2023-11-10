@@ -3,6 +3,8 @@ import { getWeatherData } from "../utils";
 
 /**
  * Placeholder for 7-day weather forecast data at the user's current location, in JSON format.
+ * 
+ * Syntax: `{{weekWeather}}`
  */
 const WeekWeatherPlaceholder: Placeholder = {
   name: "weekWeather",

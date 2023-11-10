@@ -3,6 +3,8 @@ import { getLastEmail } from "../scripts";
 
 /**
  * Placeholder for the text of the most recently received email in Mail.app.
+ * 
+ * Syntax: `{{lastEmail}}`
  */
 const LastEmailPlaceholder: Placeholder = {
   name: "lastEmail",

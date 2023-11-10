@@ -3,6 +3,8 @@ import { Placeholder, PlaceholderCategory, PlaceholderType } from "../types";
 
 /**
  * Placeholder for the bundle ID of the current application.
+ * 
+ * Syntax: `{{currentAppBundleID}}` or `{{currentApplicationBundleID}}`
  */
 const CurrentAppBundleIDPlaceholder: Placeholder = {
   name: "currentAppBundleID",

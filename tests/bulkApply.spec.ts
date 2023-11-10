@@ -5,6 +5,19 @@ jest.mock("@raycast/utils", () => ({
   runAppleScript: (script: string) => execScript(script, []).data,
 }));
 
+jest.mock("@raycast/api", () => ({
+  Clipboard: {
+    readText: () => execScript("return the clipboard", []).data,
+  },
+  getFrontmostApplication: async () => {
+    const result = await execScript(
+      `tell application "System Events" to return name of first application process whose frontmost is true`,
+      []
+    ).data;
+    return { name: result };
+  },
+}));
+
 import os from "os";
 import { execScript } from "../lib/scripts";
 

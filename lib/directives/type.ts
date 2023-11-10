@@ -4,6 +4,8 @@ import { showHUD } from "@raycast/api";
 
 /**
  * Directive to type the provided text in the frontmost application. The placeholder will always be replaced with an empty string.
+ * 
+ * Syntax: `{{type:...}}`, where `...` is the text to type.
  */
 const TypeDirective: Placeholder = {
   name: "type",
@@ -20,8 +22,16 @@ const TypeDirective: Placeholder = {
     return { result: "" };
   },
   constant: false,
-  fn: async (text: string) =>
-    (await TypeDirective.apply(`{{type:${text}}}`)).result,
+  fn: async (content: unknown) => {
+    if (typeof content === "function") {
+      return (
+        await TypeDirective.apply(
+          `{{type:${await Promise.resolve(content())}}}`
+        )
+      ).result;
+    }
+    return (await TypeDirective.apply(`{{type:${content}}}`)).result;
+  },
   example: "{{type:Hello World}}",
   description:
     "Directive to type the provided text in the frontmost application. The placeholder will always be replaced with an empty string.",

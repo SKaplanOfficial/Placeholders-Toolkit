@@ -3,6 +3,8 @@ import { Placeholder, PlaceholderCategory, PlaceholderType } from "../types";
 
 /**
  * Placeholder for the current date supporting an optional format argument. Defaults to "Month Day, Year". Barring any issues, this should always be replaced.
+ * 
+ * Syntax: `{{date format="..."}}` or `{{currentDate format="..."}}`, where `...` specifies a valid Unicode date format string. The format argument is optional; if not provided, the default is "MMMM d, yyyy" (e.g. "January 1, 2024").
  */
 const DatePlaceholder: Placeholder = {
   name: "date",
@@ -30,7 +32,7 @@ const DatePlaceholder: Placeholder = {
   fn: async (format: string) =>
     (
       await DatePlaceholder.apply(
-        `{{date${format?.length ? ` format="${format}"` : ""}}`
+        `{{date${format?.toString().length ? ` format="${format}"` : ""}}`
       )
     ).result,
   example: "What happened on {{date format='MMMM d'}} in history?",

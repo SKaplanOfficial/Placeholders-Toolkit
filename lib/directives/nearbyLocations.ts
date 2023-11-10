@@ -3,6 +3,8 @@ import { searchNearbyLocations } from "../scripts";
 
 /**
  * Placeholder for a comma-separated list of nearby locations based on the given search query.
+ * 
+ * Syntax: `{{nearbyLocations:<query>}}`, where `<query>` is the search query.
  */
 const NearbyLocationsPlaceholder: Placeholder = {
   name: "nearbyLocations",

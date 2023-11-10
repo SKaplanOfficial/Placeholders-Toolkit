@@ -25,6 +25,41 @@ const currentURL = async () => {
 end try`);
 };
 
+const tabs = async (): Promise<{ name: string; url: string }[]> => {
+  const data = await runAppleScript(`try
+    set oldDelims to AppleScript's text item delimiters
+    set AppleScript's text item delimiters to "\`\`\`"
+    tell application "Arc"
+      set theData to {title, URL} of (tabs of window 1 whose location is "unpinned")
+      set theData to theData as string
+      set AppleScript's text item delimiters to oldDelims
+      return theData
+    end tell
+  end try`);
+  const entries = data.split("```");
+  const names = entries.slice(0, entries.length / 2);
+  const urls = entries.slice(entries.length / 2);
+  return names.map((name, i) => ({ name: name, url: urls[i] }));
+};
+
+const currentTab = async (): Promise<{ name: string; url: string }> => {
+  const data = await runAppleScript(`try
+    set oldDelims to AppleScript's text item delimiters
+    set AppleScript's text item delimiters to "\`\`\`"
+    tell application "Arc"
+      set theData to {title, url} of active tab of window 1
+      set theData to theData as string
+      set AppleScript's text item delimiters to oldDelims
+      return theData
+    end tell
+  end try`);
+  const entries = data.split("```");
+  const name = entries[0];
+  const url = entries[1];
+  return { name, url };
+};
+
+
 const currentTabText = async () => {
   return await runJSInActiveTab(`document.body.innerText`);
 };
@@ -50,6 +85,8 @@ const Arc: Browser = {
   bundleID,
   bundlePath,
   currentURL,
+  tabs,
+  currentTab,
   currentTabText,
   runJSInActiveTab,
 };

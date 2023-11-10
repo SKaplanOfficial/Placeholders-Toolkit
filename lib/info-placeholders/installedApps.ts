@@ -3,6 +3,8 @@ import { getInstalledApplications } from "../scripts";
 
 /**
  * Placeholder for the comma-separated list of application names installed on the system.
+ * 
+ * Syntax: `{{installedApps}}` or `{{apps}}` or `{{installedApplications}}` or `{{applications}}`
  */
 const InstalledApplicationsPlaceholder: Placeholder = {
   name: "installedApps",

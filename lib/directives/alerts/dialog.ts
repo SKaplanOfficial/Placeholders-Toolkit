@@ -9,7 +9,7 @@ import { Placeholder, PlaceholderCategory, PlaceholderType } from "../../types";
  * The input setting, timeout, and title are optional. If no timeout is provided, the dialog will timeout after 30 seconds. If no title is provided, the title will be "Pins". The default input setting is `false`. You must provide a message.
  */
 const DialogDirective: Placeholder = {
-  name: "displayDialog",
+  name: "dialog",
   regex:
     /{{dialog( input=(true|false))?( timeout=([0-9]+))?( title="(([^{]|{(?!{)|{{[\s\S]*?}})*?)")?:(([^{]|{(?!{)|{{[\s\S]*?}})+?)}}/g,
   apply: async (str: string) => {
@@ -40,18 +40,25 @@ const DialogDirective: Placeholder = {
   },
   constant: false,
   fn: async (
-    message: string,
-    title?: string,
+    message: unknown,
+    title?: unknown,
     timeout?: string,
     input = "false"
-  ) =>
-    (
+  ) => {
+    const messageText =
+      typeof message === "function"
+        ? await Promise.resolve(message())
+        : message;
+    const titleText =
+      typeof title === "function" ? await Promise.resolve(title()) : title;
+    return (
       await DialogDirective.apply(
         `{{dialog${input ? ` input=${input}` : ""}${
           timeout ? ` timeout=${timeout}` : ""
-        }${title ? ` title="${title}"` : ""}:${message}}}`
+        }${title ? ` title="${titleText}"` : ""}:${messageText}}}`
       )
-    ).result,
+    ).result;
+  },
   example: '{{dialog title="Info":Hello World}}',
   description:
     "Directive to display a dialog message with an optional title, timeout, and/or input field. If no timeout is provided, the alert will timeout after 10 seconds. If the input setting is `true`, the placeholder will be replaced with the user's input. Otherwise, the placeholder will be replaced with an empty string.",

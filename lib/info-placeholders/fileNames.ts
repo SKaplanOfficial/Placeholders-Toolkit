@@ -3,6 +3,8 @@ import { Placeholder, PlaceholderCategory, PlaceholderType } from "../types";
 
 /**
  * Place holder for the names of the currently selected files in Finder as a comma-separated list.
+ * 
+ * Syntax: `{{fileNames}}`
  */
 const FileNamesPlaceholder: Placeholder = {
   name: "fileNames",

@@ -3,6 +3,10 @@ import { Placeholder, PlaceholderCategory, PlaceholderType } from "../../types";
 
 /**
  * Flow control directives for each video file extension.
+ * 
+ * Each video directive follows the same syntax: `{{ext:content if true}}` or `{{ext:[content if true]:[content if false]}}`, where `ext` is the video file extension, e.g. `mp4`, `mov`, `avi`, etc.
+ * 
+ * The content if false is optional.
  */
 export const VideoDirectives = videoFileExtensions.map((ext) => {
   const newPlaceholder: Placeholder = {
@@ -39,8 +43,16 @@ export const VideoDirectives = videoFileExtensions.map((ext) => {
     },
     result_keys: [`video:${ext}`],
     constant: true,
-    fn: async (content: string) =>
-      (await newPlaceholder.apply(`{{${ext}:${content}}}`)).result,
+    fn: async (content: unknown) => {
+      if (typeof content === "function") {
+        return (
+          await newPlaceholder.apply(
+            `{{${ext}:${await Promise.resolve(content())}}}`
+          )
+        ).result;
+      }
+      return (await newPlaceholder.apply(`{{${ext}:${content}}}`)).result;
+    },
     example: `{{${ext}:This one if any ${ext} file is selected:This one if no ${ext} file is selected}}`,
     description: `Flow control directive to include some content if any ${ext} file is selected and some other content if no ${ext} file is selected.`,
     hintRepresentation: `{{${ext}:...:...}}`,
@@ -53,6 +65,10 @@ export const VideoDirectives = videoFileExtensions.map((ext) => {
 
 /**
  * Directive for directions that will only be included in the prompt if any video files are selected.
+ * 
+ * Syntax: `{{videos:content if true}}` or `{{videos:[content if true]:[content if false]}}`
+ * 
+ * The content if false is optional.
  */
 const VideoFlowDirective: Placeholder = {
   name: "contentForVideos",
@@ -81,8 +97,21 @@ const VideoFlowDirective: Placeholder = {
   },
   result_keys: ["contentForVideos"],
   constant: true,
-  fn: async (content: string) =>
-    (await VideoFlowDirective.apply(`{{videos:${content}}}`)).result,
+  fn: async (onSuccess: unknown, onFailure?: unknown) => {
+    const contentOnSuccess =
+      typeof onSuccess === "function"
+        ? await Promise.resolve(onSuccess())
+        : onSuccess;
+    const contentOnFailure =
+      typeof onFailure === "function"
+        ? await Promise.resolve(onFailure())
+        : onFailure;
+    return (
+      await VideoFlowDirective.apply(
+        `{{videos:${contentOnSuccess}${onFailure ? contentOnFailure : ""}}}`
+      )
+    ).result;
+  },
   example:
     "{{videos:This one if any video file is selected:This one if no video file is selected}}",
   description:

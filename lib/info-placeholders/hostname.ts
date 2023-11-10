@@ -3,6 +3,8 @@ import os from "os";
 
 /**
  * Placeholder for the hostname of the current machine. Barring any issues, this should always be replaced.
+ * 
+ * Syntax: `{{hostname}}`
  */
 const HostnamePlaceholder: Placeholder = {
   name: "hostname",

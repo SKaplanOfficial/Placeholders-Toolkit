@@ -3,6 +3,8 @@ import { Placeholder, PlaceholderCategory, PlaceholderType } from "../types";
 
 /**
  * Directive/placeholder to execute a Siri Shortcut by name, optionally supplying input, and insert the result. If the result is null, the placeholder will be replaced with an empty string.
+ * 
+ * Syntax: `{{shortcut:[name]:[input]}}`, where `[name]` is the name of the shortcut to run and `[input]` is the input to supply to the shortcut. The input is optional.
  */
 const ShortcutPlaceholder: Placeholder = {
   name: "shortcut",
@@ -25,12 +27,20 @@ const ShortcutPlaceholder: Placeholder = {
     return { result: "" };
   },
   constant: false,
-  fn: async (shortcut: string, input?: string) =>
-    (
+  fn: async (shortcut: string, input?: unknown) => {
+    if (typeof input === "function") {
+      return (
+        await ShortcutPlaceholder.apply(
+          `{{shortcut:${shortcut}:${await Promise.resolve(input())}}}`
+        )
+      ).result;
+    }
+    return (
       await ShortcutPlaceholder.apply(
-        `{{shortcut:${shortcut}${input?.length ? `:${input}` : ""}}}`
+        `{{shortcut:${shortcut}${input?.toString().length ? `:${input}` : ""}}}`
       )
-    ).result,
+    ).result;
+  },
   example: "{{shortcut:My Shortcut:7}}",
   description:
     "Directive to execute a Siri Shortcut by name, optionally supplying input, and insert the result.",

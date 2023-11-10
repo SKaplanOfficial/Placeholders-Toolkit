@@ -3,6 +3,8 @@ import { Placeholder, PlaceholderCategory, PlaceholderType } from "../../types";
 
 /**
  * Placeholder for a comma-separated list of the name and due date/time of all reminders that are scheduled over the next 30 days.
+ * 
+ * Syntax: `{{monthReminders}}`
  */
 const MonthRemindersPlaceholder: Placeholder = {
   name: "monthReminders",

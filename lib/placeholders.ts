@@ -43,9 +43,13 @@ import SelectFileDirective from "./directives/selectFile";
 import ShortcutPlaceholder from "./directives/shortcut";
 import CommandPlaceholder from "./directives/command";
 import YouTubeTranscriptPlaceholder from "./directives/youtubeTranscript";
+import ChooseFileDirective from "./directives/chooseFile";
+import ChooseFolderDirective from "./directives/chooseFolder";
+import ChooseApplicationDirective from "./directives/chooseApplication";
 import CopyDirective from "./directives/copy";
 import PasteDirective from "./directives/paste";
 import TypeDirective from "./directives/type";
+import WriteFileDirective from "./directives/write";
 import ToastDirective from "./directives/alerts/toast";
 import SayDirective from "./directives/alerts/say";
 import DialogDirective from "./directives/alerts/dialog";
@@ -150,6 +154,9 @@ export {
   NearbyLocationsPlaceholder,
   FilePlaceholder,
   SelectFileDirective,
+  ChooseFileDirective,
+  ChooseFolderDirective,
+  ChooseApplicationDirective,
   FocusedElementPlaceholder,
   ElementTextPlaceholder,
   ElementHTMLPlaceholder,
@@ -158,6 +165,7 @@ export {
   CopyDirective,
   PasteDirective,
   TypeDirective,
+  WriteFileDirective,
   AlertDirective,
   DialogDirective,
   SayDirective,

@@ -17,9 +17,9 @@ describe("Bulk Apply With Custom Placeholders Tests", () => {
       apply_fn: undefined,
       replace_with: "my result",
     });
-    expect(await bulkApply("{{test}}", undefined, [customPlaceholder])).toBe(
-      "my result"
-    );
+    expect(
+      await bulkApply("{{test}}", { customPlaceholders: [customPlaceholder] })
+    ).toBe("my result");
   });
 
   it("should successfully apply custom placeholder with apply_fn specified", async () => {
@@ -27,9 +27,9 @@ describe("Bulk Apply With Custom Placeholders Tests", () => {
       regex: undefined,
       apply_fn: async (str, context) => ({ result: "my result" }),
     });
-    expect(await bulkApply("{{test}}", undefined, [customPlaceholder])).toBe(
-      "my result"
-    );
+    expect(
+      await bulkApply("{{test}}", { customPlaceholders: [customPlaceholder] })
+    ).toBe("my result");
   });
 
   it("should successfully apply basic custom placeholders specified in JSON", async () => {
@@ -48,7 +48,9 @@ describe("Bulk Apply With Custom Placeholders Tests", () => {
 
     const customPlaceholders = loadPlaceholdersFromJSONString(validJSON);
     expect(
-      await bulkApply("{{test}} {{test2}}", undefined, customPlaceholders)
+      await bulkApply("{{test}} {{test2}}", {
+        customPlaceholders: customPlaceholders,
+      })
     ).toBe("my result my result2");
   });
 
@@ -62,8 +64,8 @@ describe("Bulk Apply With Custom Placeholders Tests", () => {
     });
 
     const customPlaceholders = loadPlaceholdersFromJSONString(validJSON);
-    expect(await bulkApply("{{test}}", undefined, customPlaceholders)).toBe(
-      `hello, my name is ${os.userInfo().username}`
-    );
+    expect(
+      await bulkApply("{{test}}", { customPlaceholders: customPlaceholders })
+    ).toBe(`hello, my name is ${os.userInfo().username}`);
   });
 });

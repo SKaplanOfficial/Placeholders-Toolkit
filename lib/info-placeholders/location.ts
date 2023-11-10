@@ -3,7 +3,10 @@ import { getJSONResponse } from "../utils";
 
 /**
  * Placeholder for the user's current location in the format "city, region, country".
- * The location is determined by the user's IP address.
+ * 
+ * Syntax: `{{location}}` or `{{currentLocation}}`
+ * 
+ * The location is determined by the user's IP address. In some case, such as when using IPv6, the location may be inaccurate or incomplete.
  */
 const LocationPlaceholder: Placeholder = {
   name: "location",
@@ -15,7 +18,7 @@ const LocationPlaceholder: Placeholder = {
     const city = jsonObj["city"];
     const region = jsonObj["region"];
     const country = jsonObj["country"];
-    const location = `${city}, ${region}, ${country}`;
+    const location = `${city ? `${city}, ` : ""} ${region ? `${region}, ` : ""}${country}`;
     return { result: location, location: location };
   },
   result_keys: ["location"],

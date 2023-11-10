@@ -3,6 +3,8 @@ import { getCurrentTrack } from "../scripts";
 
 /**
  * Placeholder for the name of the currently playing track in Music.app.
+ * 
+ * Syntax: `{{currentTrack}}` or `{{currentSong}}`
  */
 const CurrentTrackPlaceholder: Placeholder = {
   name: "currentTrack",

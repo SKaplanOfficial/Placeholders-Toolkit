@@ -3,6 +3,8 @@ import { Placeholder, PlaceholderCategory, PlaceholderType } from "../types";
 
 /**
  * Placeholder for output of a JavaScript for Automation script. If the script fails, this placeholder will be replaced with an empty string. No sanitization is done in the script input; the expectation is that users will only use this placeholder with trusted scripts.
+ * 
+ * Syntax: `{{jxa:...}}`, where `...` is the JavaScript for Automation script to run.
  */
 const JXAPlaceholder: Placeholder = {
   name: "jxa",
@@ -28,7 +30,7 @@ const JXAPlaceholder: Placeholder = {
     }
   },
   constant: false,
-  fn: async (script: string) =>
+  fn: async (script: string) => 
     (await JXAPlaceholder.apply(`{{jxa:${script}}}`)).result,
   example: "{{jxa:Application('Music').currentTrack.name()}}",
   description:

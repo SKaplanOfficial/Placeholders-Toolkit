@@ -1,3 +1,15 @@
+export type Tab = {
+  /**
+   * The name of the tab.
+   */
+  name: string;
+
+  /**
+   * The URL of the tab.
+   */
+  url: string;
+};
+
 /**
  * A web browser application.
  */
@@ -30,6 +42,18 @@ export interface Browser {
    * @returns A promise resolving to a string.
    */
   currentURL: () => Promise<string>;
+
+  /**
+   * Gets the name and URL of each currently open tab in the browser.
+   * @returns A promise resolving to an array of {@link Tab} objects.
+   */
+  tabs: () => Promise<Tab[]>;
+
+  /**
+   * Gets the current tab of the browser.
+   * @returns A promise resolving to a {@link Tab} object.
+   */
+  currentTab: () => Promise<Tab>;
 
   /**
    * Gets the current tab text of the browser.

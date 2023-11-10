@@ -3,6 +3,8 @@ import { getWeatherData } from "../utils";
 
 /**
  * Placeholder for 24-hour weather forecast data at the user's current location, in JSON format.
+ * 
+ * Syntax: `{{todayWeather}}`
  */
 const TodayWeatherPlaceholder: Placeholder = {
   name: "todayWeather",

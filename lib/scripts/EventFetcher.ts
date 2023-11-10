@@ -1,4 +1,4 @@
-import { execScript } from "./utils";
+import { runOSAScript } from "./utils";
 
 const eventsScript = `use framework "EventKit"
 
@@ -98,7 +98,7 @@ const EventFetcher = {
     eventType: "calendar" | "reminder",
     duration: number
   ): Promise<string> => {
-    return await execScript(eventsScript, [eventType, duration], "AppleScript")
+    return await runOSAScript(eventsScript, [eventType, duration], "AppleScript")
       .data;
   },
 

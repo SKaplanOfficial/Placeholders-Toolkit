@@ -3,6 +3,8 @@ import { getPersistentVariable } from "./utils";
 
 /**
  * Directive to get the value of a persistent variable. If the variable does not exist, the placeholder will be replaced with an empty string.
+ * 
+ * Syntax: `{{get x}}`, where `x` is the name of the variable to get.
  */
 const GetPersistentVariablePlaceholder: Placeholder = {
   name: "get",

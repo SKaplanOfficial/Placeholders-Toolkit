@@ -88,6 +88,7 @@ export const loadPlaceholderFromJSONString = (
       regex: new RegExp(
         newPlaceholderData.regex || `{{${newPlaceholderData.name}}}`
       ),
+      rules: [],
       apply: async (str: string, context?: { [key: string]: unknown }) => {
         const match = str.match(new RegExp(`${newPlaceholderData.regex}`));
         let value = newPlaceholderData.value;
@@ -138,7 +139,7 @@ export const loadPlaceholderFromJSONString = (
  *    "value": "my value"
  *   }
  * }`);
- * const result = await PLApplicator.applyToString("{{test}}", undefined, customPlaceholders);
+ * const result = await PLApplicator.applyToString("{{test}}", { customPlaceholders: customPlaceholders });
  * console.log(result); // my value
  * ```
  *
@@ -159,6 +160,7 @@ export const loadPlaceholdersFromJSONString = (
       const newPlaceholder: Placeholder = {
         name: placeholder.name,
         regex: new RegExp(`${key}`),
+        rules: [],
         apply: async (str: string, context?: { [key: string]: unknown }) => {
           const match = str.match(new RegExp(`${key}`));
           let value = placeholder.value;

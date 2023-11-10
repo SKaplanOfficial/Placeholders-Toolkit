@@ -3,6 +3,10 @@ import { Placeholder, PlaceholderCategory, PlaceholderType } from "../../types";
 
 /**
  * Flow control directives for each text file extension.
+ * 
+ * Each text file directive follows the same syntax: `{{ext:content if true}}` or `{{ext:[content if true]:[content if false]}}`, where `ext` is the text file extension, e.g. `txt`, `md`, `js`, etc.
+ * 
+ * The content if false is optional.
  */
 export const TextFileDirectives = textFileExtensions
   .map((ext) => {
@@ -54,12 +58,16 @@ export const TextFileDirectives = textFileExtensions
       },
       result_keys: [`textfile:${ext}`],
       constant: true,
-      fn: async (content: string) =>
-        (
-          await newPlaceholder.apply(`{{${ext}:${content}}}`, {
-            selectedFiles: content,
-          })
-        ).result,
+      fn: async (content: unknown) => {
+        if (typeof content === "function") {
+          return (
+            await newPlaceholder.apply(
+              `{{${ext}:${await Promise.resolve(content())}}}`
+            )
+          ).result;
+        }
+        return (await newPlaceholder.apply(`{{${ext}:${content}}}`)).result;
+      },
       example: `{{${ext}:This one if any ${ext} file is selected:This one if no ${ext} file is selected}}`,
       description: `Flow control directive to include some content if any ${ext} file is selected and some other content if no ${ext} file is selected.`,
       hintRepresentation: `{{${ext}:...:...}}`,
@@ -72,6 +80,10 @@ export const TextFileDirectives = textFileExtensions
 
 /**
  * Directive for directions that will only be included in the prompt if any image files are selected.
+ * 
+ * Syntax: `{{textfiles:content if true}}` or `{{textfiles:[content if true]:[content if false]}}`
+ * 
+ * The content if false is optional.
  */
 const TextFileFlowDirective: Placeholder = {
   name: "contentForTextFiles",
@@ -101,8 +113,21 @@ const TextFileFlowDirective: Placeholder = {
   },
   result_keys: ["contentForTextFiles"],
   constant: true,
-  fn: async (content: string) =>
-    (await TextFileFlowDirective.apply(`{{textfiles:${content}}}`)).result,
+  fn: async (onSuccess: unknown, onFailure?: unknown) => {
+    const contentOnSuccess =
+      typeof onSuccess === "function"
+        ? await Promise.resolve(onSuccess())
+        : onSuccess;
+    const contentOnFailure =
+      typeof onFailure === "function"
+        ? await Promise.resolve(onFailure())
+        : onFailure;
+    return (
+      await TextFileFlowDirective.apply(
+        `{{textfiles:${contentOnSuccess}${onFailure ? contentOnFailure : ""}}}`
+      )
+    ).result;
+  },
   example:
     "{{textfiles:This one if any text file is selected:This one if no text file is selected}}",
   description:

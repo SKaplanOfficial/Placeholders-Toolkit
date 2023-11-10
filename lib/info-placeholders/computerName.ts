@@ -3,6 +3,8 @@ import { getComputerName } from "../scripts";
 
 /**
  * Placeholder for the 'pretty' hostname of the current machine. Barring any issues, this should always be replaced.
+ * 
+ * Syntax: `{{computerName}}`
  */
 const ComputerNamePlaceholder: Placeholder = {
   name: "computerName",

@@ -2,6 +2,8 @@ import { Placeholder, PlaceholderCategory, PlaceholderType } from "../types";
 
 /**
  * Placeholder for output of a JavaScript script. If the script fails, this placeholder will be replaced with an empty string. The script is run in a sandboxed environment.
+ *
+ * Syntax: `{{js target="[browser]":...}}`, where `...` is the JavaScript script to run and `[browser]` is the name of the browser to run the script in. The target parameter is optional; if not provided, the script will be run in a Node.js environment.
  */
 const JavaScriptPlaceholder: Placeholder = {
   name: "js",

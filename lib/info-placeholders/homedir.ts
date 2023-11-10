@@ -3,6 +3,8 @@ import os from "os";
 
 /**
  * Placeholder for the home directory of the currently logged-in user. Barring any issues, this should always be replaced.
+ * 
+ * Syntax: `{{homedir}}` or `{{homeDirectory}}`
  */
 const HomeDirPlaceholder: Placeholder = {
   name: "homedir",

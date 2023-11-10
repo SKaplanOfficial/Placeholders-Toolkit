@@ -2,7 +2,9 @@ import { Placeholder, PlaceholderCategory, PlaceholderType } from "../types";
 import { addFileToSelection } from "../scripts";
 
 /**
- * Directive to select files. The placeholder will always be replaced with an empty string.
+ * Directive to select a file. The placeholder will always be replaced with an empty string.
+ * 
+ * Syntax: `{{selectFile:...}}`, where `...` is the POSIX path to the file to select.
  */
 const SelectFileDirective: Placeholder = {
   name: "selectFile",
@@ -14,8 +16,10 @@ const SelectFileDirective: Placeholder = {
     return { result: "" };
   },
   constant: false,
-  fn: async (path: string) =>
-    (await SelectFileDirective.apply(`{{selectFile:${path}}}`)).result,
+  fn: async (path: unknown) => {
+    const pathText = typeof path === "function" ? await Promise.resolve(path()) : path;
+    return (await SelectFileDirective.apply(`{{selectFile:${pathText}}}`)).result
+  },
   example: "{{selectFile:/Users/username/Desktop/file.txt}}",
   description:
     "Directive to a select file. The placeholder will always be replaced with an empty string.",

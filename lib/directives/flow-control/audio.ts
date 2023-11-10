@@ -3,6 +3,10 @@ import { Placeholder, PlaceholderCategory, PlaceholderType } from "../../types";
 
 /**
  * Flow control directives for each audio file extension.
+ * 
+ * Each audio directive follows the same syntax: `{{ext:content if true}}` or `{{ext:[content if true]:[content if false]}}`, where `ext` is the audio file extension, e.g. `mp3`, `wav`, `aiff`, etc.
+ * 
+ * The content if false is optional.
  */
 export const AudioDirectives = audioFileExtensions.map((ext) => {
   const newPlaceholder: Placeholder = {
@@ -39,8 +43,16 @@ export const AudioDirectives = audioFileExtensions.map((ext) => {
     },
     result_keys: [`audio:${ext}`],
     constant: true,
-    fn: async (content: string) =>
-      (await newPlaceholder.apply(`{{${ext}:${content}}}`)).result,
+    fn: async (content: unknown) => {
+      if (typeof content === "function") {
+        return (
+          await newPlaceholder.apply(
+            `{{${ext}:${await Promise.resolve(content())}}}`
+          )
+        ).result;
+      }
+      return (await newPlaceholder.apply(`{{${ext}:${content}}}`)).result;
+    },
     example: `{{${ext}:This one if any ${ext} file is selected:This one if no ${ext} file is selected}}`,
     description: `Flow control directive to include some content if any ${ext} file is selected and some other content if no ${ext} file is selected.`,
     hintRepresentation: `{{${ext}:...:...}}`,
@@ -53,6 +65,10 @@ export const AudioDirectives = audioFileExtensions.map((ext) => {
 
 /**
  * Directive for directions that will only be included in the prompt if any audio files are selected.
+ * 
+ * Syntax: `{{audio:content if true}}` or `{{audio:[content if true]:[content if false]}}`
+ * 
+ * The content if false is optional.
  */
 const AudioFlowDirective: Placeholder = {
   name: "contentForAudio",
@@ -81,8 +97,21 @@ const AudioFlowDirective: Placeholder = {
   },
   result_keys: ["contentForAudio"],
   constant: true,
-  fn: async (content: string) =>
-    (await AudioFlowDirective.apply(`{{audio:${content}}}`)).result,
+  fn: async (onSuccess: unknown, onFailure?: unknown) => {
+    const contentOnSuccess =
+      typeof onSuccess === "function"
+        ? await Promise.resolve(onSuccess())
+        : onSuccess;
+    const contentOnFailure =
+      typeof onFailure === "function"
+        ? await Promise.resolve(onFailure())
+        : onFailure;
+    return (
+      await AudioFlowDirective.apply(
+        `{{audio:${contentOnSuccess}${onFailure ? contentOnFailure : ""}}}`
+      )
+    ).result;
+  },
   example:
     "{{audio:This one if any audio file is selected:This one if no audio file is selected}}",
   description:

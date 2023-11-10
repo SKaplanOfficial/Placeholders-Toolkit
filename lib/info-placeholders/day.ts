@@ -2,6 +2,8 @@ import { Placeholder, PlaceholderCategory, PlaceholderType } from "../types";
 
 /**
  * Placeholder for the current day of the week, e.g. "Monday", using en-US as the default locale. Supports an optional locale argument. Barring any issues, this should always be replaced.
+ * 
+ * Syntax: `{{day locale="..."}}` or `{{dayName locale="..."}}` or `{{currentDay locale="..."}}` or `{{currentDayName locale="..."}}`, where `...` specifies a valid Unicode locale string. The locale argument is optional; if not provided, the default is "en-US".
  */
 const DayPlaceholder: Placeholder = {
   name: "day",
@@ -16,7 +18,7 @@ const DayPlaceholder: Placeholder = {
   fn: async (locale: string) =>
     (
       await DayPlaceholder.apply(
-        `{{day${locale?.length ? ` locale="${locale}"` : ""}}}`
+        `{{day${locale?.toString().length ? ` locale="${locale}"` : ""}}}`
       )
     ).result,
   example: "Write a generic agenda for {{day locale='en-GB'}}",

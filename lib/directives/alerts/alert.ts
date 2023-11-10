@@ -10,7 +10,7 @@ import { showHUD } from "@raycast/api";
  * The timeout and title are optional. If no timeout is provided, the alert will timeout after 10 seconds. The default title is "Pins". You must provide a message.
  */
 const AlertDirective: Placeholder = {
-  name: "displayAlert",
+  name: "alert",
   regex:
     /{{(alert)( timeout=([0-9]+))?( title="(([^{]|{(?!{)|{{[\s\S]*?}})*?)")?:(([^{]|{(?!{)|{{[\s\S]*?}})+?)}}/g,
   apply: async (str: string) => {
@@ -24,7 +24,11 @@ const AlertDirective: Placeholder = {
       try {
         await runAppleScript(
           `display alert "${title.replaceAll('"', "'")}"${
-            message ? ` message "${message.replaceAll('"', "'")}"` : ""
+            message
+              ? ` message "${message
+                  .replaceAll('"', "'")
+                  .replaceAll("\\", "\\\\")}"`
+              : ""
           } giving up after ${timeout} as critical`
         );
       } catch (e) {
@@ -36,14 +40,21 @@ const AlertDirective: Placeholder = {
     return { result: "" };
   },
   constant: false,
-  fn: async (message: string, title?: string, timeout?: string) =>
-    (
+  fn: async (message: unknown, title?: unknown, timeout?: string) => {
+    const messageText =
+      typeof message === "function"
+        ? await Promise.resolve(message())
+        : message;
+    const titleText =
+      typeof title === "function" ? await Promise.resolve(title()) : title;
+    return (
       await AlertDirective.apply(
         `{{alert${timeout ? ` timeout=${timeout}` : ""}${
-          title ? ` title="${title}"` : ""
-        }:${message}}}`
+          title ? ` title="${titleText}"` : ""
+        }:${messageText}}}`
       )
-    ).result,
+    ).result;
+  },
   example: '{{alert title="Info":Hello World}}',
   description:
     "Directive to display an alert message with an optional title and timeout. The placeholder will always be replaced with an empty string. If no timeout is provided, the alert will timeout after 10 seconds.",

@@ -4,35 +4,52 @@ import { Placeholder } from "./types";
 /**
  * Applies placeholders to a single string.
  * @param str The string to apply placeholders to.
- * @param context The context to apply placeholders with.
- * @param customPlaceholders The list of custom (user-defined) placeholders. Provide this if you have a separate list of custom placeholders.
- * @param defaultPlaceholders The list of default placeholders. Provide this if you have customized the order of default placeholders or added additional defaults.
- * @param allPlaceholders The list of all placeholders (custom and default). Provide this if you have a single list of all placeholders.
+ * @param options The options for applying placeholders.
+ * @param options.context The context to apply placeholders with.
+ * @param options.customPlaceholders The list of custom (user-defined) placeholders. Provide this if you have a separate list of custom placeholders.
+ * @param options.defaultPlaceholders The list of default placeholders. Provide this if you have customized the order of default placeholders or added additional defaults.
+ * @param options.allPlaceholders The list of all placeholders (custom and default). Provide this if you have a single list of all placeholders.
+ * @param options.checkRules Whether or not to check the rules of each placeholder before applying it.
  * @returns The string with placeholders applied.
  */
 export const applyToString = async (
   str: string,
-  context?: { [key: string]: unknown },
-  customPlaceholders?: Placeholder[],
-  defaultPlaceholders?: Placeholder[],
-  allPlaceholders?: Placeholder[]
+  options?: {
+    context?: { [key: string]: unknown };
+    customPlaceholders?: Placeholder[];
+    defaultPlaceholders?: Placeholder[];
+    allPlaceholders?: Placeholder[];
+    checkRules?: boolean;
+  }
 ) => {
-  const sortedPlaceholders = allPlaceholders
-    ? allPlaceholders
+  const sortedPlaceholders = options?.allPlaceholders
+    ? options.allPlaceholders
     : [
-        ...(customPlaceholders || []),
-        ...(defaultPlaceholders
-          ? defaultPlaceholders
+        ...(options?.customPlaceholders || []),
+        ...(options?.defaultPlaceholders
+          ? options.defaultPlaceholders
           : Object.values(DefaultPlaceholders)),
       ];
 
   let subbedStr = str;
   for (const placeholder of sortedPlaceholders) {
     if (!subbedStr.match(placeholder.regex)) continue;
+    if (options?.checkRules && placeholder.rules) {
+      let shouldContinue = true;
+      for (const rule of placeholder.rules) {
+        if (!(await rule(subbedStr, options?.context))) {
+          console.log(rule.toString());
+          shouldContinue = false;
+          break;
+        }
+      }
+      if (!shouldContinue) continue;
+    }
+
     while (subbedStr.match(placeholder.regex) != undefined) {
       subbedStr = subbedStr.replace(
         placeholder.regex,
-        (await placeholder.apply(subbedStr, context)).result
+        (await placeholder.apply(subbedStr, options?.context)).result
       );
     }
   }
@@ -42,16 +59,27 @@ export const applyToString = async (
 /**
  * Applies placeholders to an array of strings.
  * @param strs The array of strings to apply placeholders to.
- * @param context The context to apply placeholders with.
+ * @param options The options for applying placeholders.
+ * @param options.context The context to apply placeholders with.
+ * @param options.customPlaceholders The list of custom (user-defined) placeholders. Provide this if you have a separate list of custom placeholders.
+ * @param options.defaultPlaceholders The list of default placeholders. Provide this if you have customized the order of default placeholders or added additional defaults.
+ * @param options.allPlaceholders The list of all placeholders (custom and default). Provide this if you have a single list of all placeholders.
+ * @param options.checkRules Whether or not to check the rules of each placeholder before applying it.
  * @returns The array of strings with placeholders applied.
  */
 export const applyToStrings = async (
   strs: string[],
-  context?: { [key: string]: string }
+  options?: {
+    context?: { [key: string]: unknown };
+    customPlaceholders?: Placeholder[];
+    defaultPlaceholders?: Placeholder[];
+    allPlaceholders?: Placeholder[];
+    checkRules?: boolean;
+  }
 ) => {
   const subbedStrs: string[] = [];
   for (const str of strs) {
-    subbedStrs.push(await applyToString(str, context));
+    subbedStrs.push(await applyToString(str, options));
   }
   return subbedStrs;
 };
@@ -60,24 +88,35 @@ export const applyToStrings = async (
  * Applies placeholders to the value of a single key in an object.
  * @param obj The object to apply placeholders to.
  * @param key The key of the value to apply placeholders to.
- * @param context The context to apply placeholders with.
+ * @param options The options for applying placeholders.
+ * @param options.context The context to apply placeholders with.
+ * @param options.customPlaceholders The list of custom (user-defined) placeholders. Provide this if you have a separate list of custom placeholders.
+ * @param options.defaultPlaceholders The list of default placeholders. Provide this if you have customized the order of default placeholders or added additional defaults.
+ * @param options.allPlaceholders The list of all placeholders (custom and default). Provide this if you have a single list of all placeholders.
+ * @param options.checkRules Whether or not to check the rules of each placeholder before applying it.
  * @returns The object with placeholders applied.
  */
 export const applyToObjectValueWithKey = async (
   obj: { [key: string]: unknown },
   key: string,
-  context?: { [key: string]: string }
+  options?: {
+    context?: { [key: string]: unknown };
+    customPlaceholders?: Placeholder[];
+    defaultPlaceholders?: Placeholder[];
+    allPlaceholders?: Placeholder[];
+    checkRules?: boolean;
+  }
 ) => {
   const value = obj[key];
   if (typeof value === "string") {
-    return await applyToString(value, context);
+    return await applyToString(value, options);
   } else if (Array.isArray(value)) {
-    return await applyToStrings(value, context);
+    return await applyToStrings(value, options);
   } else if (typeof value === "object") {
     return await applyToObjectValuesWithKeys(
       value as { [key: string]: unknown },
       Object.keys(value as { [key: string]: unknown }),
-      context
+      options
     );
   } else {
     return (value || "undefined").toString();
@@ -88,17 +127,28 @@ export const applyToObjectValueWithKey = async (
  * Applies placeholders to an object's values, specified by keys.
  * @param obj The object to apply placeholders to.
  * @param keys The keys of the object to apply placeholders to.
- * @param context The context to apply placeholders with.
+ * @param options The options for applying placeholders.
+ * @param options.context The context to apply placeholders with.
+ * @param options.customPlaceholders The list of custom (user-defined) placeholders. Provide this if you have a separate list of custom placeholders.
+ * @param options.defaultPlaceholders The list of default placeholders. Provide this if you have customized the order of default placeholders or added additional defaults.
+ * @param options.allPlaceholders The list of all placeholders (custom and default). Provide this if you have a single list of all placeholders.
+ * @param options.checkRules Whether or not to check the rules of each placeholder before applying it.
  * @returns The object with placeholders applied.
  */
 export const applyToObjectValuesWithKeys = async (
   obj: { [key: string]: unknown },
   keys: string[],
-  context?: { [key: string]: string }
+  options?: {
+    context?: { [key: string]: unknown };
+    customPlaceholders?: Placeholder[];
+    defaultPlaceholders?: Placeholder[];
+    allPlaceholders?: Placeholder[];
+    checkRules?: boolean;
+  }
 ) => {
   const subbedObj: { [key: string]: unknown } = {};
   for (const key of keys) {
-    subbedObj[key] = await applyToObjectValueWithKey(obj, key, context);
+    subbedObj[key] = await applyToObjectValueWithKey(obj, key, options);
   }
   return subbedObj;
 };
@@ -106,25 +156,29 @@ export const applyToObjectValuesWithKeys = async (
 /**
  * Gets a list of placeholders that are included in a string.
  * @param str The string to check.
- * @param customPlaceholders The list of custom (user-defined) placeholders. Provide this if you have a separate list of custom placeholders.
- * @param defaultPlaceholders The list of default placeholders. Provide this if you have customized the order of default placeholders or added additional defaults.
- * @param allPlaceholders The list of all placeholders (custom and default). Provide this if you have a single list of all placeholders.
+ * @param options The options for applying placeholders.
+ * @param options.customPlaceholders The list of custom (user-defined) placeholders. Provide this if you have a separate list of custom placeholders.
+ * @param options.defaultPlaceholders The list of default placeholders. Provide this if you have customized the order of default placeholders or added additional defaults.
+ * @param options.allPlaceholders The list of all placeholders (custom and default). Provide this if you have a single list of all placeholders.
  * @returns The list of {@link Placeholder} objects.
  */
 export const checkForPlaceholders = async (
   str: string,
-  customPlaceholders?: Placeholder[],
-  defaultPlaceholders?: Placeholder[],
-  allPlaceholders?: Placeholder[]
+  options?: {
+    customPlaceholders?: Placeholder[];
+    defaultPlaceholders?: Placeholder[];
+    allPlaceholders?: Placeholder[];
+  }
 ): Promise<Placeholder[]> => {
-  const sortedPlaceholders = allPlaceholders
-    ? allPlaceholders
+  const sortedPlaceholders = options?.allPlaceholders
+    ? options.allPlaceholders
     : [
-        ...(customPlaceholders || []),
-        ...(defaultPlaceholders
-          ? defaultPlaceholders
+        ...(options?.customPlaceholders || []),
+        ...(options?.defaultPlaceholders
+          ? options.defaultPlaceholders
           : Object.values(DefaultPlaceholders)),
       ];
+
   const includedPlaceholders = sortedPlaceholders
     .filter((placeholder) => {
       return (
@@ -138,7 +192,7 @@ export const checkForPlaceholders = async (
         ) != undefined ||
         str.match(
           new RegExp(
-            `(^| )(?<!{{)${placeholder.name.replace(/[!#+-]/g, "\\$1")}(?!}})`,
+            `(^| |:|})({?{?)${placeholder.name.replace(/[!#+-]/g, "\\$1")}(}?}?)`,
             "g"
           )
         ) != undefined
@@ -160,45 +214,66 @@ export const checkForPlaceholders = async (
 /**
  * Applies placeholders to a string by memoizing the results of each placeholder.
  * @param str The string to apply placeholders to.
- * @param context The context to apply placeholders with.
- * @param customPlaceholders The list of custom (user-defined) placeholders. Provide this if you have a separate list of custom placeholders.
- * @param defaultPlaceholders The list of default placeholders. Provide this if you have customized the order of default placeholders or added additional defaults.
- * @param allPlaceholders The list of all placeholders (custom and default). Provide this if you have a single list of all placeholders.
+ * @param options The options for applying placeholders.
+ * @param options.context The context to apply placeholders with.
+ * @param options.customPlaceholders The list of custom (user-defined) placeholders. Provide this if you have a separate list of custom placeholders.
+ * @param options.defaultPlaceholders The list of default placeholders. Provide this if you have customized the order of default placeholders or added additional defaults.
+ * @param options.allPlaceholders The list of all placeholders (custom and default). Provide this if you have a single list of all placeholders.
+ * @param options.checkRules Whether or not to check the rules of each placeholder before applying it.
  * @returns The string with placeholders substituted.
  */
 export const bulkApply = async (
   str: string,
-  context?: { [key: string]: string },
-  customPlaceholders?: Placeholder[],
-  defaultPlaceholders?: Placeholder[],
-  allPlaceholders?: Placeholder[]
+  options?: {
+    context?: { [key: string]: unknown };
+    customPlaceholders?: Placeholder[];
+    defaultPlaceholders?: Placeholder[];
+    allPlaceholders?: Placeholder[];
+    checkRules?: boolean;
+  }
 ): Promise<string> => {
-  const sortedPlaceholders = allPlaceholders
-    ? allPlaceholders
+  const sortedPlaceholders = options?.allPlaceholders
+    ? options.allPlaceholders
     : [
-        ...(customPlaceholders || []),
-        ...(defaultPlaceholders
-          ? defaultPlaceholders
+        ...(options?.customPlaceholders || []),
+        ...(options?.defaultPlaceholders
+          ? options.defaultPlaceholders
           : Object.values(DefaultPlaceholders)),
       ];
 
   let subbedStr = str;
-  const result = { ...(context || {}) };
+  const result = { ...(options?.context || {}) };
 
   // Apply any substitutions that are already in the context
-  for (const contextKey in context) {
+  for (const contextKey in options?.context || {}) {
     const keyHolder = sortedPlaceholders.find(
       (placeholder) => placeholder.name == contextKey
     );
-    if (keyHolder && !(contextKey == "input" && context[contextKey] == "")) {
+    if (
+      keyHolder &&
+      !(contextKey == "input" && options?.context?.[contextKey] == "")
+    ) {
       subbedStr = subbedStr.replace(
         new RegExp(keyHolder.regex.source + "(?=(}}|[\\s\\S]|$))", "g"),
-        context[contextKey]
+        typeof options?.context?.[contextKey] === "string"
+          ? (options.context[contextKey] as string)
+          : ""
       );
     }
   }
 
   for (const placeholder of sortedPlaceholders) {
+    if (options?.checkRules && placeholder.rules) {
+      let shouldContinue = true;
+      for (const rule of placeholder.rules) {
+        if (!(await rule(subbedStr, options?.context))) {
+          shouldContinue = false;
+          break;
+        }
+      }
+      if (!shouldContinue) continue;
+    }
+
     const keysToCheck = [];
     if (subbedStr.match(placeholder.regex)) {
       keysToCheck.push(placeholder.regex);
@@ -262,16 +337,4 @@ export const bulkApply = async (
     }
   }
   return subbedStr;
-};
-
-/**
- * Object for managing placeholder application.
- */
-export const PLApplicator = {
-  applyToString,
-  applyToStrings,
-  applyToObjectValueWithKey,
-  applyToObjectValuesWithKeys,
-  checkForPlaceholders,
-  bulkApply,
 };

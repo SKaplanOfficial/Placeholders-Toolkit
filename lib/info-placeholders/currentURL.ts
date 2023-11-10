@@ -1,12 +1,17 @@
+import { getFrontmostApplication } from "@raycast/api";
 import { Placeholder, PlaceholderCategory, PlaceholderType } from "../types";
-import { getActiveBrowser } from "../utils";
+import { SupportedBrowsers, getActiveBrowser } from "../utils";
+import { RequireActiveBrowser } from "../rules";
 
 /**
  * Placeholder for the current URL in any supported browser. If the current application is not a supported browser, this placeholder will not be replaced.
+ * 
+ * Syntax: `{{currentURL}}` or `{{currentTabURL}}`
  */
 const CurrentURLPlaceholder: Placeholder = {
   name: "currentURL",
   regex: /{{(currentURL|currentTabURL)}}/g,
+  rules: [RequireActiveBrowser()],
   apply: async (str: string, context?: { [key: string]: unknown }) => {
     try {
       if (

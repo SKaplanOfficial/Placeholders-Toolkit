@@ -3,6 +3,10 @@ import { Placeholder, PlaceholderCategory, PlaceholderType } from "../../types";
 
 /**
  * Flow control directives for each image file extension.
+ * 
+ * Each image directive follows the same syntax: `{{ext:content if true}}` or `{{ext:[content if true]:[content if false]}}`, where `ext` is the image file extension, e.g. `png`, `jpg`, `gif`, etc.
+ * 
+ * The content if false is optional.
  */
 export const ImageDirectives = imageFileExtensions.map((ext) => {
   const newPlaceholder: Placeholder = {
@@ -39,8 +43,16 @@ export const ImageDirectives = imageFileExtensions.map((ext) => {
     },
     result_keys: [`image:${ext}`],
     constant: true,
-    fn: async (content: string) =>
-      (await newPlaceholder.apply(`{{${ext}:${content}}}`)).result,
+    fn: async (content: unknown) => {
+      if (typeof content === "function") {
+        return (
+          await newPlaceholder.apply(
+            `{{${ext}:${await Promise.resolve(content())}}}`
+          )
+        ).result;
+      }
+      return (await newPlaceholder.apply(`{{${ext}:${content}}}`)).result;
+    },
     example: `{{${ext}:This one if any ${ext} file is selected:This one if no ${ext} file is selected}}`,
     description: `Flow control directive to include some content if any ${ext} file is selected and some other content if no ${ext} file is selected.`,
     hintRepresentation: `{{${ext}:...:...}}`,
@@ -53,6 +65,10 @@ export const ImageDirectives = imageFileExtensions.map((ext) => {
 
 /**
  * Directive for directions that will only be included in the prompt if any image files are selected.
+ * 
+ * Syntax: `{{images:content if true}}` or `{{images:[content if true]:[content if false]}}`
+ * 
+ * The content if false is optional.
  */
 const ImageFlowDirective: Placeholder = {
   name: "contentForImages",
@@ -81,8 +97,21 @@ const ImageFlowDirective: Placeholder = {
   },
   result_keys: ["contentForImages"],
   constant: true,
-  fn: async (content: string) =>
-    (await ImageFlowDirective.apply(`{{images:${content}}}`)).result,
+  fn: async (onSuccess: unknown, onFailure?: unknown) => {
+    const contentOnSuccess =
+      typeof onSuccess === "function"
+        ? await Promise.resolve(onSuccess())
+        : onSuccess;
+    const contentOnFailure =
+      typeof onFailure === "function"
+        ? await Promise.resolve(onFailure())
+        : onFailure;
+    return (
+      await ImageFlowDirective.apply(
+        `{{images:${contentOnSuccess}${onFailure ? contentOnFailure : ""}}}`
+      )
+    ).result;
+  },
   example:
     "{{images:This one if any image file is selected:This one if no image file is selected}}",
   description:

@@ -1,12 +1,16 @@
+import { RequireValue } from "../rules";
 import { getSelectedFiles } from "../scripts";
 import { Placeholder, PlaceholderCategory, PlaceholderType } from "../types";
 
 /**
  * Placeholder for the paths of the currently selected files in Finder as a comma-separated list. If no files are selected, this will be replaced with an empty string.
+ * 
+ * Syntax: `{{selectedFiles}}` or `{{selectedFile}}` or `{{files}}`
  */
 const SelectedFilesPlaceholder: Placeholder = {
   name: "selectedFiles",
   regex: /{{(selectedFiles|selectedFile|files)}}/g,
+  rules: [RequireValue(async () => (await getSelectedFiles()).paths)],
   apply: async (str: string, context?: { [key: string]: unknown }) => {
     if (!context || !("selectedFiles" in context))
       return { result: "", selectedFiles: "" };

@@ -3,6 +3,8 @@ import { deletePersistentVariable } from "./utils";
 
 /**
  * Directive to delete a persistent variable. If the variable does not exist, nothing will happen. The placeholder will always be replaced with an empty string.
+ * 
+ * Syntax: `{{delete x}}`, where `x` is the name of the variable to delete.
  */
 const DeletePersistentVariablePlaceholder: Placeholder = {
   name: "delete",

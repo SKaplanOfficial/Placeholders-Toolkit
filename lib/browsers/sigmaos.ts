@@ -24,6 +24,28 @@ const currentURL = async () => {
   );
 };
 
+// TODO: Improve this when/if SigmaOS supports getting multiple tabs via AppleScript.
+const tabs = async (): Promise<{ name: string; url: string }[]> => {
+  return [await currentTab()];
+};
+
+const currentTab = async (): Promise<{ name: string; url: string }> => {
+  const data = await runAppleScript(`try
+    set oldDelims to AppleScript's text item delimiters
+    set AppleScript's text item delimiters to "\`\`\`"
+    tell application "SigmaOS"
+      set theData to {name, URL} of active tab of window 1
+      set theData to theData as string
+      set AppleScript's text item delimiters to oldDelims
+      return theData
+    end tell
+  end try`);
+  const entries = data.split("```");
+  const name = entries[0];
+  const url = entries[1];
+  return { name, url };
+};
+
 const currentTabText = async () => {
   const url = await currentURL();
   return await utils.getTextOfWebpage(url);
@@ -42,6 +64,8 @@ const SigmaOS: Browser = {
   bundleID,
   bundlePath,
   currentURL,
+  tabs,
+  currentTab,
   currentTabText,
   runJSInActiveTab,
 };

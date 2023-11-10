@@ -2,7 +2,9 @@ import { LocalStorage } from "@raycast/api";
 import { Placeholder, PlaceholderCategory, PlaceholderType } from "../../types";
 
 /**
- * Directive to increment a persistent counter variable by 1. Returns the new value of the counter.
+ * Directive to increment a persistent counter variable by 1. Replaced with the new value of the counter.
+ * 
+ * Syntax: `{{increment:x}}`, where `x` is the name of the counter variable. If the variable does not exist, it will be created with a value of 1.
  */
 const IncrementPersistentVariablePlaceholder: Placeholder = {
   name: "increment",

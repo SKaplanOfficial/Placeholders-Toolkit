@@ -1,8 +1,11 @@
 import { Clipboard } from "@raycast/api";
 import { Placeholder, PlaceholderCategory, PlaceholderType } from "../types";
+import { RequireValue } from "../rules";
 
 /**
  * Placeholder for the text currently stored in the clipboard. If the clipboard is empty, this will be replaced with an empty string. Most clipboard content supplies a string format, such as file names when copying files in Finder.
+ * 
+ * Syntax: `{{clipboardText}}`
  */
 const ClipboardTextPlaceholder: Placeholder = {
   name: "clipboardText",
@@ -22,6 +25,7 @@ const ClipboardTextPlaceholder: Placeholder = {
       return { result: "", clipboardText: "" };
     }
   },
+  rules: [RequireValue(Clipboard.readText)],
   result_keys: ["clipboardText"],
   constant: true,
   fn: async () =>

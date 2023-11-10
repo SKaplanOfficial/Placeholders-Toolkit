@@ -6,6 +6,8 @@ import { Placeholder, PlaceholderCategory, PlaceholderType } from "../types";
 
 /**
  * Placeholder for a list of all previously used UUIDs since PromptLab's LocalStorage was last reset.
+ * 
+ * Syntax: `{{usedUUIDs}}`
  */
 const UsedUUIDsPlaceholder: Placeholder = {
   name: "usedUUIDs",

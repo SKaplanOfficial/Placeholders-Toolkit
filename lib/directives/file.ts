@@ -4,6 +4,8 @@ import * as fs from "fs";
 
 /**
  * Placeholder for the raw text of a file at the given path. The path can be absolute or relative to the user's home directory (e.g. `~/Desktop/file.txt`). The file must be readable as UTF-8 text, or the placeholder will be replaced with an empty string.
+ * 
+ * Syntax: `{{file:[path]}}`, where `[path]` is the POSIX path to the file.
  */
 const FilePlaceholder: Placeholder = {
   name: "file",
@@ -27,8 +29,10 @@ const FilePlaceholder: Placeholder = {
     }
   },
   constant: false,
-  fn: async (path: string) =>
-    (await FilePlaceholder.apply(`{{file:${path}}}`)).result,
+  fn: async (path: unknown) => {
+    const pathText = typeof path === "function" ? await Promise.resolve(path()) : path;
+    return (await FilePlaceholder.apply(`{{file:${pathText}}}`)).result
+  },
   example: "{{file:/Users/username/Desktop/file.txt}}",
   description: "Placeholder for the raw text of a file at the given path.",
   hintRepresentation: "{{file:...}}",

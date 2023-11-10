@@ -6,6 +6,11 @@ import { getFrontmostApplication } from "@raycast/api";
 import { Placeholder, PlaceholderCategory, PlaceholderType } from "../types";
 import { runJSInActiveTab } from "../utils";
 
+/**
+ * Placeholder for the text of the currently focused element in the frontmost window of a supported browser.
+ * 
+ * Syntax: `{{focusedElement}}`
+ */
 const FocusedElementPlaceholder: Placeholder = {
   name: "focusedElement",
   regex:

@@ -2,6 +2,10 @@ import { Placeholder, PlaceholderCategory, PlaceholderType } from "../../types";
 
 /**
  * Directive for directions that will only be included in the prompt if any PDF files are selected.
+ * 
+ * Syntax: `{{pdf:content if true}}` or `{{pdf:[content if true]:[content if false]}}`
+ * 
+ * The content if false is optional.
  */
 const PDFFlowDirective: Placeholder = {
   name: "contentForPDFs",
@@ -33,8 +37,16 @@ const PDFFlowDirective: Placeholder = {
   },
   result_keys: ["contentForPDFs"],
   constant: true,
-  fn: async (content: string) =>
-    (await PDFFlowDirective.apply(`{{pdf:${content}}}`)).result,
+  fn: async (content: unknown) => {
+    if (typeof content === "function") {
+      return (
+        await PDFFlowDirective.apply(
+          `{{pdf:${await Promise.resolve(content())}}}`
+        )
+      ).result;
+    }
+    return (await PDFFlowDirective.apply(`{{$pdf:${content}}}`)).result;
+  },
   example:
     "{{pdf:This one if any PDF file is selected:This one if no PDF file is selected}}",
   description:

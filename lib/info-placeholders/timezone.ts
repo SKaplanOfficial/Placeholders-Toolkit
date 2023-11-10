@@ -2,6 +2,8 @@ import { Placeholder, PlaceholderCategory, PlaceholderType } from "../types";
 
 /**
  * Placeholder for the long name of the current timezone. Barring any issues, this should always be replaced.
+ * 
+ * Syntax: `{{timezone}}`
  */
 const TimezonePlaceholder: Placeholder = {
   name: "timezone",

@@ -3,6 +3,8 @@ import { Placeholder, PlaceholderCategory, PlaceholderType } from "../types";
 
 /**
  * Placeholder for the current time supporting an optional format argument. Defaults to "Hour:Minute:Second AM/PM". Barring any issues, this should always be replaced.
+ * 
+ * Syntax: `{{time format="..."}}` or `{{currentTime format="..."}}`, where `...` specifies a valid Unicode time format string. The format argument is optional and defaults to "HH:mm:s a" (e.g. "12:00:00 PM").
  */
 const TimePlaceholder: Placeholder = {
   name: "time",
@@ -30,7 +32,7 @@ const TimePlaceholder: Placeholder = {
   fn: async (format?: string) =>
     (
       await TimePlaceholder.apply(
-        `{{time${format?.length ? ` format="${format}"` : ""}}}`
+        `{{time${format?.toString().length ? ` format="${format}"` : ""}}}`
       )
     ).result,
   example: "It's currently {{time format='HH:mm'}}. How long until dinner?",

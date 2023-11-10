@@ -3,6 +3,8 @@ import { Placeholder, PlaceholderCategory, PlaceholderType } from "../types";
 
 /**
  * Directive to paste the provided text in the frontmost application. The placeholder will always be replaced with an empty string.
+ * 
+ * Syntax: `{{paste:...}}`, where `...` is the text to paste.
  */
 const PasteDirective: Placeholder = {
   name: "paste",
@@ -15,8 +17,16 @@ const PasteDirective: Placeholder = {
     return { result: "" };
   },
   constant: false,
-  fn: async (text: string) =>
-    (await PasteDirective.apply(`{{paste:${text}}}`)).result,
+  fn: async (content: unknown) => {
+    if (typeof content === "function") {
+      return (
+        await PasteDirective.apply(
+          `{{paste:${await Promise.resolve(content())}}}`
+        )
+      ).result;
+    }
+    return (await PasteDirective.apply(`{{paste:${content}}}`)).result;
+  },
   example: "{{paste:Hello World}}",
   description:
     "Directive to paste the provided text in the frontmost application. The placeholder will always be replaced with an empty string.",

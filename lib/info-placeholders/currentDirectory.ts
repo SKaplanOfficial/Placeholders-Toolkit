@@ -1,12 +1,19 @@
 import { runAppleScript } from "@raycast/utils";
 import { Placeholder, PlaceholderCategory, PlaceholderType } from "../types";
+import { RequireEquals } from "../rules";
+import { getFrontmostApplication } from "@raycast/api";
 
 /**
  * Placeholder for the current working directory. If the current application is not Finder, this placeholder will not be replaced.
+ * 
+ * Syntax: `{{currentDirectory}}`
  */
 const CurrentDirectoryPlaceholder: Placeholder = {
   name: "currentDirectory",
   regex: /{{currentDirectory}}/g,
+  rules: [
+    RequireEquals(async () => (await getFrontmostApplication()).name, "Finder"),
+  ],
   apply: async () => {
     const dir = await runAppleScript(
       `tell application "Finder" to return POSIX path of (insertion location as alias)`

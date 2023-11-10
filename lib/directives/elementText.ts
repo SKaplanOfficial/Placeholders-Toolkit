@@ -4,6 +4,8 @@ import { runJSInActiveTab } from "../utils";
 
 /**
  * Placeholder for the text of the first element matching the given selector in the frontmost window of a supported browser.
+ * 
+ * Syntax: `{{elementText:<selector>}}`, where `<selector>` is a valid CSS selector.
  */
 const ElementTextPlaceholder: Placeholder = {
   name: "elementText",

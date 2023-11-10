@@ -3,10 +3,12 @@ import { getTrackNames } from "../scripts";
 
 /**
  * Placeholder for the comma-separated list of track names in Music.app.
+ * 
+ * Syntax: `{{musicTracks}}` or `{{tracks}}` or `{{songs}}`
  */
 const MusicTracksPlaceholder: Placeholder = {
   name: "musicTracks",
-  regex: /{{musicTracks}}/g,
+  regex: /{{musicTracks|tracks|songs}}/g,
   apply: async (str: string, context?: { [key: string]: unknown }) => {
     if (context && "musicTracks" in context) {
       return {

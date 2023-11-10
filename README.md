@@ -48,7 +48,7 @@ const p2 = PLCreator.newPlaceholder("test2", { apply_fn: async (str, context) =>
   return { result: data?.length ? `${data}, world!`: "Goodbye!" };
 } });
 
-PLApplicator.bulkApply("{{test}}{{test2}}", undefined, [p1, p2]).then((result) => {
+PLApplicator.bulkApply("{{test}}{{test2}}", { customPlaceholders: [p1, p2] }).then((result) => {
   console.log(result); // Hello, world!
 });
 ```
@@ -110,7 +110,7 @@ const singleValuePlaceholders = PLCreator.buildPlaceholdersFromValueDict({
   p7: "Today is {{day}}.",
 });
 
-PLApplicator.bulkApply("{{p6}} {{p7}}", undefined, singleValuePlaceholders).then((result) => {
+PLApplicator.bulkApply("{{p6}} {{p7}}", { customPlaceholders: singleValuePlaceholders }).then((result) => {
   console.log(result); // Hello, my name is steven. Today is Monday.
 });
 ```
@@ -127,7 +127,7 @@ const dynamicValuePlaceholders = PLCreator.buildPlaceholdersFromFnDict({
   p9: async (str, context) => ({ result: "It is currently {{time}}." }),
 });
 
-PLApplicator.bulkApply("{{p8}} {{p9}}", undefined, dynamicValuePlaceholders).then((result) => {
+PLApplicator.bulkApply("{{p8}} {{p9}}", { customPlaceholders: dynamicValuePlaceholders }).then((result) => {
   console.log(result); // Hello.  It is currently 13:00:56 PM.
 });
 ```
@@ -170,7 +170,7 @@ const customPlaceholders = await PLLoader.loadPlaceholdersFromFile("/Users/examp
 
 const text = "{{summarize sentences=1:Say hello to the Store. A home for Extensions published by our community of Developers using our API. Find extensions to the tools you use in your day-to-day.}}";
 
-const result = await PLApplicator.bulkApply(text, undefined, customPlaceholders);
+const result = await PLApplicator.bulkApply(text, { customPlaceholders: customPlaceholders });
 console.log(result); // A home for Extensions published by our community of Developers using our API.
 ```
 
@@ -187,7 +187,7 @@ const uppercaseTransform = PLCreator.newPlaceholder("upper", { regex: /{{upper:[
   return { result: res };
 } });
 
-PLApplicator.bulkApply("Hello, {{upper:world}}", undefined, [uppercaseTransform]).then((result) => {
+PLApplicator.bulkApply("Hello, {{upper:world}}", { customPlaceholders: [uppercaseTransform] }).then((result) => {
   console.log(result); // Hello, WORLD
 });
 ```
@@ -209,7 +209,7 @@ const markdownTablePlaceholder = PLCreator.newPlaceholder("mdtable", { regex: /{
   return { result: tableLines?.join("\n") || "" };
 } });
 
-PLApplicator.bulkApply("{{mdtable:A,B,C,D|E,F,G,H|I,J,K,L|M,N,O,P|Q,R,S,T|U,V,W,X|Y,Z,,}}", undefined, [markdownTablePlaceholder]).then((result) => {
+PLApplicator.bulkApply("{{mdtable:A,B,C,D|E,F,G,H|I,J,K,L|M,N,O,P|Q,R,S,T|U,V,W,X|Y,Z,,}}", { customPlaceholders: [markdownTablePlaceholder] }).then((result) => {
   console.log(result);
   /*
   | A | B | C | D |

@@ -1,12 +1,16 @@
 import { getSelectedText } from "@raycast/api";
 import { Placeholder, PlaceholderCategory, PlaceholderType } from "../types";
+import { RequireValue } from "../rules";
 
 /**
  * Placeholder for the currently selected text. If no text is selected, this will be replaced with an empty string.
+ * 
+ * Syntax: `{{selectedText}}`
  */
 const SelectedTextPlaceholder: Placeholder = {
   name: "selectedText",
   regex: /{{selectedText}}/g,
+  rules: [RequireValue(getSelectedText)],
   apply: async () => {
     try {
       const text = await getSelectedText();

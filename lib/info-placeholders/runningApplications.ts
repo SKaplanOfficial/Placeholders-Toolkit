@@ -3,10 +3,12 @@ import { getRunningApplications } from "../scripts";
 
 /**
  * Placeholder for a comma-separated list of the names of all running applications that are visible to the user.
+ * 
+ * Syntax: `{{runningApplications}}` or `{{runningApps}}`
  */
 const RunningApplicationsPlaceholder: Placeholder = {
   name: "runningApplications",
-  regex: /{{runningApplications}}/g,
+  regex: /{{runningApplications|runningApps}}/g,
   apply: async (str: string, context?: { [key: string]: unknown }) => {
     if (context && "runningApplications" in context) {
       return {

@@ -201,7 +201,7 @@ export const Braced = (
  *     return { result: matches?.[3] || "" }
  *   }
  * })
- * const result = await PLApplicator.bulkApply("{{myPlaceholder:hello, world!}}", undefined, [myPlaceholder])
+ * const result = await PLApplicator.bulkApply("{{myPlaceholder:hello, world!}}", { customPlaceholders: [myPlaceholder] })
  * console.log(result) // hello, world!
  * ```
  */

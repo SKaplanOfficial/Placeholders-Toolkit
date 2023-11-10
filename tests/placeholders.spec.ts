@@ -7,7 +7,6 @@ jest.mock("@raycast/utils", () => ({
 
 import os from "os";
 import { execScript } from "../lib/scripts";
-import { DefaultPlaceholders } from "../lib/defaultPlaceholders";
 
 describe("Information Placeholder Tests", () => {
   it("should replace {{user}} with correct user name", async () => {

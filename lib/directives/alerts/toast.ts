@@ -28,12 +28,14 @@ const ToastDirective: Placeholder = {
     return { result: "" };
   },
   constant: false,
-  fn: async (message: string, style?: string) =>
-    (
+  fn: async (message: unknown, style?: string) => {
+    const messageText = typeof message === "function" ? await Promise.resolve(message()) : message;
+    return (
       await ToastDirective.apply(
-        `{{toast${style ? ` style="${style}"` : ""}:${message}}}`
+        `{{toast${style ? ` style="${style}"` : ""}:${messageText}}}`
       )
-    ).result,
+    ).result
+      },
   example: '{{toast style="success":Done!}}',
   description:
     "Directive to display a toast or HUD with the provided text. The placeholder will always be replaced with an empty string. Whether a toast or HUD is displayed depends on the context (e.g. if the Raycast window is focused, a toast will be displayed; otherwise, a HUD will be displayed).",

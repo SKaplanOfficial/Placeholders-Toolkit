@@ -1,13 +1,17 @@
 import { Browser } from "../browsers";
+import { RequireActiveBrowser } from "../rules";
 import { Placeholder, PlaceholderCategory, PlaceholderType } from "../types";
 import { getActiveBrowser } from "../utils";
 
 /**
  * Placeholder for the visible text of the current tab in any supported browser. If the current application is not a supported browser, this placeholder will not be replaced.
+ * 
+ * Syntax: `{{currentTabText}}` or `{{tabText}}`
  */
 const CurrentTabTextPlaceholder: Placeholder = {
   name: "currentTabText",
   regex: /{{(currentTabText|tabText)}}/g,
+  rules: [RequireActiveBrowser()],
   apply: async (str: string, context?: { [key: string]: unknown }) => {
     const data = {
       result: (context?.["currentTabText"] as string) || "",

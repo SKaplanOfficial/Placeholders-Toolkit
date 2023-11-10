@@ -3,6 +3,8 @@ import { Placeholder, PlaceholderCategory, PlaceholderType } from "../types";
 
 /**
  * Placeholder for the comma-separated list of titles and URLs of all bookmarks in Safari, obtained via plist.
+ * 
+ * Syntax: `{{safariBookmarks}}`
  */
 const SafariBookmarksPlaceholder: Placeholder = {
   name: "safariBookmarks",

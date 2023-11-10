@@ -7,6 +7,8 @@ import {
 
 /**
  * Replaces YouTube placeholders with the transcript of the corresponding YouTube video.
+ * 
+ * Syntax: `{{youtube:[id or URL]}}`, where `[id or URL]` is the ID or URL of the YouTube video.
  */
 const YouTubeTranscriptPlaceholder: Placeholder = {
   name: "youtube",

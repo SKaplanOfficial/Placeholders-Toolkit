@@ -3,6 +3,8 @@ import { getLastNote } from "../scripts";
 
 /**
  * Placeholder for the HTML text of the most recently edited note in Notes.app.
+ * 
+ * Syntax: `{{lastNote}}`
  */
 const LastNotePlaceholder: Placeholder = {
   name: "lastNote",

@@ -3,6 +3,8 @@ import os from "os";
 
 /**
  * Placeholder for the username of the currently logged-in user. Barring any issues, this should always be replaced.
+ * 
+ * Syntax: `{{user}}` or `{{username}}`
  */
 const UserPlaceholder: Placeholder = {
   name: "user",

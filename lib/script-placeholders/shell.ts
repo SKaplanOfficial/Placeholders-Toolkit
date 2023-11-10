@@ -3,6 +3,8 @@ import { Placeholder, PlaceholderCategory, PlaceholderType } from "../types";
 
 /**
  * Placeholder for output of a shell script. If the script fails, this placeholder will be replaced with an empty string. No sanitization is done on the script input; the expectation is that users will only use this placeholder with trusted scripts.
+ * 
+ * Syntax: `{{shell [bin]:...}}`, where `...` is the shell script to run and `[bin]` is the path to the shell to run the script in. The bin parameter is optional; if not provided, the script will be run using `/bin/zsh`.
  */
 const ShellScriptPlaceholder: Placeholder = {
   name: "shell",

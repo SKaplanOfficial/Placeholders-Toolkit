@@ -203,3 +203,61 @@ export const searchNearbyLocations = async (query: string) => {
       
       return run script jxa in "JavaScript"`);
 };
+
+/**
+ * Prompts the user to choose one or more files/folders.
+ * @returns A promise that resolves to a list of POSIX paths.
+ */
+export const chooseFile = async (allowMultiple = true, folder = false): Promise<string[]> => {
+  const jsonString = await runAppleScript(`use framework "AppKit"
+  use scripting additions
+  
+  try
+    set theFiles to (choose ${folder == true ? "folder" : "file"} multiple selections allowed ${allowMultiple.toString()})
+    
+    set thePaths to {}
+    if class of theFiles is list then
+      repeat with theFile in theFiles
+        set end of thePaths to POSIX path of theFile
+      end repeat
+    else
+      set end of thePaths to POSIX path of theFiles
+    end if
+    
+    set jsonObj to current application's NSJSONSerialization's dataWithJSONObject:thePaths options:(current application's NSJSONWritingFragmentsAllowed) |error|:(missing value)
+    set jsonString to current application's NSString's alloc()'s initWithData:jsonObj encoding:(current application's NSUTF8StringEncoding)
+    return jsonString as text
+  on error err
+    return "[]"
+  end try`)
+  return JSON.parse(jsonString) as string[];
+}
+
+/**
+ * Prompts the user to choose one or more applications.
+ * @param allowMultiple Whether to allow multiple applications to be selected.
+ * @returns A promise that resolves to a list of application bundle POSIX paths.
+ */
+export const chooseApplication = async (allowMultiple = false): Promise<string[]> => {
+  const jsonString = await runAppleScript(`use framework "AppKit"
+  use scripting additions
+  
+  try
+    set theApplications to (choose application with multiple selections allowed)
+    set thePaths to {}
+    if class of theApplications is list then
+      repeat with theApplication in theApplications
+        set end of thePaths to POSIX path of (path to theApplication)
+      end repeat
+    else
+      set end of thePaths to POSIX path of (path to theApplications)
+    end if
+    
+    set jsonObj to current application's NSJSONSerialization's dataWithJSONObject:thePaths options:(current application's NSJSONWritingFragmentsAllowed) |error|:(missing value)
+    set jsonString to current application's NSString's alloc()'s initWithData:jsonObj encoding:(current application's NSUTF8StringEncoding)
+    return jsonString as text
+  on error err
+    return "[]"
+  end try`)
+  return JSON.parse(jsonString) as string[];
+}

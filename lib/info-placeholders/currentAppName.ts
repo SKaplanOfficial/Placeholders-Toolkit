@@ -3,6 +3,8 @@ import { Placeholder, PlaceholderCategory, PlaceholderType } from "../types";
 
 /**
  * Placeholder for the name of the current application. Barring any issues, this should always be replaced.
+ * 
+ * Syntax: `{{currentAppName}}` or `{{currentApp}}` or `{{currentApplication}}` or `{{currentApplicationName}}`
  */
 const CurrentAppNamePlaceholder: Placeholder = {
   name: "currentAppName",

@@ -3,6 +3,8 @@ import { Placeholder, PlaceholderCategory, PlaceholderType } from "../types";
 
 /**
  * Placeholder for the path of the current application. Barring any issues, this should always be replaced.
+ * 
+ * Syntax: `{{currentAppPath}}` or `{{currentApplicationPath}}`
  */
 const CurrentAppPathPlaceholder: Placeholder = {
   name: "currentAppPath",

@@ -4,6 +4,8 @@ import * as fs from "fs";
 
 /**
  * Placeholder for metadata of the currently selected files in Finder as a comma-separated list.
+ * 
+ * Syntax: `{{metadata}}`
  */
 const FileMetadataPlaceholder: Placeholder = {
   name: "metadata",

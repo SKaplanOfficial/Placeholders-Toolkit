@@ -4,6 +4,8 @@ import { STORAGE_KEYS, getStorage } from "./utils";
 
 /**
  * Placeholder for a comma-separated list of all persistent variables. If no persistent variables have been set, this placeholder will be replaced with an empty string.
+ * 
+ * Syntax: `{{vars}}`
  */
 const VarsPlaceholder: Placeholder = {
   name: "vars",

@@ -4,6 +4,8 @@ import { runJSInActiveTab } from "../utils";
 
 /**
  * Placeholder for the raw HTML of the first element matching the given selector in the active tab of a supported browser.
+ * 
+ * Syntax: `{{elementHTML:<selector>}}`, where `<selector>` is a valid CSS selector.
  */
 const ElementHTMLPlaceholder: Placeholder = {
   name: "elementHTML",

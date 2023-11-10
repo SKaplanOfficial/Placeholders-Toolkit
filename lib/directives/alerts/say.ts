@@ -32,21 +32,23 @@ const SayDirective: Placeholder = {
   },
   constant: false,
   fn: async (
-    message: string,
+    message: unknown,
     voice?: string,
     speed?: string,
     pitch?: string,
     volume?: string
-  ) =>
-    (
+  ) => {
+    const messageText = typeof message === "function" ? await Promise.resolve(message()) : message;
+    return (
       await SayDirective.apply(
         `{{say${voice ? ` voice="${voice}"` : ""}${
           speed ? ` speed="${speed}"` : ""
         }${pitch ? ` pitch="${pitch}"` : ""}${
           volume ? ` volume="${volume}"` : ""
-        }:${message}}}`
+        }:${messageText}}}`
       )
-    ).result,
+    ).result
+      },
   example: "{{say:Hello World}}",
   description:
     "Directive to speak the provided text. The placeholder will always be replaced with an empty string.",

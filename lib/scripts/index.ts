@@ -1,4 +1,4 @@
-export { execScript } from "./utils";
+export { runOSAScript as execScript } from "./utils";
 export { default as EventFetcher } from "./EventFetcher";
 
 export {

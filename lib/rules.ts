@@ -28,7 +28,6 @@ export const RequireValue = (
     try {
       if (value === undefined || value === null) return false;
       let val = await resolveValue(value);
-      console.log(val)
       if (Array.isArray(val)) return val.length > 0 && val.every((v) => !!v);
       return val !== undefined && val !== null && val !== "";
     } catch (e) {

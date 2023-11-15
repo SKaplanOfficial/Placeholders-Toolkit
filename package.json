@@ -1,6 +1,6 @@
 {
   "name": "placeholders-toolkit",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "A placeholders system for supplying dynamic content to Raycast extensions.",
   "main": "dist/lib/index.js",
   "types": "dist/lib/index.d.ts",

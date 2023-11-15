@@ -1,5 +1,4 @@
 import { Extension, ExtensionCommand, JSONObject } from "./types";
-import fetch from "node-fetch";
 import { environment, getFrontmostApplication } from "@raycast/api";
 import * as fs from "fs";
 import {

@@ -11,6 +11,11 @@ export * as Placeholders from "./placeholders";
 export * as PLApplicator from "./apply";
 
 /**
+ * Functions for checking if a string contains placeholders.
+ */
+export * as PLChecker from "./check";
+
+/**
  * Functions for loading placeholders from files or strings.
  */
 export * as PLLoader from "./load";
@@ -50,6 +55,7 @@ export {
   CustomPlaceholder,
   PlaceholderCategory,
   PlaceholderType,
+  PLRange,
 } from "./types";
 
 /**

@@ -12,15 +12,12 @@ const FileNamesPlaceholder: Placeholder = {
   apply: async (str: string, context?: { [key: string]: unknown }) => {
     const files =
       context && "selectedFiles" in context
-        ? (context["selectedFiles"] as string)
-        : (await getSelectedFiles()).csv;
+        ? (context["selectedFiles"] as string[])
+        : (await getSelectedFiles()).paths;
     if (files.length == 0)
-      return { result: "", fileNames: "", selectedFiles: "" };
-    const fileNames = files
-      .split(", ")
-      .map((file) => file.split("/").pop())
-      .join(", ");
-    return { result: fileNames, fileNames: fileNames, selectedFiles: files };
+      return { result: "", fileNames: "", selectedFiles: [] };
+    const fileNames = files.map((file) => file.split("/").pop())
+    return { result: fileNames.join(", "), fileNames: fileNames, selectedFiles: files };
   },
   result_keys: ["fileNames", "selectedFiles"],
   constant: true,

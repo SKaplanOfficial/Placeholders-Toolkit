@@ -155,6 +155,8 @@ export const applyToObjectValuesWithKeys = async (
 
 /**
  * Gets a list of placeholders that are included in a string.
+ * @deprecated Use {@link PLChecker.checkForPlaceholders} instead.
+ * 
  * @param str The string to check.
  * @param options The options for applying placeholders.
  * @param options.customPlaceholders The list of custom (user-defined) placeholders. Provide this if you have a separate list of custom placeholders.

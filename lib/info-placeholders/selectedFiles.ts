@@ -4,7 +4,7 @@ import { Placeholder, PlaceholderCategory, PlaceholderType } from "../types";
 
 /**
  * Placeholder for the paths of the currently selected files in Finder as a comma-separated list. If no files are selected, this will be replaced with an empty string.
- * 
+ *
  * Syntax: `{{selectedFiles}}` or `{{selectedFile}}` or `{{files}}`
  */
 const SelectedFilesPlaceholder: Placeholder = {
@@ -12,16 +12,14 @@ const SelectedFilesPlaceholder: Placeholder = {
   regex: /{{(selectedFiles|selectedFile|files)}}/g,
   rules: [RequireValue(async () => (await getSelectedFiles()).paths)],
   apply: async (str: string, context?: { [key: string]: unknown }) => {
-    if (!context || !("selectedFiles" in context))
-      return { result: "", selectedFiles: "" };
     try {
       const files =
         context && "selectedFiles" in context
-          ? (context["selectedFiles"] as string)
-          : (await getSelectedFiles()).csv;
-      return { result: files, selectedFiles: files };
+          ? (context["selectedFiles"] as string[])
+          : (await getSelectedFiles()).paths;
+      return { result: files.join(", "), selectedFiles: files };
     } catch (e) {
-      return { result: "", selectedFiles: "" };
+      return { result: "", selectedFiles: [] };
     }
   },
   result_keys: ["selectedFiles"],

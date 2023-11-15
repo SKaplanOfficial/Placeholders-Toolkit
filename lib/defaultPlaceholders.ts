@@ -91,6 +91,7 @@ import FileMetadataPlaceholder from "./info-placeholders/metadata";
 import FileNamesPlaceholder from "./info-placeholders/fileNames";
 import SelectedFilesPlaceholder from "./info-placeholders/selectedFiles";
 import SelectedTextPlaceholder from "./info-placeholders/selectedText";
+import SelectedFileContentsPlaceholder from "./info-placeholders/selectedFileContents";
 import { runJSInActiveTab } from "./utils";
 import { Placeholder } from "./types";
 
@@ -164,6 +165,7 @@ const defaultPlaceholders = {
   ClipboardTextPlaceholder,
   SelectedTextPlaceholder,
   SelectedFilesPlaceholder,
+  SelectedFileContentsPlaceholder,
   FileNamesPlaceholder,
   FileMetadataPlaceholder,
   CurrentAppNamePlaceholder,

@@ -242,3 +242,18 @@ export type ExtensionCommand = {
    */
   deeplink: string;
 };
+
+/**
+ * A placeholder range.
+ */
+export type PLRange = {
+  /**
+   * The start index of the placeholder in a string, inclusive.
+   */
+  startIndex: number;
+
+  /**
+   * The end index of the placeholder in a string, non-inclusive.
+   */
+  endIndex: number;
+}

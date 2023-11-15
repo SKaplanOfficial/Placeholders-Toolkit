@@ -91,6 +91,7 @@ import FileMetadataPlaceholder from "./info-placeholders/metadata";
 import FileNamesPlaceholder from "./info-placeholders/fileNames";
 import SelectedFilesPlaceholder from "./info-placeholders/selectedFiles";
 import SelectedTextPlaceholder from "./info-placeholders/selectedText";
+import SelectedFileContentsPlaceholder from "./info-placeholders/selectedFileContents";
 
 export {
   GetPersistentVariablePlaceholder,
@@ -102,6 +103,7 @@ export {
   ClipboardTextPlaceholder,
   SelectedTextPlaceholder,
   SelectedFilesPlaceholder,
+  SelectedFileContentsPlaceholder,
   FileNamesPlaceholder,
   FileMetadataPlaceholder,
   CurrentAppNamePlaceholder,

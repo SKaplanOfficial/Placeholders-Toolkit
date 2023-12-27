@@ -9,11 +9,11 @@ export const dummyPlaceholder = (): Placeholder => {
     name: "New Placeholder",
     regex: /{{newPlaceholder}}/g,
     rules: [],
-    apply: async (str: string, context?: { [key: string]: unknown }) => ({
+    apply: async () => ({
       result: "",
     }),
     constant: true,
-    fn: async (content: string) =>
+    fn: async () =>
       (await dummyPlaceholder().apply("{{newPlaceholder}}")).result,
     description: "A dummy placeholder.",
     example: "This is an example of a dummy placeholder: {{newPlaceholder}}",
@@ -115,18 +115,12 @@ export const newPlaceholder = (
 
   if (options?.replace_with != undefined) {
     if (options.constant) {
-      options.apply_fn = async (
-        str: string,
-        context?: { [key: string]: unknown }
-      ) => ({
+      options.apply_fn = async () => ({
         result: options.replace_with || "",
         [name]: options.replace_with || "",
       });
     } else {
-      options.apply_fn = async (
-        str: string,
-        context?: { [key: string]: unknown }
-      ) => ({
+      options.apply_fn = async () => ({
         result: options.replace_with || "",
         [name]: options.replace_with || "",
       });
@@ -139,13 +133,12 @@ export const newPlaceholder = (
     rules: options?.rules || [],
     apply:
       options?.apply_fn ||
-      (async (str: string, context?: { [key: string]: unknown }) => ({
+      (async () => ({
         result: "",
       })),
     result_keys: [name],
     constant: options?.constant || false,
-    fn: async (content: string) =>
-      (await newPlaceholder.apply(`{{${name}}}`)).result,
+    fn: async () => (await newPlaceholder.apply(`{{${name}}}`)).result,
     description: options?.description || "",
     example: options?.example || "",
     hintRepresentation: options?.hintRepresentation || `{{${name}}}`,

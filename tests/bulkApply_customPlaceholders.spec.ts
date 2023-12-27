@@ -25,7 +25,7 @@ describe("Bulk Apply With Custom Placeholders Tests", () => {
   it("should successfully apply custom placeholder with apply_fn specified", async () => {
     const customPlaceholder = newPlaceholder("test", {
       regex: undefined,
-      apply_fn: async (str, context) => ({ result: "my result" }),
+      apply_fn: async () => ({ result: "my result" }),
     });
     expect(
       await bulkApply("{{test}}", { customPlaceholders: [customPlaceholder] })

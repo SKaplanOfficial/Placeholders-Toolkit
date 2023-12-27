@@ -14,9 +14,9 @@ import {
 const validatePlaceholderJSON = (jsonObject: JSONObject): [boolean, string] => {
   if (typeof jsonObject !== "object")
     return [false, "Placeholder is not an object."];
-  if (!jsonObject.hasOwnProperty("name"))
+  if ("name" in jsonObject === false)
     return [false, "Placeholder is missing name field."];
-  if (!jsonObject.hasOwnProperty("value"))
+  if ("value" in jsonObject === false)
     return [false, "Placeholder is missing value field."];
 
   if (typeof jsonObject.name !== "string")
@@ -24,40 +24,28 @@ const validatePlaceholderJSON = (jsonObject: JSONObject): [boolean, string] => {
   if (typeof jsonObject.value !== "string")
     return [false, "Placeholder value is not a string."];
 
-  if (
-    jsonObject.hasOwnProperty("regex") &&
-    typeof jsonObject.regex !== "string"
-  )
+  if ("regex" in jsonObject && typeof jsonObject.regex !== "string")
     return [false, "Placeholder regex is not a string."];
-  if (
-    jsonObject.hasOwnProperty("description") &&
-    typeof jsonObject.description !== "string"
-  )
+  if ("description" in jsonObject && typeof jsonObject.description !== "string")
     return [false, "Placeholder description is not a string."];
-  if (
-    jsonObject.hasOwnProperty("example") &&
-    typeof jsonObject.example !== "string"
-  )
+  if ("example" in jsonObject && typeof jsonObject.example !== "string")
     return [false, "Placeholder example is not a string."];
   if (
-    jsonObject.hasOwnProperty("hintRepresentation") &&
+    "hintRepresentation" in jsonObject &&
     typeof jsonObject.hintRepresentation !== "string"
   )
     return [false, "Placeholder hintRepresentation is not a string."];
   if (
-    jsonObject.hasOwnProperty("fullRepresentation") &&
+    "fullRepresentation" in jsonObject &&
     typeof jsonObject.fullRepresentation !== "string"
   )
     return [false, "Placeholder fullRepresentation is not a string."];
-  if (jsonObject.hasOwnProperty("type") && typeof jsonObject.type !== "number")
+  if ("type" in jsonObject && typeof jsonObject.type !== "number")
     return [false, "Placeholder type is not a number."];
-  if (
-    jsonObject.hasOwnProperty("categories") &&
-    !Array.isArray(jsonObject.categories)
-  )
+  if ("categories" in jsonObject && !Array.isArray(jsonObject.categories))
     return [false, "Placeholder categories is not an array."];
   if (
-    jsonObject.hasOwnProperty("categories") &&
+    "categories" in jsonObject &&
     (jsonObject.categories as unknown[]).some(
       (category) => typeof category !== "number"
     )
@@ -89,7 +77,7 @@ export const loadPlaceholderFromJSONString = (
         newPlaceholderData.regex || `{{${newPlaceholderData.name}}}`
       ),
       rules: [],
-      apply: async (str: string, context?: { [key: string]: unknown }) => {
+      apply: async (str: string) => {
         const match = str.match(new RegExp(`${newPlaceholderData.regex}`));
         let value = newPlaceholderData.value;
         (match || []).forEach((m, index) => {
@@ -106,7 +94,7 @@ export const loadPlaceholderFromJSONString = (
       },
       result_keys: [newPlaceholderData.name],
       constant: true,
-      fn: async (content: string) =>
+      fn: async () =>
         (await newPlaceholder.apply(`{{${newPlaceholderData.name}}}`)).result,
       description: newPlaceholderData.description || "",
       example: newPlaceholderData.example || "",
@@ -161,7 +149,7 @@ export const loadPlaceholdersFromJSONString = (
         name: placeholder.name,
         regex: new RegExp(`${key}`),
         rules: [],
-        apply: async (str: string, context?: { [key: string]: unknown }) => {
+        apply: async (str: string) => {
           const match = str.match(new RegExp(`${key}`));
           let value = placeholder.value;
           (match || []).forEach((m, index) => {
@@ -178,8 +166,7 @@ export const loadPlaceholdersFromJSONString = (
         },
         result_keys: [placeholder.name],
         constant: true,
-        fn: async (content: string) =>
-          (await newPlaceholder.apply(`{{${key}}}`)).result,
+        fn: async () => (await newPlaceholder.apply(`{{${key}}}`)).result,
         description: placeholder.description,
         example: placeholder.example,
         hintRepresentation: placeholder.hintRepresentation,

@@ -3,7 +3,6 @@ import { Placeholder, PlaceholderCategory, PlaceholderType } from "../types";
 import * as fs from "fs";
 import os from "os";
 import path from "path";
-import { AlertDirective } from "../placeholders";
 
 /**
  * Directive to write the provided text to a file. The placeholder will always be replaced with an empty string.

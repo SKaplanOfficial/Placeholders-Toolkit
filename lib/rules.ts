@@ -24,10 +24,10 @@ export const RequireValue = (
   str: string,
   context?: { [key: string]: unknown }
 ) => Promise<boolean>) => {
-  return async (_str, _context) => {
+  return async () => {
     try {
       if (value === undefined || value === null) return false;
-      let val = await resolveValue(value);
+      const val = await resolveValue(value);
       if (Array.isArray(val)) return val.length > 0 && val.every((v) => !!v);
       return val !== undefined && val !== null && val !== "";
     } catch (e) {
@@ -51,9 +51,9 @@ export const RequireEquals = (
   str: string,
   context?: { [key: string]: unknown }
 ) => Promise<boolean>) => {
-  return async (_str, _context) => {
+  return async () => {
     try {
-      let val = await resolveValue(value);
+      const val = await resolveValue(value);
       return val === target;
     } catch (e) {
       return false;
@@ -76,9 +76,9 @@ export const RequireNotEquals = (
   str: string,
   context?: { [key: string]: unknown }
 ) => Promise<boolean>) => {
-  return async (_str, _context) => {
+  return async () => {
     try {
-      let val = await resolveValue(value);
+      const val = await resolveValue(value);
       return val !== target;
     } catch (e) {
       return false;
@@ -101,9 +101,9 @@ export const RequireContains = (
   str: string,
   context?: { [key: string]: unknown }
 ) => Promise<boolean>) => {
-  return async (_str, _context) => {
+  return async () => {
     try {
-      let val = await resolveValue(value);
+      const val = await resolveValue(value);
       if (!Array.isArray(val)) return false;
       return val.some((v) => v === target);
     } catch (e) {
@@ -127,10 +127,10 @@ export const RequireContainedIn = (
   str: string,
   context?: { [key: string]: unknown }
 ) => Promise<boolean>) => {
-  return async (_str, _context) => {
+  return async () => {
     try {
-      let val = await resolveValue(value);
-      let tg = await resolveValue(target);
+      const val = await resolveValue(value);
+      const tg = await resolveValue(target);
       if (!Array.isArray(tg)) return false;
       return tg.some((t) => t === val);
     } catch (e) {
@@ -147,7 +147,7 @@ export const RequireActiveBrowser = (): ((
   str: string,
   context?: { [key: string]: unknown }
 ) => Promise<boolean>) => {
-  return async (_str, _context) => {
+  return async () => {
     try {
       const currentAppName = (await getFrontmostApplication()).name || "";
       return (

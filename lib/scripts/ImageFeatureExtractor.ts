@@ -1,4 +1,4 @@
-const imageFeatureExtractorScript = `use framework "Vision"
+export const imageFeatureExtractorScript = `use framework "Vision"
 use scripting additions
 
 on trim(theText)
@@ -132,7 +132,7 @@ on run (argv)
 
 		if theText is not "" then
 			imageData's setValue:theText forKey:"imageText"
-			set promptText to "<Transcribed text of the image: \"" & theText & "\".>"
+			set promptText to "<Transcribed text of the image: \\"" & theText & "\\".>"
 		end if
 
 		if useSaliencyAnalysis then

@@ -248,3 +248,11 @@ m4: /{{url(\s*?(raw=(true|false))?):((?:(?:(?:https?):)\/\/)(?:\S+(?::\S*)?@)?(?
 ```
 
 Although these regexes match *mostly* the same strings, the latter two aim to match the URL standard (i.e. RFC 3986) more closely. You might not need the extra precision for your use case, so it's up to you to decide which style to use.
+
+## Contributing
+
+Contributions are welcome! Feel free to open an issue or submit a pull request.
+
+## License
+
+This project is licensed under the MIT License.

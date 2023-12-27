@@ -35,7 +35,6 @@ import {
   Yandex,
   iCab,
 } from "./browsers";
-import { runAppleScript } from "@raycast/utils";
 
 /**
  * The browsers from which the current URL can be obtained.

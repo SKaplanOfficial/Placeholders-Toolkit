@@ -1,10 +1,11 @@
 # Placeholders Toolkit Changelog
 
-## [0.1.3] - 2023-11-15?
+## [0.1.3] - 2023-12-26
 
 - Re-added the `{{selectedFileContents}}` (or just `{{contents}}`) placeholder.
 - Deprecated `PLApplicator.checkForPlaceholders()` in favor of `PLChecker.checkForPlaceholders()`.
 - Added `PLChecker.checkForPlaceholdersInRange()` and `PLChecker.getPlaceholderRanges()`.
+- Added optional `offsets` parameter to `{{clipboardText}}`, allowing users to specify one or more previous clipboard items to return.
 - Fixed bug where `{{fileNames}}` would only return the last file name.
 
 ## [0.1.2] - 2023-11-11

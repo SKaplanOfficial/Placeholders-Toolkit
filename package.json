@@ -5,7 +5,10 @@
   "main": "dist/lib/index.js",
   "types": "dist/lib/index.d.ts",
   "scripts": {
+    "clean": "rm -rf dist/ && rm -rf docs/",
     "build": "npx tsc",
+    "build-docs": "npx typedoc",
+    "publish": "npm run clean && npm run build-docs && npm run build && npm publish",
     "test": "jest",
     "lint": "eslint \"**/*.ts\""
   },

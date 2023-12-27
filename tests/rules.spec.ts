@@ -1,5 +1,3 @@
-import { PLApplicator } from "../lib";
-
 jest.mock("node-fetch", () => ({ fetch: console.log("mocked fetch") }));
 jest.mock("@raycast/utils", () => ({
   runAppleScript: (script: string) => execScript(script, []).data,
@@ -20,13 +18,11 @@ jest.mock("@raycast/api", () => ({
 import { execScript } from "../lib/scripts";
 import ClipboardTextPlaceholder from "../lib/info-placeholders/clipboardText";
 import SelectedFilesPlaceholder from "../lib/info-placeholders/selectedFiles";
-import CurrentDirectoryPlaceholder from "../lib/info-placeholders/currentDirectory";
-import CurrentTabTextPlaceholder from "../lib/info-placeholders/currentTabText";
-import { RequireContainedIn, RequireContains } from "../lib/rules";
 
 describe("RequireValue Tests", () => {
   it("should be false when the clipboard is empty", async () => {
-    await execScript(`set the clipboard to ""`, []).data;
+    await (execScript(`set the clipboard to ""`, []).data);
+    await (new Promise((resolve) => setTimeout(resolve, 1000)));
     const result = await ClipboardTextPlaceholder.rules?.[0](
       "{{clipboardText}}"
     );
@@ -47,7 +43,7 @@ describe("RequireValue Tests", () => {
       delay 1`,
       []
     ).data;
-    
+    await (new Promise((resolve) => setTimeout(resolve, 1000)));
     let result = await SelectedFilesPlaceholder.rules?.[0]("{{selectedFiles}}");
     expect(result).toBe(false);
 

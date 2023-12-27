@@ -1,6 +1,5 @@
-import { getFrontmostApplication } from "@raycast/api";
 import { Placeholder, PlaceholderCategory, PlaceholderType } from "../types";
-import { SupportedBrowsers, getActiveBrowser } from "../utils";
+import { getActiveBrowser } from "../utils";
 import { RequireActiveBrowser } from "../rules";
 
 /**

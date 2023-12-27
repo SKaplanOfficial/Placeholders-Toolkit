@@ -1,5 +1,3 @@
-import * as vm from "vm";
-
 import TimezonePlaceholder from "./info-placeholders/timezone";
 import LocationPlaceholder from "./info-placeholders/location";
 import TodayWeatherPlaceholder from "./info-placeholders/todayWeather";

@@ -10,7 +10,7 @@ const SelectFileDirective: Placeholder = {
   name: "selectFile",
   regex: /{{(selectFile)(:[\s\S]*?)?}}/g,
   apply: async (str: string) => {
-    const file = str.match(/(?<=(selectFiles:))[\s\S]*?(?=}})/)?.[0];
+    const file = str.match(/(?<=(selectFile:))[\s\S]*?(?=}})/)?.[0];
     if (!file) return { result: "" };
     await addFileToSelection(file);
     return { result: "" };

@@ -243,7 +243,7 @@ export const chooseApplication = async (allowMultiple = false): Promise<string[]
   use scripting additions
   
   try
-    set theApplications to (choose application with multiple selections allowed)
+    set theApplications to (choose application multiple selections allowed ${allowMultiple.toString()}
     set thePaths to {}
     if class of theApplications is list then
       repeat with theApplication in theApplications

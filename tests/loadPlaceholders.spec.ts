@@ -17,7 +17,7 @@ describe("Creating New Placeholders", () => {
     expect(() =>
       newPlaceholder("test", {
         regex: undefined,
-        apply_fn: async (str, context) => ({ result: "null" }),
+        apply_fn: async () => ({ result: "null" }),
         replace_with: "test",
       })
     ).toThrow("Cannot specify both apply_fn and replace_with");

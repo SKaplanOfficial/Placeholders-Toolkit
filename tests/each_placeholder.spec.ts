@@ -7,10 +7,9 @@ jest.mock("@raycast/utils", () => ({
 jest.mock("@raycast/api", () => ({
   Clipboard: {
     readText: () => execScript("return the clipboard", []).data,
-    
   },
   getFrontmostApplication: async () => {
-    const result = await (execScript(
+    const result = await execScript(
       `use framework "AppKit"
       tell application "System Events"
       set frontApp to first application process whose frontmost is true
@@ -21,15 +20,15 @@ jest.mock("@raycast/api", () => ({
       return jsonString as text
     end tell`,
       []
-    ).data);
+    ).data;
     return JSON.parse(result) as {
       name: string;
       bundleId: string;
       path: string;
-    }
+    };
   },
   getSelectedText: async () => {
-    const result = await (execScript(
+    const result = await execScript(
       `tell application "System Events"
         set currentClipboardContent to the clipboard
         keystroke "c" using {command down}
@@ -40,24 +39,31 @@ jest.mock("@raycast/api", () => ({
         return theSelection
     end tell`,
       []
-    ).data);
+    ).data;
     return result;
-  }
+  },
 }));
 
 import os from "os";
-import { execScript, getSelectedFiles } from "../lib/scripts";
+import { execScript } from "../lib/scripts";
 import path from "path";
 
 describe("Information Placeholder Tests", () => {
   it("should replace {{clipboardText}} with correct clipboard text", async () => {
-    await (execScript(`set the clipboard to "test"
-    delay 0.5`, []).data);
+    await (execScript(
+      `set the clipboard to "test"
+    delay 0.5`,
+      []
+    ).data);
+    await (new Promise((resolve) => setTimeout(resolve, 1000)));
     expect(await bulkApply("{{clipboardText}}")).toBe("test");
   });
 
   it("should replace {{computerName}} with the correct computer name", async () => {
-    const computerName = (await execScript(`return computer name of ((system info) as record)`, []).data);
+    const computerName = await execScript(
+      `return computer name of ((system info) as record)`,
+      []
+    ).data;
     expect(await bulkApply("{{computerName}}")).toBe(computerName);
   });
 
@@ -76,36 +82,39 @@ describe("Information Placeholder Tests", () => {
   });
 
   it("should replace {{currentDirectory}} with the correct directory", async () => {
-    const directory = path.join(os.homedir(), "Desktop/");
-    expect(await bulkApply("{{currentDirectory}}")).toBe(directory);
+    const libraryDirectory = path.join(os.homedir(), "Library/");
+    const fontDirectory = path.join(libraryDirectory, "Fonts/");
+    await bulkApply(`{{selectFile:${fontDirectory}}}`);
+    await (new Promise((resolve) => setTimeout(resolve, 1000)));
+    expect(await bulkApply("{{currentDirectory}}")).toBe(libraryDirectory);
   });
 
   // it("should replace {{currentTabText}} with the correct text", async () => {
-    // console.log(await bulkApply("{{date}}"));
-    // console.log(await bulkApply("{{time}}"));
-    // console.log(await bulkApply("{{day}}"));
-    // console.log(await bulkApply("{{homedir}}"));
-    // console.log(await bulkApply("{{hostname}}"));
-    // console.log(await bulkApply("{{user}}"));
-    // console.log(await bulkApply("{{installedApps}}"));
-    // console.log(await bulkApply("{{lastNote}}"));
-    // console.log(await bulkApply("{{lastEmail}}"));
-    // console.log(await bulkApply("{{runningApplications}}"));
-    // console.log(await bulkApply("{{musicTracks}}"));
-    // console.log(await bulkApply("{{location}}"));
-    // console.log(await bulkApply("{{timezone}}"));
-    // console.log(await bulkApply("{{safariTopSites}}"));
-    // console.log(await bulkApply("{{safariBookmarks}}"));
-    // console.log(await bulkApply("{{shortcuts}}"));
-    // console.log(await bulkApply("{{todayWeather}}"));
-    // console.log(await bulkApply("{{weekWeather}}"));
-    // console.log(await bulkApply("{{systemLanguage}}"));
-    // console.log(await bulkApply("{{selectedFiles}}"));
-    // console.log(await bulkApply("{{fileNames}}"));
-    // console.log(await bulkApply("{{selectedFileContents}}"));
-    // console.log(await bulkApply("{{selectedText}}"));
-    // console.log(await bulkApply("{{monthEvents}}"));
-    // console.log(await bulkApply("{{monthReminders}}"));
+  // console.log(await bulkApply("{{date}}"));
+  // console.log(await bulkApply("{{time}}"));
+  // console.log(await bulkApply("{{day}}"));
+  // console.log(await bulkApply("{{homedir}}"));
+  // console.log(await bulkApply("{{hostname}}"));
+  // console.log(await bulkApply("{{user}}"));
+  // console.log(await bulkApply("{{installedApps}}"));
+  // console.log(await bulkApply("{{lastNote}}"));
+  // console.log(await bulkApply("{{lastEmail}}"));
+  // console.log(await bulkApply("{{runningApplications}}"));
+  // console.log(await bulkApply("{{musicTracks}}"));
+  // console.log(await bulkApply("{{location}}"));
+  // console.log(await bulkApply("{{timezone}}"));
+  // console.log(await bulkApply("{{safariTopSites}}"));
+  // console.log(await bulkApply("{{safariBookmarks}}"));
+  // console.log(await bulkApply("{{shortcuts}}"));
+  // console.log(await bulkApply("{{todayWeather}}"));
+  // console.log(await bulkApply("{{weekWeather}}"));
+  // console.log(await bulkApply("{{systemLanguage}}"));
+  // console.log(await bulkApply("{{selectedFiles}}"));
+  // console.log(await bulkApply("{{fileNames}}"));
+  // console.log(await bulkApply("{{selectedFileContents}}"));
+  // console.log(await bulkApply("{{selectedText}}"));
+  // console.log(await bulkApply("{{monthEvents}}"));
+  // console.log(await bulkApply("{{monthReminders}}"));
   // });
 
   it("should replace {{user}} with correct user name", async () => {
@@ -114,11 +123,6 @@ describe("Information Placeholder Tests", () => {
   });
 
   it("should replace {{time}} with correct time", async () => {
-    const time = new Date().toLocaleTimeString([], {
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "numeric",
-    });
     expect(await bulkApply("The time is {{time}}")).toMatch(
       /The time is [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2} (AM|PM)/g
     );

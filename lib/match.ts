@@ -8,19 +8,19 @@ export const InnerText = (options?: {
 }) => {
   const global = options?.global ?? true;
   if (options?.braceType == undefined || options?.braceType === "curly")
-    return new RegExp(`(([^{]|{(?!{)|{{[\s\S]*?}})*?)`, global ? "g" : "");
+    return new RegExp(`(([^{]|{(?!{)|{{[\\s\\S]*?}})*?)`, global ? "g" : "");
   else if (options?.braceType == "square")
     return new RegExp(
-      `(([^\[]|\[(?!\[)|\[\[\s\S]*?\]\])*?)`,
+      `(([^\\[]|\\[(?!\\[)|\\[\\[\\s\\S]*?\\]\\])*?)`,
       global ? "g" : ""
     );
   else if (options?.braceType == "round")
     return new RegExp(
-      `(([^(]|\((?!\()|\(\([\s\S]*?\)\))*?)`,
+      `(([^(]|\\((?!\\()|\\(\\([\\s\\S]*?\\)\\))*?)`,
       global ? "g" : ""
     );
   else if (options?.braceType == "angle")
-    return new RegExp(`(([^<]|<(?!<)|<<[\s\S]*?>>)*?)`, global ? "g" : "");
+    return new RegExp(`(([^<]|<(?!<)|<<[\\s\\S]*?>>)*?)`, global ? "g" : "");
   else throw new Error(`Unknown brace type ${options.braceType}`);
 };
 
@@ -161,16 +161,16 @@ export const Braced = (
     );
   else if (options?.braceType == "square")
     return new RegExp(
-      `\[\[(${
+      `\\[\\[(${
         innerMatch instanceof RegExp ? innerMatch.source : innerMatch
-      })\]\]`,
+      })\\]\\]`,
       global ? "g" : ""
     );
   else if (options?.braceType == "round")
     return new RegExp(
-      `\(\((${
+      `\\(\\((${
         innerMatch instanceof RegExp ? innerMatch.source : innerMatch
-      })\)\)`,
+      })\\)\\)`,
       global ? "g" : ""
     );
   else if (options?.braceType == "angle")
@@ -223,20 +223,20 @@ export const Container = (
     );
   else if (options?.braceType == "square")
     return new RegExp(
-      `\[\[${name}(\\s*?${parameters
+      `\\[\\[${name}(\\s*?${parameters
         .map((p) => (p instanceof RegExp ? p.source : p))
         .join("\\s*?")}):(${
         valueType instanceof RegExp ? valueType.source : valueType
-      })\]\]`,
+      })\\]\\]`,
       global ? "g" : ""
     );
   else if (options?.braceType == "round")
     return new RegExp(
-      `\(\(${name}(\\s*?${parameters
+      `\\(\\(${name}(\\s*?${parameters
         .map((p) => (p instanceof RegExp ? p.source : p))
         .join("\\s*?")}):(${
         valueType instanceof RegExp ? valueType.source : valueType
-      })\)\)`,
+      })\\)\\)`,
       global ? "g" : ""
     );
   else if (options?.braceType == "angle")
@@ -267,7 +267,7 @@ export const Container = (
  */
 export const EmailAddress = (global = true) =>
   new RegExp(
-    /(?=[a-z0-9@.!#$%&'*+\/=?^_`{|}~-]{6,254})(?=[a-z0-9.!#$%&'*+\/=?^_`{|}~-]{1,64}@)[a-z0-9!#$%&'*+\/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+\/=?^_`{|}~-]+)*@(?:(?=[a-z0-9-]{1,63}\.)[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+(?=[a-z0-9-]{1,63})[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/,
+    /(?=[a-z0-9@.!#$%&'*+\\/=?^_`{|}~-]{6,254})(?=[a-z0-9.!#$%&'*+\\/=?^_`{|}~-]{1,64}@)[a-z0-9!#$%&'*+\\/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+\\/=?^_`{|}~-]+)*@(?:(?=[a-z0-9-]{1,63}\.)[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+(?=[a-z0-9-]{1,63})[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/,
     global ? "g" : ""
   );
 
@@ -288,7 +288,7 @@ export const EmailAddress = (global = true) =>
  */
 export const URI = (global = true) =>
   new RegExp(
-    /(?:(?:([a-zA-Z0-9]+):)\/?\/?)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z0-9][a-z0-9_-]{0,62})?[a-z0-9]\.)+(?:[a-z]{2,}\.?))(?::\d{2,5})?(?:[\/?#]\S*)?/,
+    /(?:(?:([a-zA-Z0-9]+):)\/?\/?)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z0-9][a-z0-9_-]{0,62})?[a-z0-9]\.)+(?:[a-z]{2,}\.?))(?::\d{2,5})?(?:[\\/?#]\S*)?/,
     global ? "g" : ""
   );
 
@@ -309,6 +309,6 @@ export const URI = (global = true) =>
  */
 export const HTTPURL = (global = true) =>
   new RegExp(
-    /(?:(?:(?:https?):)\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z0-9][a-z0-9_-]{0,62})?[a-z0-9]\.)+(?:[a-z]{2,}\.?))(?::\d{2,5})?(?:[\/?#]\S*)?/,
+    /(?:(?:(?:https?):)\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z0-9][a-z0-9_-]{0,62})?[a-z0-9]\.)+(?:[a-z]{2,}\.?))(?::\d{2,5})?(?:[\\/?#]\S*)?/,
     global ? "g" : ""
   );

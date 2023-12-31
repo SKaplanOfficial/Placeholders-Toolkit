@@ -35,6 +35,7 @@ import {
   Yandex,
   iCab,
 } from "./browsers";
+import fetch from "node-fetch";
 
 /**
  * The browsers from which the current URL can be obtained.

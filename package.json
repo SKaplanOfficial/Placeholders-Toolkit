@@ -8,7 +8,7 @@
     "clean": "rm -rf dist/ && rm -rf docs/",
     "build": "npx tsc",
     "build-docs": "npx typedoc",
-    "publish": "npm run clean && npm run build-docs && npm run build && npm publish",
+    "release": "npm run clean && npm run build-docs && npm run build && npm publish",
     "test": "jest",
     "lint": "eslint \"**/*.ts\""
   },

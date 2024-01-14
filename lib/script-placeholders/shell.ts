@@ -8,7 +8,7 @@ import { Placeholder, PlaceholderCategory, PlaceholderType } from "../types";
  */
 const ShellScriptPlaceholder: Placeholder = {
   name: "shell",
-  regex: /{{shell( .*)?:(.|[ \\n\\r\\s])*?}}/g,
+  regex: /{{shell( .*)?:(.|[ \n\r\s])*?}}/g,
   apply: async (str: string) => {
     try {
       const bin =

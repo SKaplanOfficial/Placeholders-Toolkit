@@ -1,5 +1,13 @@
 # Placeholders Toolkit Changelog
 
+## [0.1.5] - 2024-01-12
+
+- Fix multi-line script placeholders not working properly due to invalid regex.
+
+## [0.1.4] - 2023-12-27
+
+- Fix fetch error.
+
 ## [0.1.3] - 2023-12-26
 
 - Re-added the `{{selectedFileContents}}` (or just `{{contents}}`) placeholder.

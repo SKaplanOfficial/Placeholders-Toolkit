@@ -8,7 +8,7 @@ import { Placeholder, PlaceholderCategory, PlaceholderType } from "../types";
  */
 const AppleScriptPlaceholder: Placeholder = {
   name: "as",
-  regex: /{{(as|AS):(([^{]|{(?!{)|{{[\\s\\S]*?}})*?)}}/g,
+  regex: /{{(as|AS):(([^{]|{(?!{)|{{[\s\S]*?}})*?)}}/g,
   apply: async (str: string) => {
     try {
       const script = str.match(/(as|AS):(([^{]|{(?!{)|{{[\s\S]*?}})*?)}}/)?.[2];

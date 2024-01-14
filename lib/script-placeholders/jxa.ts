@@ -8,7 +8,7 @@ import { Placeholder, PlaceholderCategory, PlaceholderType } from "../types";
  */
 const JXAPlaceholder: Placeholder = {
   name: "jxa",
-  regex: /{{(jxa|JXA):(([^{]|{(?!{)|{{[\\s\\S]*?}})*?)}}/g,
+  regex: /{{(jxa|JXA):(([^{]|{(?!{)|{{[\s\S]*?}})*?)}}/g,
   apply: async (str: string) => {
     try {
       const script = str.match(

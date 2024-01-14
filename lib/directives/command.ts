@@ -9,7 +9,7 @@ import { getExtensions } from "../utils";
 const CommandPlaceholder: Placeholder = {
   name: "command",
   regex:
-    /{{command:([^:}]*[\\s]*)*?(:([^:}]*[\\s]*)*?)?(:([^:}]*[\\s]*)*?)?}}/g,
+    /{{command:([^:}]*[\s]*)*?(:([^:}]*[\s]*)*?)?(:([^:}]*[\s]*)*?)?}}/g,
   apply: async (str: string) => {
     const command = str.match(/command:([^:]*?)(:[^}:]*?)*(?=}})/)?.[1] || "";
     const extension =

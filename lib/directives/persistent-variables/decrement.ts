@@ -8,7 +8,7 @@ import { Placeholder, PlaceholderCategory, PlaceholderType } from "../../types";
  */
 const DecrementPersistentVariablePlaceholder: Placeholder = {
   name: "decrement",
-  regex: /{{decrement:[\\s\\S]*?}}/g,
+  regex: /{{decrement:[\s\S]*?}}/g,
   apply: async (str: string) => {
     const name = str.match(/(?<=(decrement:))[\s\S]*?(?=}})/)?.[0];
     const identifier = `id-${name}`;

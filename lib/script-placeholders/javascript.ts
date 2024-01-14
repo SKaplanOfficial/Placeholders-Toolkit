@@ -7,7 +7,7 @@ import { Placeholder, PlaceholderCategory, PlaceholderType } from "../types";
  */
 const JavaScriptPlaceholder: Placeholder = {
   name: "js",
-  regex: /{{(js|JS)( target="(.*?)")?:(([^{]|{(?!{)|{{[\\s\\S]*?}})*?)}}/g,
+  regex: /{{(js|JS)( target="(.*?)")?:(([^{]|{(?!{)|{{[\s\S]*?}})*?)}}/g,
   apply: async () => {
     return { result: "", js: "" };
   },

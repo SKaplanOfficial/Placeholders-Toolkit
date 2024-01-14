@@ -8,7 +8,7 @@ import { setPersistentVariable } from "./utils";
  */
 const SetPersistentVariablePlaceholder: Placeholder = {
   name: "set",
-  regex: /{{set [a-zA-Z0-9_]+:[\\s\\S]*?}}/g,
+  regex: /{{set [a-zA-Z0-9_]+:[\s\S]*?}}/g,
   apply: async (str: string) => {
     const matches = str.match(/{{set ([a-zA-Z0-9_]+):([\s\S]*?)}}/);
     if (matches) {
